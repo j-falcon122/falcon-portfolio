@@ -1,93 +1,50 @@
-# Portfolio Template
+## portfolio-template — minimal Next.js + TypeScript portfolio starter
 
-A reusable Next.js portfolio template designed for creators, artists, and personal websites.
+A compact, copy-friendly template meant to be forked or copied into new projects as a starting point for personal portfolio sites.
 
-## Features
+Quick start
 
-- Next.js App Router
-- CMS-ready architecture
-- Block-based page system
-- Hero / Gallery / Video / Text / CTA blocks
-- Mock content for development
+1. Copy the folder to a new location, or clone and remove history:
 
-## Usage
+   git clone <this-repo> my-portfolio
+   cd my-portfolio
+   rm -rf .git
 
-1. Clone or use this repository as a template.
 2. Install dependencies:
 
-```bash
-npm install
-```
+   npm install
 
-3. Run the dev server:
+3. Update project metadata in `package.json` (name, author, license).
+4. Edit `app/`, `components/`, and `public/` to add your content and assets.
+5. Replace the mock CMS provider in `lib/cms/providers/mock.ts` with your real provider if desired.
+6. Run the dev server:
 
-```bash
-npm run dev
-```
+   npm run dev
 
-Open http://localhost:3000 to view the site.
+What this template includes
 
-## Project structure
+- Next.js app router scaffolding in `app/` with example routes.
+- A tiny CMS abstraction (`lib/cms/`) and a mock provider to let you develop without external services.
+- Reusable, content-driven blocks in `components/blocks/` (Hero, Gallery, Text, Video, CTA).
+- Tailwind CSS setup and basic global styles.
 
-- `app/` — Next.js app routes and pages
-- `components/` — UI components and blocks
-- `content/mock` — Mock CMS content for local development
-- `lib/cms` — CMS adapter and types
+Tips
 
-## Environment
+- Keep this repo as a lightweight starting point. Remove unused examples and dependencies before publishing.
+- Use environment variables for secrets; don't commit `.env` files. See `.gitignore`.
 
-See `.env.example` for example variables. The template uses a mock CMS provider by default.
+License
 
-## Concept
+This template is MIT licensed. See `LICENSE`.
 
-This template uses a modern headless CMS architecture:
+Init script
 
-Next.js
-  ↓
-Page Route
-  ↓
-CMS Adapter
-  ↓
-Blocks
-  ↓
-React Components
+This template includes a small helper script at `scripts/init-template.sh` that bootstraps a new project copy. It prompts for a project name and author, updates `package.json`, removes the local `.git` history, and can optionally run `npm install` for you.
 
-## License
-
-MIT
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
+Usage:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bash scripts/init-template.sh --install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If you want this template customized for a specific CMS or deployment target, tell me what you need and I can make a targeted version.

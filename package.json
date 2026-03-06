@@ -1,5 +1,5 @@
 {
-  "name": "portfolio",
+  "name": "portfolio-template",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -23,4 +23,7 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   }
+  ,
+  "keywords": ["nextjs","portfolio","template"],
+  "license": "MIT"
 }
