@@ -1,0 +1,61 @@
+[
+  {
+    "slug": "home",
+    "title": "Home",
+    "blocks": [
+      {
+        "_type": "hero",
+        "brandTitle": "Your Site",
+        "headline": "Create something beautiful",
+        "subheadline": "A minimal, content-first Next.js template",
+        "cta": { "label": "See examples", "href": "/work" },
+        "backgroundImage": {
+          "src": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+          "alt": "Placeholder"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "about",
+    "title": "About",
+    "blocks": [
+      {
+        "_type": "text",
+        "title": "About this template",
+        "body": "<p>This is a generic portfolio template built with Next.js. Replace this text with your own content.</p>"
+      }
+    ]
+  },
+  {
+    "slug": "work",
+    "title": "Work",
+    "blocks": [
+      {
+        "_type": "gallery",
+        "title": "Selected work",
+        "items": [
+          { "src": "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d", "alt": "Work 1" },
+          { "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085", "alt": "Work 2" },
+          { "src": "https://images.unsplash.com/photo-1495567720989-cebdbdd97913", "alt": "Work 3" }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "contact",
+    "title": "Contact",
+    "blocks": [
+      {
+        "_type": "text",
+        "title": "Get in touch",
+        "body": "<p>Email: <a href=\"mailto:hello@example.com\">hello@example.com</a></p>"
+      },
+      {
+        "_type": "cta",
+        "label": "Send a message",
+        "href": "/contact"
+      }
+    ]
+  }
+]

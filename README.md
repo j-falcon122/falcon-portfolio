@@ -1,3 +1,60 @@
+# Portfolio Template
+
+A reusable Next.js portfolio template designed for creators, artists, and personal websites.
+
+## Features
+
+- Next.js App Router
+- CMS-ready architecture
+- Block-based page system
+- Hero / Gallery / Video / Text / CTA blocks
+- Mock content for development
+
+## Usage
+
+1. Clone or use this repository as a template.
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the dev server:
+
+```bash
+npm run dev
+```
+
+Open http://localhost:3000 to view the site.
+
+## Project structure
+
+- `app/` — Next.js app routes and pages
+- `components/` — UI components and blocks
+- `content/mock` — Mock CMS content for local development
+- `lib/cms` — CMS adapter and types
+
+## Environment
+
+See `.env.example` for example variables. The template uses a mock CMS provider by default.
+
+## Concept
+
+This template uses a modern headless CMS architecture:
+
+Next.js
+  ↓
+Page Route
+  ↓
+CMS Adapter
+  ↓
+Blocks
+  ↓
+React Components
+
+## License
+
+MIT
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

@@ -24,3 +24,49 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* BEM base styles for blocks */
+.hero {
+  position: relative;
+}
+.hero__inner {
+  z-index: 2;
+}
+.hero__headline {
+  font-size: 2.5rem;
+}
+.hero--large .hero__headline {
+  font-size: 4rem;
+}
+.hero__sub {
+  opacity: 0.9;
+}
+.hero__cta {
+  /* modifier for hero CTAs */
+}
+
+.gallery__items {
+  display: grid;
+  gap: 1rem;
+}
+.gallery__item {
+  border-radius: 8px;
+  overflow: hidden;
+}
+.gallery__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.text-block__title {
+  margin-bottom: 0.5rem;
+}
+.text-block__body {
+  line-height: 1.6;
+}
+
+.cta__button {
+  text-decoration: none;
+}
+
