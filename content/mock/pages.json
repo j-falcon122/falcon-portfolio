@@ -1,0 +1,68 @@
+[
+  {
+    "slug": "home",
+    "title": "Home",
+    "blocks": [
+      {
+        "_type": "hero",
+        "headline": "Create Something Great",
+        "subheadline": "A flexible portfolio template for creators",
+        "cta": {
+          "label": "View Work",
+          "href": "/work"
+        },
+        "backgroundImage": {
+          "src": "/placeholder-hero.svg",
+          "alt": "Background"
+        }
+        ,
+        "gallery": [
+          { "_type": "image", "src": "/placeholder-work-1.svg", "alt": "Hero slide 1" },
+          { "_type": "image", "src": "/placeholder-work-2.svg", "alt": "Hero slide 2" },
+          { "_type": "video", "videoUrl": "/placeholder-video.mp4", "poster": "/placeholder-work-3.svg", "alt": "Hero video" }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "about",
+    "title": "About",
+    "blocks": [
+      {
+        "_type": "text",
+        "title": "About",
+  "body": "This section can be used to introduce yourself, your brand, or your work.",
+  "image": { "src": "/placeholder-work-6.svg", "alt": "About photo" }
+      }
+    ]
+  },
+  {
+    "slug": "work",
+    "title": "Work",
+    "blocks": [
+      {
+        "_type": "gallery",
+        "title": "Selected Work",
+        "items": [
+          { "src": "/placeholder-work-1.svg", "alt": "Portfolio item 1" },
+          { "src": "/placeholder-work-2.svg", "alt": "Portfolio item 2" },
+          { "src": "/placeholder-work-3.svg", "alt": "Portfolio item 3" }
+          ,{ "src": "/placeholder-work-4.svg", "alt": "Portfolio item 4" }
+          ,{ "src": "/placeholder-work-5.svg", "alt": "Portfolio item 5" }
+          ,{ "src": "/placeholder-work-6.svg", "alt": "Portfolio item 6" }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "contact",
+    "title": "Contact",
+    "blocks": [
+      {
+        "_type": "text",
+        "title": "Contact",
+        "body": "Provide ways for people to reach you."
+      }
+    ]
+  }
+]
