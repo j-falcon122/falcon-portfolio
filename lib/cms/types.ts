@@ -13,6 +13,7 @@ export type HeroBlock = {
   subheadline?: string;
   cta?: { label: string; href: string };
   backgroundImage?: { src: string; alt?: string };
+<<<<<<< HEAD
   /** optional gallery to show as the hero background */
   gallery?: GalleryItem[];
 };
@@ -42,6 +43,14 @@ export type GalleryBlock = {
   _type: "gallery";
   title?: string;
   items: GalleryItem[];
+=======
+};
+
+export type GalleryBlock = {
+  _type: "gallery";
+  title?: string;
+  items: { src: string; alt?: string }[];
+>>>>>>> falcon/main
 };
 
 export type VideoBlock = {
@@ -55,8 +64,11 @@ export type TextBlock = {
   _type: "text";
   title?: string;
   body: string;
+<<<<<<< HEAD
   /** optional image for About / text blocks */
   image?: { src: string; alt?: string };
+=======
+>>>>>>> falcon/main
 };
 
 export type CtaBlock = {

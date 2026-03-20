@@ -12,6 +12,7 @@
           "href": "/work"
         },
         "backgroundImage": {
+<<<<<<< HEAD
           "src": "/placeholder-hero.svg",
           "alt": "Background"
         }
@@ -21,6 +22,11 @@
           { "_type": "image", "src": "/placeholder-work-2.svg", "alt": "Hero slide 2" },
           { "_type": "video", "videoUrl": "/placeholder-video.mp4", "poster": "/placeholder-work-3.svg", "alt": "Hero video" }
         ]
+=======
+          "src": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=1600&q=80",
+          "alt": "Background"
+        }
+>>>>>>> falcon/main
       }
     ]
   },
@@ -31,8 +37,12 @@
       {
         "_type": "text",
         "title": "About",
+<<<<<<< HEAD
   "body": "This section can be used to introduce yourself, your brand, or your work.",
   "image": { "src": "/placeholder-work-6.svg", "alt": "About photo" }
+=======
+        "body": "This section can be used to introduce yourself, your brand, or your work."
+>>>>>>> falcon/main
       }
     ]
   },
@@ -44,12 +54,27 @@
         "_type": "gallery",
         "title": "Selected Work",
         "items": [
+<<<<<<< HEAD
           { "src": "/placeholder-work-1.svg", "alt": "Portfolio item 1" },
           { "src": "/placeholder-work-2.svg", "alt": "Portfolio item 2" },
           { "src": "/placeholder-work-3.svg", "alt": "Portfolio item 3" }
           ,{ "src": "/placeholder-work-4.svg", "alt": "Portfolio item 4" }
           ,{ "src": "/placeholder-work-5.svg", "alt": "Portfolio item 5" }
           ,{ "src": "/placeholder-work-6.svg", "alt": "Portfolio item 6" }
+=======
+          {
+            "src": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1000&q=80",
+            "alt": "Portfolio item"
+          },
+          {
+            "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1000&q=80",
+            "alt": "Portfolio item 2"
+          },
+          {
+            "src": "https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&w=1000&q=80",
+            "alt": "Portfolio item 3"
+          }
+>>>>>>> falcon/main
         ]
       }
     ]

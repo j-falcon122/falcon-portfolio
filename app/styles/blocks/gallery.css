@@ -25,6 +25,7 @@
   width: 100%;
   height: auto;
 }
+<<<<<<< HEAD
 
 /* card styling to match visual reference */
 .gallery__card {
@@ -87,3 +88,5 @@
   pointer-events: none;
 }
 .carousel-controls .controls-inner { pointer-events: auto; }
+=======
+>>>>>>> falcon/main

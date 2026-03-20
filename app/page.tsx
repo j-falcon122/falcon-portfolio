@@ -3,6 +3,7 @@ import BlockRenderer from "@/components/blocks/BlockRenderer";
 
 export default async function HomePage() {
   const cms = getCms();
+<<<<<<< HEAD
   // gather all mock pages to render in a single vertical scroll
   const slugs = ["home", "about", "work", "contact"];
   const pages = await Promise.all(slugs.map((s) => cms.getPageBySlug(s)));
@@ -16,4 +17,8 @@ export default async function HomePage() {
       ))}
     </main>
   );
+=======
+  const page = await cms.getPageBySlug("home");
+  return <BlockRenderer blocks={page?.blocks || []} />;
+>>>>>>> falcon/main
 }
