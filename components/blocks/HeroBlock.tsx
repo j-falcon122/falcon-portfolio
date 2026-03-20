@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Carousel from "./CarouselClient";
 import type { HeroBlock as HeroBlockType } from "@/lib/cms/types";
 
 export default function HeroBlock({
@@ -7,11 +8,17 @@ export default function HeroBlock({
   headline,
   subheadline,
   cta,
-  backgroundImage
+  backgroundImage,
+  gallery,
 }: HeroBlockType) {
   return (
     <section className="relative min-h-[80vh] w-full overflow-hidden">
-      {backgroundImage?.src ? (
+        {gallery && gallery.length ? (
+        <div className="absolute inset-0">
+          <Carousel items={gallery} className="h-full" showControls={false} />
+          <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+        </div>
+      ) : backgroundImage?.src ? (
         <>
           <Image
             src={backgroundImage.src}

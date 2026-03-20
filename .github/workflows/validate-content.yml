@@ -1,0 +1,19 @@
+name: Validate mock content
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate-content:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install deps
+        run: npm ci
+      - name: Validate mock content JSON
+        run: npm run validate:content

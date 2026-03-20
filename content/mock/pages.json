@@ -12,9 +12,15 @@
           "href": "/work"
         },
         "backgroundImage": {
-          "src": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=1600&q=80",
+          "src": "/placeholder-hero.svg",
           "alt": "Background"
         }
+        ,
+        "gallery": [
+          { "_type": "image", "src": "/placeholder-work-1.svg", "alt": "Hero slide 1" },
+          { "_type": "image", "src": "/placeholder-work-2.svg", "alt": "Hero slide 2" },
+          { "_type": "video", "videoUrl": "/placeholder-video.mp4", "poster": "/placeholder-work-3.svg", "alt": "Hero video" }
+        ]
       }
     ]
   },
@@ -25,7 +31,8 @@
       {
         "_type": "text",
         "title": "About",
-        "body": "This section can be used to introduce yourself, your brand, or your work."
+  "body": "This section can be used to introduce yourself, your brand, or your work.",
+  "image": { "src": "/placeholder-work-6.svg", "alt": "About photo" }
       }
     ]
   },
@@ -37,18 +44,12 @@
         "_type": "gallery",
         "title": "Selected Work",
         "items": [
-          {
-            "src": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1000&q=80",
-            "alt": "Portfolio item"
-          },
-          {
-            "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1000&q=80",
-            "alt": "Portfolio item 2"
-          },
-          {
-            "src": "https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&w=1000&q=80",
-            "alt": "Portfolio item 3"
-          }
+          { "src": "/placeholder-work-1.svg", "alt": "Portfolio item 1" },
+          { "src": "/placeholder-work-2.svg", "alt": "Portfolio item 2" },
+          { "src": "/placeholder-work-3.svg", "alt": "Portfolio item 3" }
+          ,{ "src": "/placeholder-work-4.svg", "alt": "Portfolio item 4" }
+          ,{ "src": "/placeholder-work-5.svg", "alt": "Portfolio item 5" }
+          ,{ "src": "/placeholder-work-6.svg", "alt": "Portfolio item 6" }
         ]
       }
     ]
