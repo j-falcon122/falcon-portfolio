@@ -8,11 +8,18 @@
 @import "./styles/blocks/gallery.css";
 @import "./styles/blocks/text.css";
 @import "./styles/blocks/cta.css";
+<<<<<<< HEAD
 @import "./styles/figma.css";
 
 :root {
   --background: var(--figma-bg);
   --foreground: var(--figma-foreground);
+=======
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+>>>>>>> falcon/main
   --header-height: 72px;
 }
 
@@ -26,11 +33,17 @@
 body {
   background: var(--background);
   color: var(--foreground);
+<<<<<<< HEAD
   font-family: var(--figma-sans);
   /* removed global padding-top: header is no longer offsetting the body
     If you need the page to start below a fixed header, add a utility
     class to apply padding-top where needed instead of globally. */
   padding-top: 0;
+=======
+  font-family: Arial, Helvetica, sans-serif;
+  /* ensure page content starts below the header to avoid overlap */
+  padding-top: var(--header-height);
+>>>>>>> falcon/main
 }
 
 /* Minimal nav link styles */
@@ -56,11 +69,16 @@ header {
   height: var(--header-height);
   display: block;
   /* keep header visually separated without hiding background */
+<<<<<<< HEAD
   background: rgba(255, 255, 255, 0.03);
+=======
+  background: rgba(255, 255, 255, 0.02);
+>>>>>>> falcon/main
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 
+<<<<<<< HEAD
 /* make header sticky so it remains visible while scrolling */
 header {
   position: sticky;
@@ -85,13 +103,18 @@ header {
   }
 }
 
+=======
+>>>>>>> falcon/main
 /* place the nav on the right and keep responsive spacing */
 .site-nav {
   margin-left: auto;
 }
 
+<<<<<<< HEAD
 .header .site-title { color: var(--figma-primary); font-weight: 700; }
 
+=======
+>>>>>>> falcon/main
 @media (max-width: 640px) {
   .site-nav {
     position: static;
@@ -100,6 +123,7 @@ header {
     width: 100%;
     justify-content: flex-start;
   }
+<<<<<<< HEAD
 }
 
 /* sticky footer styles */
@@ -117,4 +141,6 @@ header {
 /* ensure main content isn't hidden behind the footer */
 main {
   padding-bottom: calc(var(--header-height) + 3rem);
+=======
+>>>>>>> falcon/main
 }

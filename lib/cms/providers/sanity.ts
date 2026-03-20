@@ -1,17 +1,20 @@
-import sanityClient from "@sanity/client";
+import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { CmsProvider, Page, SiteSettings, Block, GalleryItem } from "../types";
 
 const projectId = process.env.SANITY_PROJECT_ID;
 const dataset = process.env.SANITY_DATASET || "production";
 
-if (!projectId) {
-	// We avoid throwing at import time to keep the dev experience smooth when SANITY isn't configured.
-	// The provider will throw at runtime if used without config.
+// Only initialize Sanity client when a valid projectId is supplied.
+// Sanity project IDs may only contain a-z, 0-9 and dashes.
+const isValidProjectId = typeof projectId === "string" && /^[a-z0-9-]+$/.test(projectId);
+if (!isValidProjectId) {
+	// Keep behavior non-throwing at import time to preserve dev experience when SANITY isn't configured.
+	// A runtime error will be thrown if the provider is used without a valid config.
 }
 
-const client = projectId
-	? sanityClient({ projectId, dataset, useCdn: !!process.env.SANITY_USE_CDN, apiVersion: "2024-01-01" })
+const client = isValidProjectId
+	? createClient({ projectId: projectId as string, dataset, useCdn: !!process.env.SANITY_USE_CDN, apiVersion: "2024-01-01" })
 	: null;
 
 const builder = client ? imageUrlBuilder(client) : null;

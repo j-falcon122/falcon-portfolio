@@ -33,6 +33,7 @@ Tips
 - Keep this repo as a lightweight starting point. Remove unused examples and dependencies before publishing.
 - Use environment variables for secrets; don't commit `.env` files. See `.gitignore`.
 
+<<<<<<< HEAD
 Admin & CMS integration
 
 This template includes a lightweight CMS abstraction and an `/admin` route protected by NextAuth (GitHub provider). Follow these steps to enable editing with Sanity Studio and secure access:
@@ -53,6 +54,8 @@ Notes:
 - The current admin page redirects to the Studio; optionally I can add an in-app admin UI if you prefer editing inside this Next app.
 - To restrict admin access to a GitHub org or user list, set `ADMIN_GITHUB_ORG` or `ADMIN_GITHUB_USERS` in `.env.local` and I can wire the server-side check.
 
+=======
+>>>>>>> falcon/main
 License
 
 This template is MIT licensed. See `LICENSE`.

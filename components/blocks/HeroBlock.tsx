@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+<<<<<<< HEAD
 import Carousel from "./CarouselClient";
+=======
+>>>>>>> falcon/main
 import type { HeroBlock as HeroBlockType } from "@/lib/cms/types";
 
 export default function HeroBlock({
@@ -8,6 +11,7 @@ export default function HeroBlock({
   headline,
   subheadline,
   cta,
+<<<<<<< HEAD
   backgroundImage,
   gallery,
 }: HeroBlockType) {
@@ -19,6 +23,13 @@ export default function HeroBlock({
           <div className="absolute inset-0 bg-black/40 pointer-events-none" />
         </div>
       ) : backgroundImage?.src ? (
+=======
+  backgroundImage
+}: HeroBlockType) {
+  return (
+    <section className="relative min-h-[80vh] w-full overflow-hidden">
+      {backgroundImage?.src ? (
+>>>>>>> falcon/main
         <>
           <Image
             src={backgroundImage.src}

@@ -4,6 +4,7 @@
 .text-block__body {
   line-height: 1.6;
 }
+<<<<<<< HEAD
 
 /* About block specific styles */
 .about__image-wrapper {
@@ -33,3 +34,5 @@
     width: 100%;
   }
 }
+=======
+>>>>>>> falcon/main
