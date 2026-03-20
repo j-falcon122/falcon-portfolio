@@ -6,7 +6,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-<<<<<<< HEAD
     "lint": "eslint",
     "validate:content": "node ./scripts/validate-json-ci.js"
   },
@@ -16,12 +15,6 @@
     "embla-carousel-react": "^8.0.0",
     "next": "^16.2.0",
     "next-auth": "^4.24.13",
-=======
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.1.6",
->>>>>>> falcon/main
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
@@ -30,25 +23,12 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-<<<<<<< HEAD
     "ajv": "^8.18.0",
-=======
->>>>>>> falcon/main
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
     "typescript": "^5"
-<<<<<<< HEAD
   },
-  "keywords": [
-    "nextjs",
-    "portfolio",
-    "template"
-  ],
-=======
-  }
-  ,
-  "keywords": ["nextjs","portfolio","template"],
->>>>>>> falcon/main
+  "keywords": ["nextjs", "portfolio", "template"],
   "license": "MIT"
 }
