@@ -1,50 +1,68 @@
-## portfolio-template — minimal Next.js + TypeScript portfolio starter
+## falcon-portfolio — J. Falcon's personal portfolio site
 
-A compact, copy-friendly template meant to be forked or copied into new projects as a starting point for personal portfolio sites.
+A Next.js + TypeScript portfolio site for J. Falcon, built on top of a flexible template with a pluggable CMS layer and GitHub OAuth.
 
-Quick start
+### Quick start
 
-1. Copy the folder to a new location, or clone and remove history:
+1. Install dependencies:
 
-   git clone <this-repo> my-portfolio
-   cd my-portfolio
-   rm -rf .git
-
-2. Install dependencies:
-
+   ```bash
    npm install
+   ```
 
-3. Update project metadata in `package.json` (name, author, license).
-4. Edit `app/`, `components/`, and `public/` to add your content and assets.
-5. Replace the mock CMS provider in `lib/cms/providers/mock.ts` with your real provider if desired.
-6. Run the dev server:
+2. Copy the example environment file and fill in your values:
 
+   ```bash
+   cp .env.example .env.local
+   ```
+
+3. Run the dev server:
+
+   ```bash
    npm run dev
+   ```
 
-What this template includes
+### Environment variables
 
-- Next.js app router scaffolding in `app/` with example routes.
-- A tiny CMS abstraction (`lib/cms/`) and a mock provider to let you develop without external services.
-- Reusable, content-driven blocks in `components/blocks/` (Hero, Gallery, Text, Video, CTA).
-- Tailwind CSS setup and basic global styles.
+See `.env.example` for a full list with descriptions.
 
-Tips
+| Variable | Purpose |
+|---|---|
+| `CMS_PROVIDER` | `mock` (default) or `sanity` |
+| `SANITY_PROJECT_ID` | Sanity project ID (required when `CMS_PROVIDER=sanity`) |
+| `SANITY_DATASET` | Sanity dataset (default: `production`) |
+| `SANITY_API_TOKEN` | Optional Sanity read token for private datasets |
+| `NEXTAUTH_SECRET` | Random secret for NextAuth session encryption |
+| `NEXTAUTH_URL` | Canonical deployment URL |
+| `GITHUB_CLIENT_ID` | GitHub OAuth App client ID |
+| `GITHUB_CLIENT_SECRET` | GitHub OAuth App client secret |
+| `ALLOWED_GITHUB_LOGIN` | GitHub username allowed to access `/admin` |
 
-- Keep this repo as a lightweight starting point. Remove unused examples and dependencies before publishing.
-- Use environment variables for secrets; don't commit `.env` files. See `.gitignore`.
+### CMS
 
-License
+Content is driven by a swappable CMS provider:
 
-This template is MIT licensed. See `LICENSE`.
+- **Mock** (`CMS_PROVIDER=mock`): reads from `content/mock/site.json` and `content/mock/pages.json` — no external services needed.
+- **Sanity** (`CMS_PROVIDER=sanity`): fetches live content from your Sanity project using GROQ queries.
 
-Init script
+### Admin / OAuth
 
-This template includes a small helper script at `scripts/init-template.sh` that bootstraps a new project copy. It prompts for a project name and author, updates `package.json`, removes the local `.git` history, and can optionally run `npm install` for you.
+Visit `/admin` to access the admin dashboard. You will be redirected to `/admin/login` where you can sign in with GitHub. Only the GitHub account matching `ALLOWED_GITHUB_LOGIN` is permitted.
 
-Usage:
+Create a GitHub OAuth App at <https://github.com/settings/developers> and set the callback URL to:
 
-```bash
-bash scripts/init-template.sh --install
+```
+{NEXTAUTH_URL}/api/auth/callback/github
 ```
 
-If you want this template customized for a specific CMS or deployment target, tell me what you need and I can make a targeted version.
+### What's included
+
+- Next.js App Router with example routes (`/`, `/about`, `/work`, `/contact`)
+- Pluggable CMS abstraction (`lib/cms/`) with mock and Sanity providers
+- Reusable content blocks (`components/blocks/`): Hero, Gallery, Text, Video, CTA
+- GitHub OAuth via NextAuth.js protecting `/admin`
+- Tailwind CSS with a custom dark theme and accent colour
+
+### License
+
+MIT

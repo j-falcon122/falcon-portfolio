@@ -5,10 +5,10 @@
     "blocks": [
       {
         "_type": "hero",
-        "headline": "Create Something Great",
-        "subheadline": "A flexible portfolio template for creators",
+        "headline": "J. Falcon",
+        "subheadline": "Software engineer, creator, and builder of things that matter.",
         "cta": {
-          "label": "View Work",
+          "label": "See My Work",
           "href": "/work"
         },
         "backgroundImage": {
@@ -24,8 +24,8 @@
     "blocks": [
       {
         "_type": "text",
-        "title": "About",
-        "body": "This section can be used to introduce yourself, your brand, or your work."
+        "title": "About Me",
+        "body": "Hi, I'm J. Falcon — a software engineer passionate about building clean, purposeful digital experiences. I work across the full stack with a focus on modern web technologies including Next.js, TypeScript, and cloud platforms. When I'm not writing code, I'm exploring new ideas and pushing projects forward."
       }
     ]
   },
@@ -39,15 +39,15 @@
         "items": [
           {
             "src": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1000&q=80",
-            "alt": "Portfolio item"
+            "alt": "Project one"
           },
           {
             "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1000&q=80",
-            "alt": "Portfolio item 2"
+            "alt": "Project two"
           },
           {
             "src": "https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&w=1000&q=80",
-            "alt": "Portfolio item 3"
+            "alt": "Project three"
           }
         ]
       }
@@ -59,8 +59,8 @@
     "blocks": [
       {
         "_type": "text",
-        "title": "Contact",
-        "body": "Provide ways for people to reach you."
+        "title": "Get in Touch",
+        "body": "Interested in working together or just want to say hello? Reach out via <a href=\"https://github.com/j-falcon122\">my GitHub profile</a> or drop me a message — I'd love to connect."
       }
     ]
   }

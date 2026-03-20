@@ -1,10 +1,10 @@
 import type { CmsProvider } from "./types";
 import mock from "./providers/mock";
-// import sanity from "./providers/sanity";
+import sanity from "./providers/sanity";
 
 const providers: Record<string, CmsProvider> = {
   mock,
-  // sanity,
+  sanity,
 };
 
 export function getCms(): CmsProvider {

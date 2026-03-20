@@ -10,9 +10,11 @@ export default function SiteHeader({ site }: { site: SiteSettings }) {
   return (
     <header className="header">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <div className="text-sm font-medium">{site.title}</div>
+        <Link href="/" className="text-sm font-semibold tracking-wide" style={{ color: "var(--accent)" }}>
+          {site.title}
+        </Link>
 
-  <nav className="site-nav flex gap-6 text-sm opacity-90">
+        <nav className="site-nav flex gap-6 text-sm opacity-90">
           {site.nav?.map((item) => {
             const active = item.href === pathname || (item.href !== "/" && pathname.startsWith(item.href));
             return (
@@ -27,7 +29,6 @@ export default function SiteHeader({ site }: { site: SiteSettings }) {
           })}
         </nav>
       </div>
-      
     </header>
   );
 }
