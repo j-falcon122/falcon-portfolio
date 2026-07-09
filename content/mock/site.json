@@ -1,0 +1,12 @@
+{
+  "title": "Jordan Falcon",
+  "navigationMode": "single-page",
+  "singlePageSectionSlugs": ["home", "about", "work", "contact"],
+  "nav": [
+    { "label": "Home", "href": "/" },
+    { "label": "About", "href": "/about" },
+    { "label": "Work", "href": "/work" },
+    { "label": "Contact", "href": "/contact" }
+  ],
+  "footerText": "© 2026 Jordan Falcon"
+}

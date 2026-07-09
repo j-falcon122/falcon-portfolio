@@ -1,0 +1,113 @@
+[
+  {
+    "slug": "home",
+    "title": "Home",
+    "blocks": [
+      {
+        "_type": "hero",
+        "brandTitle": "Jordan Falcon",
+        "headline": "Software engineer & lifelong learner",
+        "subheadline": "I believe the best experiences are built with intention—turning complex technical challenges into products that feel simple, intuitive, and meaningful.",
+        "ctas": [
+          { "label": "About me", "href": "/about" },
+          { "label": "Get in touch", "href": "/contact" }
+        ],
+        "backgroundImage": {
+          "src": "/placeholder-hero.svg",
+          "alt": "Abstract gradient background"
+        }
+      },
+      {
+        "_type": "text",
+        "title": "What I do",
+        "body": "<p>For the past several years, I've been fortunate to help build products used by <strong>millions of sports fans</strong>, turning complex technical challenges into experiences that feel simple, intuitive, and meaningful.</p><p>My work has centered around modern frontend development with <strong>React</strong>, <strong>TypeScript</strong>, and <strong>Next.js</strong>—creating scalable applications, improving user experiences, and collaborating across teams to bring ideas to life.</p>"
+      }
+    ]
+  },
+  {
+    "slug": "about",
+    "title": "About",
+    "blocks": [
+      {
+        "_type": "about",
+        "title": "About me",
+        "body": "I'm Jordan Falcon—a software engineer, lifelong learner, and someone who believes the best experiences are built with intention. Writing code is one part of who I am, but I'm equally driven by curiosity, creativity, and the desire to keep improving.",
+        "image": {
+          "src": "/jf_logo_transparent.png",
+          "alt": "Jordan Falcon"
+        },
+        "stats": [
+          { "value": "React", "label": "TypeScript · Next.js" },
+          { "value": "Sports", "label": "Products at scale" },
+          { "value": "People", "label": "First, always" }
+        ]
+      },
+      {
+        "_type": "text",
+        "title": "Beyond the keyboard",
+        "body": "<p>Sports have always been at the center of my life. Whether I'm watching a game, breaking down strategy, or building products that connect fans with the teams they love, I've always been fascinated by competition, teamwork, and the stories behind every season.</p><p>When I'm away from my keyboard, you'll usually find me dancing salsa, exploring new music, gaming with friends, or organizing events that bring people together. One of the traditions I'm most proud of is our annual <strong>Falcon Bros BBQ</strong>—a community gathering that started with a simple idea: create a space where people can celebrate life, reconnect, and make lasting memories. It's never been about making a profit. It's always been about creating moments that matter.</p>"
+      },
+      {
+        "_type": "text",
+        "title": "How I think about building",
+        "body": "<p>I believe the same philosophy applies to technology.</p><p>Great software isn't just about clean architecture or elegant code—it's about <strong>understanding people</strong>. Every feature, every interaction, and every detail should solve a real problem and leave someone's experience a little better than before.</p><p>Whether I'm designing a new user experience, learning a new technology, dancing to live music, or competing in a game with friends, I'm driven by curiosity, creativity, and the desire to keep improving.</p>"
+      }
+    ]
+  },
+  {
+    "slug": "work",
+    "title": "Work",
+    "blocks": [
+      {
+        "_type": "text",
+        "title": "Selected work",
+        "body": "<p>Projects and case studies coming soon. In the meantime, feel free to reach out if you'd like to hear more about the products I've helped build for sports fans at scale.</p>"
+      },
+      {
+        "_type": "gallery",
+        "title": "Projects",
+        "items": [
+          {
+            "type": "image",
+            "src": "/placeholder-work-1.svg",
+            "alt": "Project placeholder — add your work here"
+          },
+          {
+            "type": "image",
+            "src": "/placeholder-work-2.svg",
+            "alt": "Project placeholder — add your work here"
+          },
+          {
+            "type": "image",
+            "src": "/placeholder-work-3.svg",
+            "alt": "Project placeholder — add your work here"
+          }
+        ]
+      },
+      {
+        "_type": "cta",
+        "label": "Let's connect",
+        "href": "/contact"
+      }
+    ]
+  },
+  {
+    "slug": "contact",
+    "title": "Contact",
+    "blocks": [
+      {
+        "_type": "contact",
+        "title": "Get in touch",
+        "subtitle": "I'm always excited to connect with people who are passionate about building meaningful products, creating memorable experiences, or simply sharing ideas. Thanks for stopping by.",
+        "email": "j.falcon122@gmail.com",
+        "phone": "",
+        "location": "US Eastern",
+        "submitLabel": "Send message",
+        "socialLinks": [
+          { "label": "GitHub", "href": "https://github.com/j-falcon122" },
+          { "label": "Email", "href": "mailto:j.falcon122@gmail.com" }
+        ]
+      }
+    ]
+  }
+]
