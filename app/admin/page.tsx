@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getDeployEnv } from "@/lib/deployEnv";
+import { getDeployEnv } from "portfolio-core/lib/deployEnv";
 
 /**
  * Opens CMS / Sanity Studio. Hosted QA/PROD: set ADMIN_NAV_URL (or SANITY_STUDIO_URL).

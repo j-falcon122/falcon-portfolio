@@ -6,6 +6,7 @@ const isStaticExport =
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH?.trim() || "";
 
 const nextConfig: NextConfig = {
+  transpilePackages: ["portfolio-core"],
   ...(isStaticExport ? { output: "export" as const } : {}),
   ...(basePath ? { basePath, assetPrefix: basePath } : {}),
   ...(isStaticExport ? { trailingSlash: true } : {}),

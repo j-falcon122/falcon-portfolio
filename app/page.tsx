@@ -1,7 +1,7 @@
-import { getCms } from "@/lib/cms";
-import { resolveSinglePageSectionSlugs } from "@/lib/cms/singlePageSections";
-import { normalizePageSlug } from "@/lib/normalizePageSlug";
-import BlockRenderer from "@/components/blocks/BlockRenderer";
+import { getCms } from "portfolio-core/lib/cms";
+import { resolveSinglePageSectionSlugs } from "portfolio-core/lib/cms/singlePageSections";
+import { normalizePageSlug } from "portfolio-core/lib/normalizePageSlug";
+import BlockRenderer from "portfolio-core/components/blocks/BlockRenderer";
 
 export default async function HomePage() {
   const cms = getCms();

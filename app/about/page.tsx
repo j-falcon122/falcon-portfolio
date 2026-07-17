@@ -1,6 +1,6 @@
-import { getCms } from "@/lib/cms";
-import BlockRenderer from "@/components/blocks/BlockRenderer";
-import { redirectToSinglePageAnchorIfNeeded } from "@/lib/singlePageNav";
+import { getCms } from "portfolio-core/lib/cms";
+import BlockRenderer from "portfolio-core/components/blocks/BlockRenderer";
+import { redirectToSinglePageAnchorIfNeeded } from "portfolio-core/lib/singlePageNav";
 
 export default async function AboutPage() {
   const jump = await redirectToSinglePageAnchorIfNeeded("about");

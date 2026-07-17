@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { getCms } from "@/lib/cms";
-import { resolveAdminNav } from "@/lib/resolveAdminNav";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
-import SkipLink from "@/components/SkipLink";
-import SinglePageHashScroll from "@/components/SinglePageHashScroll";
+import { getCms } from "portfolio-core/lib/cms";
+import { resolveAdminNav } from "portfolio-core/lib/resolveAdminNav";
+import SiteHeader from "portfolio-core/components/SiteHeader";
+import SiteFooter from "portfolio-core/components/SiteFooter";
+import SkipLink from "portfolio-core/components/SkipLink";
+import SinglePageHashScroll from "portfolio-core/components/SinglePageHashScroll";
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getCms().getSiteSettings();
