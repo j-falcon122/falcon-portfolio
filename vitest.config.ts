@@ -34,6 +34,21 @@ export default defineConfig({
           },
         },
         test: {
+          name: "smoke",
+          environment: "node",
+          include: ["lib/**/*.smoke.test.tsx"],
+        },
+      },
+      {
+        esbuild: {
+          jsx: "automatic",
+        },
+        resolve: {
+          alias: {
+            "@": path.resolve(__dirname, "."),
+          },
+        },
+        test: {
           name: "a11y",
           environment: "jsdom",
           include: ["**/*.a11y.test.tsx"],
