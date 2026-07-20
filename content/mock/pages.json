@@ -5,17 +5,14 @@
     "blocks": [
       {
         "_type": "hero",
-        "brandTitle": "Jordan Falcon",
-        "headline": "Software engineer & lifelong learner",
-        "subheadline": "I believe the best experiences are built with intention—turning complex technical challenges into products that feel simple, intuitive, and meaningful.",
+        "brandTitle": "Frontend-Focused Software Engineer",
+        "headline": "Jordan Falcon",
+        "subheadline": "I'm a software engineer with seven years of experience at ESPN and Disney, building responsive, accessible, and user-friendly digital experiences for sports fans. My background spans media, content management systems, consumer products, and high-traffic web applications.",
         "ctas": [
-          { "label": "About me", "href": "/about" },
-          { "label": "Get in touch", "href": "/contact" }
-        ],
-        "backgroundImage": {
-          "src": "/placeholder-hero.svg",
-          "alt": "Abstract gradient background"
-        }
+          { "label": "View My Work", "href": "/work" },
+          { "label": "View Résumé", "href": "/contact" },
+          { "label": "Contact Me", "href": "/contact" }
+        ]
       },
       {
         "_type": "text",
