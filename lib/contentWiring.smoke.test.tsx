@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { renderToReadableStream } from "react-dom/server";
-import BlockRenderer from "portfolio-core/components/blocks/BlockRenderer";
+import BlockRenderer from "@/components/blocks/BlockRenderer";
 import type { Block } from "portfolio-core/lib/cms/types";
 import pages from "../content/mock/pages.json";
 
@@ -58,8 +58,8 @@ describe("BlockRenderer smoke (falcon mock content)", () => {
     const html = await renderBlocks(home!.blocks as Block[]);
 
     expect(html).toContain("Jordan Falcon");
-    expect(html).toContain("Software engineer &amp; lifelong learner");
-    expect(html).toContain("About me");
+    expect(html).toContain("Frontend-Focused Software Engineer");
+    expect(html).toContain("View My Work");
   });
 
   it("renders about, work, and contact blocks from content/mock/pages.json", async () => {

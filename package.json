@@ -29,6 +29,7 @@
     "@sanity/image-url": "^2.0.3",
     "@sanity/vision": "^5.22.0",
     "embla-carousel-react": "^8.0.0",
+    "geist": "^1.7.2",
     "next": "^16.2.0",
     "next-auth": "^4.24.13",
     "portfolio-core": "github:j-falcon122/portfolio-core#v1.0.1",
