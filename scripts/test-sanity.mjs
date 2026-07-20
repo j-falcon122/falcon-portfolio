@@ -1,21 +1,30 @@
 import { createClient } from "@sanity/client";
+import {
+  resolveSanityDataset,
+  resolveSanityProjectId,
+} from "./lib/sanityEnv.mjs";
 
-const projectId = process.env.SANITY_PROJECT_ID;
-const dataset = process.env.SANITY_DATASET || "production";
-
-if (!projectId) {
-  console.error("SANITY_PROJECT_ID not set");
+let projectId;
+let dataset;
+try {
+  projectId = resolveSanityProjectId();
+  dataset = resolveSanityDataset();
+} catch (err) {
+  console.error(err instanceof Error ? err.message : err);
   process.exit(1);
 }
 
 const client = createClient({
   projectId,
   dataset,
-  useCdn: !!process.env.SANITY_USE_CDN,
-  apiVersion: "2024-01-01",
+  useCdn: process.env.SANITY_USE_CDN !== "false",
+  apiVersion: process.env.SANITY_API_VERSION?.trim() || "2024-01-01",
+  token: process.env.SANITY_API_READ_TOKEN?.trim() || undefined,
 });
 
-console.log("Sanity client created, running small fetch...");
+console.log(
+  `Sanity client ready (project=${projectId}, dataset=${dataset}), running small fetch...`
+);
 
 (async () => {
   try {

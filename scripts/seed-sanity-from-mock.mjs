@@ -13,13 +13,24 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createClient } from "@sanity/client";
+import {
+  resolveSanityDataset,
+  resolveSanityProjectId,
+} from "./lib/sanityEnv.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const publicDir = path.join(root, "public");
 
-const projectId = process.env.SANITY_PROJECT_ID?.trim();
-const dataset = process.env.SANITY_DATASET?.trim() || "production";
+let projectId;
+let dataset;
+try {
+  projectId = resolveSanityProjectId();
+  dataset = resolveSanityDataset();
+} catch (err) {
+  console.error(err instanceof Error ? err.message : err);
+  process.exit(1);
+}
 const token =
   process.env.SANITY_API_WRITE_TOKEN?.trim() ||
   process.env.SANITY_WRITE_TOKEN?.trim();
@@ -35,10 +46,12 @@ if (onlyEq) {
   }
 }
 
-if (!projectId || !token) {
-  console.error("Set SANITY_PROJECT_ID and SANITY_API_WRITE_TOKEN in .env.local");
+if (!token) {
+  console.error("Set SANITY_API_WRITE_TOKEN in .env.local");
   process.exit(1);
 }
+
+console.log(`Seeding Sanity project=${projectId} dataset=${dataset}`);
 
 const client = createClient({
   projectId,

@@ -6,17 +6,30 @@
  *   npm run migrate:hero-ctas
  */
 import { createClient } from "@sanity/client";
+import {
+  resolveSanityDataset,
+  resolveSanityProjectId,
+} from "./lib/sanityEnv.mjs";
 
-const projectId = process.env.SANITY_PROJECT_ID?.trim();
-const dataset = process.env.SANITY_DATASET?.trim() || "production";
+let projectId;
+let dataset;
+try {
+  projectId = resolveSanityProjectId();
+  dataset = resolveSanityDataset();
+} catch (err) {
+  console.error(err instanceof Error ? err.message : err);
+  process.exit(1);
+}
 const token =
   process.env.SANITY_API_WRITE_TOKEN?.trim() ||
   process.env.SANITY_WRITE_TOKEN?.trim();
 
-if (!projectId || !token) {
-  console.error("Set SANITY_PROJECT_ID and SANITY_API_WRITE_TOKEN in .env.local");
+if (!token) {
+  console.error("Set SANITY_API_WRITE_TOKEN in .env.local");
   process.exit(1);
 }
+
+console.log(`Migrating hero CTAs in project=${projectId} dataset=${dataset}`);
 
 const client = createClient({
   projectId,

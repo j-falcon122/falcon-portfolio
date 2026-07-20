@@ -2,13 +2,21 @@ import {defineConfig} from "sanity";
 import {structureTool} from "sanity/structure";
 import {visionTool} from "@sanity/vision";
 import {schemaTypes} from "./sanity/schemaTypes";
+import {DEFAULT_SANITY_DATASET} from "./lib/sanityEnv";
 
-const projectId = process.env.SANITY_PROJECT_ID || "bn5j0gt9";
-const dataset = process.env.SANITY_DATASET || "production";
+const projectId = process.env.SANITY_PROJECT_ID?.trim();
+const dataset =
+  process.env.SANITY_DATASET?.trim() || DEFAULT_SANITY_DATASET;
+
+if (!projectId) {
+  throw new Error(
+    "SANITY_PROJECT_ID is required for Sanity Studio. Add it to .env.local (see .env.example)."
+  );
+}
 
 export default defineConfig({
-  name: "default",
-  title: "Template Portfolio",
+  name: "development",
+  title: "Falcon Portfolio",
   projectId,
   dataset,
   plugins: [structureTool(), visionTool()],

@@ -7,6 +7,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createClient } from "@sanity/client";
+import {
+  resolveSanityDataset,
+  resolveSanityProjectId,
+} from "./lib/sanityEnv.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
@@ -28,22 +32,27 @@ const FILES = [
   },
 ];
 
-const projectId = process.env.SANITY_PROJECT_ID?.trim();
-const dataset = process.env.SANITY_DATASET?.trim() || "production";
+let projectId;
+let dataset;
+try {
+  projectId = resolveSanityProjectId();
+  dataset = resolveSanityDataset();
+} catch (err) {
+  console.error(err instanceof Error ? err.message : err);
+  process.exit(1);
+}
 const token =
   process.env.SANITY_API_WRITE_TOKEN?.trim() ||
   process.env.SANITY_WRITE_TOKEN?.trim();
 
-if (!projectId) {
-  console.error("Set SANITY_PROJECT_ID in .env.local");
-  process.exit(1);
-}
 if (!token) {
   console.error(
     "Set SANITY_API_WRITE_TOKEN in .env.local (Sanity → Project → API → Tokens → Editor)."
   );
   process.exit(1);
 }
+
+console.log(`Uploading videos to project=${projectId} dataset=${dataset}`);
 
 const client = createClient({
   projectId,
