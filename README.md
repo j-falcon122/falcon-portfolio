@@ -1,15 +1,39 @@
 # falcon-portfolio
 
-Personal portfolio site for **Jordan Falcon** — built with Next.js, TypeScript, and a content-driven block system.
+Personal portfolio site for **Jordan Falcon** — built with Next.js, TypeScript, and a content-driven block system (shared via [`portfolio-core`](https://github.com/j-falcon122/portfolio-core)).
 
 ## Local development
 
 ```bash
+cp .env.example .env.local
 npm install
 npm run dev
 ```
 
-Content lives in `content/mock/*.json` when using the mock CMS (`CMS_PROVIDER=mock` in `.env.local`).
+By default `CMS_PROVIDER=mock` serves `content/mock/*.json`.
+
+## Sanity CMS
+
+Free plan: use one active dataset — **`development`** — everywhere for now.
+
+1. Create dataset `development` in Sanity Manage.
+2. In `.env.local`:
+   ```bash
+   SITE_ENV=local
+   CMS_PROVIDER=sanity
+   SANITY_PROJECT_ID=your-project-id
+   SANITY_DATASET=development
+   SANITY_API_WRITE_TOKEN=…   # Editor token
+   ```
+3. Seed and run:
+   ```bash
+   npm run seed:sanity
+   npm run test:sanity
+   npm run dev
+   npm run sanity:dev
+   ```
+
+See [docs/SANITY.md](docs/SANITY.md) for tokens and hosting notes.
 
 ## Scripts
 
@@ -17,7 +41,9 @@ Content lives in `content/mock/*.json` when using the mock CMS (`CMS_PROVIDER=mo
 - `npm run build` — production build
 - `npm run validate:content` — validate content JSON
 - `npm run test` — run tests
+- `npm run sanity:dev` — Sanity Studio
+- `npm run seed:sanity` — seed the configured dataset from mock JSON
 
 ## Deploy
 
-Configured for Vercel or GitHub Pages static export (`npm run build:pages`).
+Configured for Vercel or GitHub Pages static export (`npm run build:pages`). For Sanity-backed deploys, set `CMS_PROVIDER=sanity` and `SANITY_DATASET=development` in host/CI env vars (see `.env.example`).

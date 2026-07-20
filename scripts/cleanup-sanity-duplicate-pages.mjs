@@ -4,17 +4,30 @@
  * Keeps canonical ids: page-home, page-about, page-work, page-contact.
  */
 import { createClient } from "@sanity/client";
+import {
+  resolveSanityDataset,
+  resolveSanityProjectId,
+} from "./lib/sanityEnv.mjs";
 
-const projectId = process.env.SANITY_PROJECT_ID?.trim();
-const dataset = process.env.SANITY_DATASET?.trim() || "production";
+let projectId;
+let dataset;
+try {
+  projectId = resolveSanityProjectId();
+  dataset = resolveSanityDataset();
+} catch (err) {
+  console.error(err instanceof Error ? err.message : err);
+  process.exit(1);
+}
 const token =
   process.env.SANITY_API_WRITE_TOKEN?.trim() ||
   process.env.SANITY_WRITE_TOKEN?.trim();
 
-if (!projectId || !token) {
-  console.error("Set SANITY_PROJECT_ID and SANITY_API_WRITE_TOKEN");
+if (!token) {
+  console.error("Set SANITY_API_WRITE_TOKEN");
   process.exit(1);
 }
+
+console.log(`Cleaning duplicate pages in project=${projectId} dataset=${dataset}`);
 
 function normalizeSlug(slug) {
   const s = (slug ?? "").trim().replace(/^\/+|\/+$/g, "");
