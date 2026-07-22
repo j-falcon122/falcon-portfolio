@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
-import { getCms } from "portfolio-core/lib/cms";
+import { getFalconCms } from "@/lib/cms";
 import { resolveAdminNav } from "portfolio-core/lib/resolveAdminNav";
-import SiteHeader from "portfolio-core/components/SiteHeader";
+import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "portfolio-core/components/SiteFooter";
 import SkipLink from "portfolio-core/components/SkipLink";
 import SinglePageHashScroll from "portfolio-core/components/SinglePageHashScroll";
@@ -17,7 +17,7 @@ const outfit = Outfit({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const site = await getCms().getSiteSettings();
+  const site = await getFalconCms().getSiteSettings();
   return {
     title: {
       default: site.title,
@@ -33,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const cms = getCms();
+  const cms = getFalconCms();
   const site = await cms.getSiteSettings();
   const adminNav = resolveAdminNav();
 

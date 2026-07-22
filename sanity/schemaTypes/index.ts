@@ -10,6 +10,14 @@ import {
   videoBlockType,
   videoCarouselBlockType,
 } from "./pageBlocks";
+import {
+  educationBlockType,
+  experienceBlockType,
+  experienceDetailsBlockType,
+  projectListBlockType,
+  skillsBlockType,
+  workGridBlockType,
+} from "./figmaBlocks";
 
 export const schemaTypes = [
   siteSettingsType,
@@ -22,4 +30,10 @@ export const schemaTypes = [
   ctaBlockType,
   aboutBlockType,
   contactBlockType,
+  experienceBlockType,
+  experienceDetailsBlockType,
+  workGridBlockType,
+  projectListBlockType,
+  skillsBlockType,
+  educationBlockType,
 ];

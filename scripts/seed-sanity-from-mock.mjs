@@ -192,8 +192,10 @@ async function convertBlock(block, hosted) {
       const row = {
         _type: "about",
         _key: key,
+        ...(block.eyebrow ? { eyebrow: block.eyebrow } : {}),
         ...(block.title ? { title: block.title } : {}),
         ...(block.body ? { body: block.body } : {}),
+        ...(block.playbookTitle ? { playbookTitle: block.playbookTitle } : {}),
         ...(block.stats ? { stats: block.stats } : {}),
       };
       if (block.image?.src) {
@@ -207,6 +209,7 @@ async function convertBlock(block, hosted) {
       return {
         _type: "contact",
         _key: key,
+        ...(block.eyebrow ? { eyebrow: block.eyebrow } : {}),
         ...(block.title ? { title: block.title } : {}),
         ...(block.subtitle ? { subtitle: block.subtitle } : {}),
         ...(block.email ? { email: block.email } : {}),
@@ -214,6 +217,120 @@ async function convertBlock(block, hosted) {
         ...(block.location ? { location: block.location } : {}),
         ...(block.submitLabel ? { submitLabel: block.submitLabel } : {}),
         ...(block.socialLinks ? { socialLinks: block.socialLinks } : {}),
+      };
+
+    case "experience":
+      return {
+        _type: "experience",
+        _key: key,
+        ...(block.eyebrow ? { eyebrow: block.eyebrow } : {}),
+        ...(block.title ? { title: block.title } : {}),
+        ...(block.subtitle ? { subtitle: block.subtitle } : {}),
+        ...(block.ctaLabel ? { ctaLabel: block.ctaLabel } : {}),
+        ...(block.ctaHint ? { ctaHint: block.ctaHint } : {}),
+        ...(block.ctaHref ? { ctaHref: block.ctaHref } : {}),
+        milestones: (block.milestones || []).map((m, i) => ({
+          _key: `ms-${i}`,
+          dates: m.dates,
+          title: m.title,
+          ...(m.organization ? { organization: m.organization } : {}),
+          ...(m.details?.length ? { details: m.details } : {}),
+          ...(m.detailId ? { detailId: m.detailId } : {}),
+          kind: m.kind || (m.highlighted ? "internship" : "job"),
+        })),
+      };
+
+    case "experienceDetails": {
+      const mapRole = (r, i, prefix) => ({
+        _key: `${prefix}-${i}`,
+        ...(r.id ? { id: r.id } : {}),
+        company: r.company,
+        title: r.title,
+        dates: r.dates,
+        ...(r.location ? { location: r.location } : {}),
+        ...(r.summary ? { summary: r.summary } : {}),
+        ...(r.bullets?.length ? { bullets: r.bullets } : {}),
+      });
+      return {
+        _type: "experienceDetails",
+        _key: key,
+        ...(block.eyebrow ? { eyebrow: block.eyebrow } : {}),
+        ...(block.title ? { title: block.title } : {}),
+        ...(block.subtitle ? { subtitle: block.subtitle } : {}),
+        ...(block.earlierLabel ? { earlierLabel: block.earlierLabel } : {}),
+        ...(block.backLabel ? { backLabel: block.backLabel } : {}),
+        ...(block.collapseLabel ? { collapseLabel: block.collapseLabel } : {}),
+        ...(block.collapseHref ? { collapseHref: block.collapseHref } : {}),
+        roles: (block.roles || []).map((r, i) => mapRole(r, i, "role")),
+        ...(block.earlierRoles?.length
+          ? {
+              earlierRoles: block.earlierRoles.map((r, i) =>
+                mapRole(r, i, "earlier")
+              ),
+            }
+          : {}),
+      };
+    }
+
+    case "workGrid":
+      return {
+        _type: "workGrid",
+        _key: key,
+        ...(block.eyebrow ? { eyebrow: block.eyebrow } : {}),
+        ...(block.title ? { title: block.title } : {}),
+        ...(block.subtitle ? { subtitle: block.subtitle } : {}),
+        items: (block.items || []).map((item, i) => ({
+          _key: `work-${i}`,
+          title: item.title,
+          description: item.description,
+          ...(item.tags?.length ? { tags: item.tags } : {}),
+          ...(item.href ? { href: item.href } : {}),
+          ...(item.linkLabel ? { linkLabel: item.linkLabel } : {}),
+        })),
+      };
+
+    case "projectList":
+      return {
+        _type: "projectList",
+        _key: key,
+        ...(block.eyebrow ? { eyebrow: block.eyebrow } : {}),
+        ...(block.title ? { title: block.title } : {}),
+        ...(block.subtitle ? { subtitle: block.subtitle } : {}),
+        items: (block.items || []).map((item, i) => ({
+          _key: `proj-${i}`,
+          title: item.title,
+          description: item.description,
+          ...(item.tags?.length ? { tags: item.tags } : {}),
+        })),
+      };
+
+    case "skills":
+      return {
+        _type: "skills",
+        _key: key,
+        ...(block.eyebrow ? { eyebrow: block.eyebrow } : {}),
+        ...(block.title ? { title: block.title } : {}),
+        ...(block.subtitle ? { subtitle: block.subtitle } : {}),
+        categories: (block.categories || []).map((cat, i) => ({
+          _key: `skill-${i}`,
+          title: cat.title,
+          items: cat.items || [],
+        })),
+      };
+
+    case "education":
+      return {
+        _type: "education",
+        _key: key,
+        ...(block.eyebrow ? { eyebrow: block.eyebrow } : {}),
+        ...(block.title ? { title: block.title } : {}),
+        ...(block.subtitle ? { subtitle: block.subtitle } : {}),
+        items: (block.items || []).map((item, i) => ({
+          _key: `edu-${i}`,
+          school: item.school,
+          detail: item.detail,
+          ...(item.years ? { years: item.years } : {}),
+        })),
       };
 
     case "gallery": {

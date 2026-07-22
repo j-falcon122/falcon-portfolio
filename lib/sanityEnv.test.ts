@@ -15,25 +15,32 @@ afterEach(() => {
 });
 
 describe("sanityEnv", () => {
-  it("uses development for every deploy stage on the free plan", () => {
+  it("maps deploy stages to datasets", () => {
     expect(defaultDatasetForDeployEnv("local")).toBe("development");
     expect(defaultDatasetForDeployEnv("qa")).toBe("development");
-    expect(defaultDatasetForDeployEnv("production")).toBe("development");
+    expect(defaultDatasetForDeployEnv("production")).toBe("production");
   });
 
   it("lets SANITY_DATASET override the default", () => {
     const dataset = resolveSanityDataset({
-      SITE_ENV: "production",
+      SITE_ENV: "qa",
       SANITY_DATASET: "production",
     } as NodeJS.ProcessEnv);
     expect(dataset).toBe("production");
   });
 
-  it("defaults to development when SANITY_DATASET is unset", () => {
+  it("defaults to development for preview stages when SANITY_DATASET is unset", () => {
     const dataset = resolveSanityDataset({
       SITE_ENV: "qa",
     } as NodeJS.ProcessEnv);
     expect(dataset).toBe("development");
+  });
+
+  it("uses production dataset when SITE_ENV is production", () => {
+    const dataset = resolveSanityDataset({
+      SITE_ENV: "production",
+    } as NodeJS.ProcessEnv);
+    expect(dataset).toBe("production");
   });
 
   it("requires SANITY_PROJECT_ID", () => {

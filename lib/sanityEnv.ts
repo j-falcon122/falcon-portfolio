@@ -1,22 +1,20 @@
 /**
  * Shared Sanity environment resolution for falcon-portfolio.
  *
- * Free-plan constraint: Sanity allows two datasets. This project uses a
- * single active dataset — `development` — for local, QA, and production
- * until the plan is upgraded. `SANITY_DATASET` can still override.
+ * Datasets:
+ * - `development` — local, GitHub Pages preview (default), Amplify QA
+ * - `production` — live AWS / manual Pages deploy with sanity_env=production
  *
- * portfolio-core's Sanity client also reads SANITY_DATASET directly —
- * keep that value set to `development` in every host env for now.
+ * Explicit `SANITY_DATASET` always wins when set.
  */
 
 import type { DeployEnv } from "portfolio-core/lib/deployEnv";
 
-/** Datasets this Studio knows about (free plan: only development is active). */
-export const SANITY_DATASETS = ["development"] as const;
+export const SANITY_DATASETS = ["development", "production"] as const;
 
 export type SanityDataset = (typeof SANITY_DATASETS)[number];
 
-/** Default dataset while on the free plan (all deploy stages). */
+/** Default dataset for preview / local when nothing else is set. */
 export const DEFAULT_SANITY_DATASET: SanityDataset = "development";
 
 export function resolveDeployEnvFromProcessEnv(
@@ -36,12 +34,13 @@ export function resolveDeployEnvFromProcessEnv(
 }
 
 export function defaultDatasetForDeployEnv(
-  _deploy: DeployEnv
+  deploy: DeployEnv
 ): SanityDataset {
+  if (deploy === "production") return "production";
   return DEFAULT_SANITY_DATASET;
 }
 
-/** Explicit SANITY_DATASET wins; otherwise use development (free-plan default). */
+/** Explicit SANITY_DATASET wins; otherwise map from deploy stage. */
 export function resolveSanityDataset(
   env: NodeJS.ProcessEnv = process.env
 ): string {

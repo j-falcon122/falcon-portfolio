@@ -20,9 +20,9 @@
     "seed:sanity:development": "SANITY_DATASET=development npm run seed:sanity",
     "migrate:hero-ctas": "node --env-file=.env.local scripts/migrate-hero-cta-to-ctas.mjs",
     "cleanup:sanity-pages": "node --env-file=.env.local scripts/cleanup-sanity-duplicate-pages.mjs",
-    "sanity:dev": "node --env-file=.env.local node_modules/.bin/sanity dev",
-    "sanity:dev:polling": "CHOKIDAR_USEPOLLING=1 node --env-file=.env.local node_modules/.bin/sanity dev",
-    "sanity:deploy": "sanity deploy"
+    "sanity:dev": "node scripts/run-sanity.mjs dev",
+    "sanity:dev:polling": "CHOKIDAR_USEPOLLING=1 node scripts/run-sanity.mjs dev",
+    "sanity:deploy": "node scripts/run-sanity.mjs deploy"
   },
   "dependencies": {
     "@sanity/client": "^7.22.0",

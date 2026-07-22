@@ -4,9 +4,15 @@ import {visionTool} from "@sanity/vision";
 import {schemaTypes} from "./sanity/schemaTypes";
 import {DEFAULT_SANITY_DATASET} from "./lib/sanityEnv";
 
-const projectId = process.env.SANITY_PROJECT_ID?.trim();
+// Studio (Vite) only inlines SANITY_STUDIO_* into the browser. Prefer those,
+// then fall back to shared SANITY_* from .env.local / scripts/run-sanity.mjs.
+const projectId =
+  process.env.SANITY_STUDIO_PROJECT_ID?.trim() ||
+  process.env.SANITY_PROJECT_ID?.trim();
 const dataset =
-  process.env.SANITY_DATASET?.trim() || DEFAULT_SANITY_DATASET;
+  process.env.SANITY_STUDIO_DATASET?.trim() ||
+  process.env.SANITY_DATASET?.trim() ||
+  DEFAULT_SANITY_DATASET;
 
 if (!projectId) {
   throw new Error(

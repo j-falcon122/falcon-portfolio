@@ -1,15 +1,25 @@
-import type { Block } from "portfolio-core/lib/cms/types";
+import type { FalconBlock } from "@/lib/cms/falconTypes";
 import GalleryBlock from "portfolio-core/components/blocks/GalleryBlock";
 import VideoBlock from "portfolio-core/components/blocks/VideoBlock";
 import VideoCarouselBlock from "portfolio-core/components/blocks/VideoCarouselBlock";
 import TextBlock from "portfolio-core/components/blocks/TextBlock";
 import CtaBlock from "portfolio-core/components/blocks/CtaBlock";
-import AboutBlock from "portfolio-core/components/blocks/AboutBlock";
 import ContactBlock from "portfolio-core/components/blocks/ContactBlock";
 import HeroBlock from "./HeroBlock";
+import AboutBlock from "./AboutBlock";
+import ExperienceBlock from "./ExperienceBlock";
+import ExperienceDetailsBlock from "./ExperienceDetailsBlock";
+import WorkGridBlock from "./WorkGridBlock";
+import ProjectListBlock from "./ProjectListBlock";
+import SkillsBlock from "./SkillsBlock";
+import EducationBlock from "./EducationBlock";
 
-/** Falcon-local renderer: Figma hero override, other blocks from portfolio-core. */
-export default function BlockRenderer({ blocks = [] }: { blocks: Block[] }) {
+/** Falcon renderer: Figma section blocks + portfolio-core media/contact/text. */
+export default function BlockRenderer({
+  blocks = [],
+}: {
+  blocks: FalconBlock[];
+}) {
   return (
     <>
       {blocks.map((block, i) => {
@@ -30,6 +40,18 @@ export default function BlockRenderer({ blocks = [] }: { blocks: Block[] }) {
             return <AboutBlock key={i} {...block} />;
           case "contact":
             return <ContactBlock key={i} {...block} />;
+          case "experience":
+            return <ExperienceBlock key={i} {...block} />;
+          case "experienceDetails":
+            return <ExperienceDetailsBlock key={i} {...block} />;
+          case "workGrid":
+            return <WorkGridBlock key={i} {...block} />;
+          case "projectList":
+            return <ProjectListBlock key={i} {...block} />;
+          case "skills":
+            return <SkillsBlock key={i} {...block} />;
+          case "education":
+            return <EducationBlock key={i} {...block} />;
           default:
             return null;
         }

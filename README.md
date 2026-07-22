@@ -46,4 +46,8 @@ See [docs/SANITY.md](docs/SANITY.md) for tokens and hosting notes.
 
 ## Deploy
 
-Configured for Vercel or GitHub Pages static export (`npm run build:pages`). For Sanity-backed deploys, set `CMS_PROVIDER=sanity` and `SANITY_DATASET=development` in host/CI env vars (see `.env.example`).
+Configured for GitHub Pages (preview) and AWS (production). Pages defaults to
+Sanity `development`; use **Actions → Deploy GitHub Pages → Run workflow** and
+set `sanity_env=production` to bake prod content. For Sanity-backed deploys, set
+`CMS_PROVIDER=sanity` and the right `SANITY_DATASET` (see `.env.example` and
+[docs/SANITY.md](docs/SANITY.md)).
