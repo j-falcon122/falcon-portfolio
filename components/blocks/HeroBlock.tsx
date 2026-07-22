@@ -1,19 +1,21 @@
 import Image from "next/image";
 import type { HeroBlock as HeroBlockType } from "portfolio-core/lib/cms/types";
 import { withAssetPath } from "portfolio-core/lib/basePath";
-import { getCms } from "portfolio-core/lib/cms";
 import SinglePageNavLink from "portfolio-core/components/SinglePageNavLink";
 
 const HERO_PANEL_SRC = "/figma/hero-logo.png";
 
-export default async function HeroBlock({
+/**
+ * Sync / client-safe: do not import getCms (pulls node:fs via the mock CMS provider).
+ * Falcon is single-page; navigationMode is fixed accordingly.
+ */
+export default function HeroBlock({
   brandTitle,
   headline,
   subheadline,
   cta,
   ctas,
 }: HeroBlockType) {
-  const site = await getCms().getSiteSettings();
   const heroCtas =
     ctas?.length
       ? ctas
@@ -43,7 +45,7 @@ export default async function HeroBlock({
                   <SinglePageNavLink
                     key={`${item.href}-${index}`}
                     href={item.href}
-                    navigationMode={site.navigationMode}
+                    navigationMode="single-page"
                     className={`hero__cta${index > 0 ? " hero__cta--secondary" : ""}`}
                   >
                     {item.label}

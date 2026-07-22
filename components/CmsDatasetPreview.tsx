@@ -2,19 +2,54 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
-import { resolveSinglePageSectionSlugs } from "portfolio-core/lib/cms/singlePageSections";
-import { normalizePageSlug } from "portfolio-core/lib/normalizePageSlug";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
-import { createFalconSanityProvider } from "@/lib/cms/falconSanity";
+import {
+  normalizeFalconBlock,
+  pageGroq,
+  SITE_GROQ,
+} from "@/lib/cms/falconNormalize";
 import type { FalconBlock } from "@/lib/cms/falconTypes";
 
 const DATASETS = new Set(["development", "production"]);
+
+const DEFAULT_SECTION_SLUGS = [
+  "home",
+  "about",
+  "experience",
+  "work",
+  "projects",
+  "skills",
+  "education",
+  "contact",
+] as const;
 
 type SectionView = {
   slug: string;
   title?: string;
   blocks: FalconBlock[];
 };
+
+function normalizeSlug(value: string): string {
+  return value.trim().replace(/^\/+|\/+$/g, "").toLowerCase() || "home";
+}
+
+async function fetchSanityQuery<T>(
+  projectId: string,
+  dataset: string,
+  query: string
+): Promise<T> {
+  const url = new URL(
+    `https://${projectId}.apicdn.sanity.io/v2024-01-01/data/query/${dataset}`
+  );
+  url.searchParams.set("query", query);
+  url.searchParams.set("returnQuery", "false");
+  const res = await fetch(url.toString());
+  if (!res.ok) {
+    throw new Error(`Sanity query failed (${res.status})`);
+  }
+  const json = (await res.json()) as { result: T };
+  return json.result;
+}
 
 /**
  * GitHub Pages preview helper: `?dataset=production` (or `development`)
@@ -59,20 +94,35 @@ export default function CmsDatasetPreview({
 
     (async () => {
       try {
-        const cms = createFalconSanityProvider({
-          projectId,
-          dataset: requested,
-          useCdn: true,
-        });
-        const site = await cms.getSiteSettings();
-        const slugs = resolveSinglePageSectionSlugs(site);
+        const site = await fetchSanityQuery<{
+          title?: string;
+          singlePageSectionSlugs?: string[];
+        } | null>(projectId, requested, SITE_GROQ);
+
+        const rawSlugs = site?.singlePageSectionSlugs;
+        const slugs =
+          Array.isArray(rawSlugs) && rawSlugs.length > 0
+            ? rawSlugs
+                .map((s) => (typeof s === "string" ? normalizeSlug(s) : ""))
+                .filter(Boolean)
+            : [...DEFAULT_SECTION_SLUGS];
+
         const pages = await Promise.all(
           slugs.map(async (slug) => {
-            const page = await cms.getPageBySlug(slug);
+            const page = await fetchSanityQuery<{
+              slug?: string;
+              title?: string;
+              blocks?: unknown[];
+            } | null>(projectId, requested, pageGroq(slug));
+            const blocks = Array.isArray(page?.blocks)
+              ? page.blocks
+                  .map((b) => normalizeFalconBlock(b))
+                  .filter(Boolean)
+              : [];
             return {
-              slug: normalizePageSlug(page?.slug ?? slug),
+              slug: normalizeSlug(page?.slug ?? slug),
               title: page?.title,
-              blocks: (page?.blocks || []) as FalconBlock[],
+              blocks: blocks as FalconBlock[],
             };
           })
         );
