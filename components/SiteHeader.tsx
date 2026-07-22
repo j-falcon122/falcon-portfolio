@@ -33,7 +33,7 @@ export default function SiteHeader({
   const singlePage = navMode === "single-page";
   const isHome = pathname === "/";
   const [isAtTop, setIsAtTop] = useState(true);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpenForRoute, setMenuOpenForRoute] = useState<string | null>(null);
   const menuId = useId();
 
   const hasMounted = useSyncExternalStore(
@@ -52,6 +52,8 @@ export default function SiteHeader({
 
   const hashSection = hash.replace(/^#/, "");
   const isHomeHash = !hashSection || hashSection === "home";
+  const routeKey = `${pathname}${hash}`;
+  const menuOpen = menuOpenForRoute === routeKey;
 
   useEffect(() => {
     const onScroll = () => setIsAtTop(window.scrollY <= 0);
@@ -60,16 +62,20 @@ export default function SiteHeader({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname, hash]);
-
   const useHeroNavStyle = hasMounted
     ? isHome && isAtTop && isHomeHash
     : isHome;
   const headerState = useHeroNavStyle
     ? "site-header--at-top"
     : "site-header--solid";
+
+  function closeMenu() {
+    setMenuOpenForRoute(null);
+  }
+
+  function toggleMenu() {
+    setMenuOpenForRoute((current) => (current === routeKey ? null : routeKey));
+  }
 
   function handleSinglePageNavClick(
     e: ReactMouseEvent<HTMLAnchorElement>,
@@ -78,7 +84,7 @@ export default function SiteHeader({
     const hashMatch = href.match(/#([^/?#]+)$/);
     if (!singlePage || !hashMatch) return;
     e.preventDefault();
-    setMenuOpen(false);
+    closeMenu();
     const sectionId = hashMatch[1];
     const targetHref = withBasePath(`/#${sectionId}`);
 
@@ -139,7 +145,7 @@ export default function SiteHeader({
           className="site-header__menu-toggle"
           aria-expanded={menuOpen}
           aria-controls={menuId}
-          onClick={() => setMenuOpen((open) => !open)}
+          onClick={toggleMenu}
         >
           <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
           <span aria-hidden="true">{menuOpen ? "✕" : "Menu"}</span>
@@ -180,7 +186,7 @@ export default function SiteHeader({
                 href={resolvedHref}
                 className={className}
                 aria-current={ariaCurrent}
-                onClick={() => setMenuOpen(false)}
+                onClick={closeMenu}
               >
                 {item.label}
               </Link>
@@ -209,7 +215,7 @@ export default function SiteHeader({
               <Link
                 href={adminNav.href}
                 className="nav-link nav-link--admin"
-                onClick={() => setMenuOpen(false)}
+                onClick={closeMenu}
               >
                 {adminNav.label}
               </Link>
