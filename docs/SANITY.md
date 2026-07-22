@@ -1,17 +1,16 @@
 # Sanity CMS setup
 
-falcon-portfolio uses **one Sanity project**. On the free plan you only get
-**two datasets**, so this repo standardizes on a single active dataset:
-**`development`**.
+falcon-portfolio uses **one Sanity project** with two datasets:
 
-Use `development` for local, QA, and production until you upgrade. Keep the
-default `production` dataset as your unused second slot (or delete it if empty
-and unused).
+| Dataset | Use |
+|---------|-----|
+| `development` | Local + GitHub Pages preview (default) |
+| `production` | AWS prod + optional manual Pages deploy |
 
 ## Connect
 
 1. In [Sanity Manage](https://www.sanity.io/manage) open project `SANITY_PROJECT_ID`.
-2. **Datasets → Create dataset → `development`** (if it does not exist yet).
+2. Ensure datasets **`development`** and **`production`** exist (seed each as needed).
 3. In `.env.local`:
    ```bash
    SITE_ENV=local
@@ -40,18 +39,34 @@ and unused).
 
 Never expose write tokens to the browser or public CI logs.
 
-## Later (paid plan / more datasets)
+## GitHub Pages (preview)
 
-When you can create more datasets, add `staging` / use `production` per host
-and set `SANITY_DATASET` differently in each environment. Studio can gain
-workspaces again at that point — see git history on `feat/sanity-multi-env`
-for the earlier multi-dataset config.
+Pages builds against Sanity **`development` by default**.
 
-## Hosting checklist
+- **Push to `main`** → always `development` (`SITE_ENV=qa`)
+- **Actions → Deploy GitHub Pages → Run workflow** → choose:
+  - `development` (default preview)
+  - `production` (bake prod Sanity content into Pages)
 
-For every deploy target for now:
+Repo secrets / vars needed:
+
+1. `CMS_PROVIDER=sanity` (or rely on workflow default)
+2. `SANITY_PROJECT_ID` (secret)
+3. Optional: `SANITY_API_READ_TOKEN`, `SANITY_STUDIO_URL` / `ADMIN_NAV_URL`
+
+## Hosting checklist (AWS prod)
 
 1. `CMS_PROVIDER=sanity`
 2. `SANITY_PROJECT_ID`
-3. `SANITY_DATASET=development`
-4. Optional: `SANITY_API_READ_TOKEN`, `SANITY_STUDIO_URL` / `ADMIN_NAV_URL`
+3. `SANITY_DATASET=production`
+4. `SITE_ENV=production`
+5. Optional: `SANITY_API_READ_TOKEN`, `SANITY_STUDIO_URL` / `ADMIN_NAV_URL`
+
+## Figma block types
+
+Page `blocks` in Studio can include: `hero`, `about`, `experience`, `workGrid`,
+`projectList`, `skills`, `education`, `contact` (plus legacy gallery/video/text/cta).
+
+`npm run seed:sanity` writes the mock portfolio content for all of these into
+the active dataset. The Next app reads them via `getFalconCms()` (local mock or
+falcon Sanity normalize — not portfolio-core’s older block allow-list alone).

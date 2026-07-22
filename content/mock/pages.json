@@ -7,17 +7,12 @@
         "_type": "hero",
         "brandTitle": "Frontend-Focused Software Engineer",
         "headline": "Jordan Falcon",
-        "subheadline": "I'm a software engineer with seven years of experience at ESPN and Disney, building responsive, accessible, and user-friendly digital experiences for sports fans. My background spans media, content management systems, consumer products, and high-traffic web applications.",
+        "subheadline": "I'm a software engineer with seven years of experience at ESPN and Disney, building responsive, accessible, and user-friendly digital experiences for sports fans. My background spans media, content management systems, consumer products, and high-traffic web applications.\n\nCurrently open to software engineering opportunities in New York City, hybrid, or remote.",
         "ctas": [
           { "label": "View My Work", "href": "/work" },
           { "label": "View Résumé", "href": "/contact" },
           { "label": "Contact Me", "href": "/contact" }
         ]
-      },
-      {
-        "_type": "text",
-        "title": "What I do",
-        "body": "<p>For the past several years, I've been fortunate to help build products used by <strong>millions of sports fans</strong>, turning complex technical challenges into experiences that feel simple, intuitive, and meaningful.</p><p>My work has centered around modern frontend development with <strong>React</strong>, <strong>TypeScript</strong>, and <strong>Next.js</strong>—creating scalable applications, improving user experiences, and collaborating across teams to bring ideas to life.</p>"
       }
     ]
   },
@@ -27,64 +22,356 @@
     "blocks": [
       {
         "_type": "about",
-        "title": "About me",
-        "body": "I'm Jordan Falcon—a software engineer, lifelong learner, and someone who believes the best experiences are built with intention. Writing code is one part of who I am, but I'm equally driven by curiosity, creativity, and the desire to keep improving.",
-        "image": {
-          "src": "/jf_logo_transparent.png",
-          "alt": "Jordan Falcon"
-        },
+        "eyebrow": "01 / About",
+        "title": "About Me",
+        "playbookTitle": "Personal Playbook",
+        "body": "I'm a frontend-focused software engineer based in New York City with experience building digital products across sports, media, and technology.\n\nMy journey began in retail, where I advanced from a part-time sales associate to store manager at LIDS Sports Group within my first year. That experience taught me how to lead a team, understand customers, manage competing priorities, and connect everyday work to measurable business results.\n\nI began college studying mechanical engineering at NYU Polytechnic School of Engineering before discovering that software development was where I could best combine creativity, problem-solving, and technology. I later studied computer science at CUNY Lehman College.\n\nMy early technology experience included working at The New York Times and Gestalt Interactive. I eventually joined ESPN as an intern and grew into a Software Engineer II, contributing to products and experiences used by sports fans across ESPN's digital platforms.\n\nI enjoy transforming complex requirements into intuitive and reliable experiences while collaborating with designers, product managers, engineers, and other stakeholders.\n\nOutside of coding, I enjoy sports, salsa dancing, gaming, creative design, and bringing people together through community events.",
         "stats": [
-          { "value": "React", "label": "TypeScript · Next.js" },
-          { "value": "Sports", "label": "Products at scale" },
-          { "value": "People", "label": "First, always" }
+          {
+            "label": "Engineering Domain",
+            "value": "Frontend, Responsive Systems, Performance"
+          },
+          {
+            "label": "Core Technologies",
+            "value": "React, JavaScript, TypeScript, Next.js"
+          },
+          {
+            "label": "Core Interests",
+            "value": "Sports, Salsa Dancing, Gaming, Community Events"
+          }
         ]
-      },
+      }
+    ]
+  },
+  {
+    "slug": "experience",
+    "title": "Experience",
+    "blocks": [
       {
-        "_type": "text",
-        "title": "Beyond the keyboard",
-        "body": "<p>Sports have always been at the center of my life. Whether I'm watching a game, breaking down strategy, or building products that connect fans with the teams they love, I've always been fascinated by competition, teamwork, and the stories behind every season.</p><p>When I'm away from my keyboard, you'll usually find me dancing salsa, exploring new music, gaming with friends, or organizing events that bring people together. One of the traditions I'm most proud of is our annual <strong>Falcon Bros BBQ</strong>—a community gathering that started with a simple idea: create a space where people can celebrate life, reconnect, and make lasting memories. It's never been about making a profit. It's always been about creating moments that matter.</p>"
-      },
+        "_type": "experience",
+        "eyebrow": "02 / Experience",
+        "title": "Professional Track Record",
+        "subtitle": "A path from retail leadership and bootcamp into media and sports products at scale.",
+        "ctaLabel": "Show More",
+        "ctaHref": "/experience-details",
+        "ctaHint": "Click a timeline card, or open the full monograph for a complete breakdown of each role.",
+        "milestones": [
+          {
+            "dates": "2013-2015",
+            "title": "Advanced from sales associate to store manager",
+            "organization": "at LIDS",
+            "kind": "job",
+            "detailId": "lids-manager",
+            "details": [
+              "Earned three promotions within the first 12 months",
+              "Helped the store achieve #1 sales ranking in the district",
+              "Supervised, scheduled, and trained a team of five"
+            ]
+          },
+          {
+            "dates": "2015",
+            "title": "Software Engineering Bootcamp",
+            "organization": "at Flatiron School",
+            "kind": "education"
+          },
+          {
+            "dates": "2015",
+            "title": "Web Developer Intern",
+            "organization": "at The New York Times",
+            "kind": "internship",
+            "detailId": "nyt-intern",
+            "details": [
+              "Built an image-upload tool for editors and a CMS",
+              "Created an API for app-to-service communication",
+              "Helped generate and customize article video clips"
+            ]
+          },
+          {
+            "dates": "2016",
+            "title": "Started Computer Science",
+            "organization": "at CUNY Lehman College",
+            "kind": "education"
+          },
+          {
+            "dates": "2017",
+            "title": "Software Engineering Intern → Software Engineer",
+            "organization": "at Gestalt Interactive",
+            "kind": "internship",
+            "detailId": "gestalt-swe",
+            "details": [
+              "Built the My Brother's Keeper website",
+              "Shipped a CMS so the client could update content",
+              "Co-developed Whimventory grid-view features"
+            ]
+          },
+          {
+            "dates": "2018",
+            "title": "Software Engineering Intern",
+            "organization": "at ESPN",
+            "kind": "internship",
+            "detailId": "espn-intern",
+            "details": [
+              "Supported ESPN digital products in production",
+              "Practiced code reviews and cross-team collaboration",
+              "Transitioned into a full-time engineering role"
+            ]
+          },
+          {
+            "dates": "2019",
+            "title": "Graduated with Bachelor of Science",
+            "organization": "in Computer Science at CUNY Lehman College",
+            "kind": "education"
+          },
+          {
+            "dates": "2019-2026",
+            "title": "Grew into Software Engineer II",
+            "organization": "at ESPN and Disney",
+            "kind": "job",
+            "detailId": "espn-swe-ii",
+            "details": [
+              "Built fan-facing products with React and TypeScript",
+              "Shipped responsive experiences across devices",
+              "Partnered with product, design, and editorial teams",
+              "Modernized apps while supporting legacy systems"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "experience-details",
+    "title": "Experience Details",
+    "blocks": [
       {
-        "_type": "text",
-        "title": "How I think about building",
-        "body": "<p>I believe the same philosophy applies to technology.</p><p>Great software isn't just about clean architecture or elegant code—it's about <strong>understanding people</strong>. Every feature, every interaction, and every detail should solve a real problem and leave someone's experience a little better than before.</p><p>Whether I'm designing a new user experience, learning a new technology, dancing to live music, or competing in a game with friends, I'm driven by curiosity, creativity, and the desire to keep improving.</p>"
+        "_type": "experienceDetails",
+        "eyebrow": "Detailed Monograph",
+        "title": "Professional Experience — Full Details",
+        "subtitle": "Complete breakdown of each role",
+        "backLabel": "Back",
+        "collapseLabel": "Collapse Details",
+        "collapseHref": "/#experience",
+        "roles": [
+          {
+            "id": "espn-swe-ii",
+            "company": "ESPN / The Walt Disney Company",
+            "title": "Software Engineer II",
+            "dates": "2019–2026",
+            "location": "New York, NY",
+            "summary": "Joined ESPN as an intern and developed into a Software Engineer II, contributing to large-scale digital experiences across ESPN's web platforms.",
+            "bullets": [
+              "Built and enhanced user-facing products using React, JavaScript, TypeScript, Redux, HTML, CSS, and SCSS",
+              "Developed responsive experiences designed to work across desktop, mobile, keyboard, mouse, and touch interactions",
+              "Collaborated with product managers, designers, engineers, and editorial stakeholders to translate requirements into reliable product experiences",
+              "Contributed to personalized sports experiences involving teams, leagues, players, contributors, favorites, and viewing information",
+              "Worked within both modern React applications and established Backbone and Marionette systems",
+              "Created and maintained automated tests using Jest and React Testing Library",
+              "Helped modernize established applications while maintaining compatibility with existing systems"
+            ]
+          },
+          {
+            "id": "espn-intern",
+            "company": "ESPN",
+            "title": "Software Engineering Intern",
+            "dates": "2018",
+            "location": "New York, NY",
+            "bullets": [
+              "Supported the development of ESPN digital products in a collaborative engineering environment",
+              "Gained experience working with production codebases, cross-functional teams, code reviews, and software-development practices",
+              "Transitioned from the internship into a full-time software engineering role"
+            ]
+          },
+          {
+            "id": "gestalt-swe",
+            "company": "Gestalt Interactive",
+            "title": "Software Engineer",
+            "dates": "October–November 2017",
+            "location": "New York, NY",
+            "bullets": [
+              "Built the website for the My Brother's Keeper initiative at iammbk.org",
+              "Provided a content management system that allowed the client to administer and update its digital content",
+              "Translated client and design requirements into a functional web experience"
+            ]
+          },
+          {
+            "id": "gestalt-intern",
+            "company": "Gestalt Interactive",
+            "title": "Software Engineering Intern",
+            "dates": "June–August 2017",
+            "location": "New York, NY",
+            "bullets": [
+              "Co-developed a grid-view feature for Whimventory, a universal e-commerce wish-list application",
+              "Provided users with an alternative way to browse and track items saved to their lists",
+              "Worked in an Agile development environment using Pivotal Tracker",
+              "Collaborated with other developers to implement, test, and refine product features"
+            ]
+          },
+          {
+            "id": "nyt-intern",
+            "company": "The New York Times",
+            "title": "Web Developer Intern",
+            "dates": "June–August 2015",
+            "location": "New York, NY",
+            "bullets": [
+              "Developed an application that enabled editors to upload images directly to an established content management system",
+              "Built an API to support communication between the application and external services",
+              "Contributed to a tool that programmatically generated video clips for articles",
+              "Helped integrate a flexible editing experience that allowed users to customize generated video content",
+              "Gained early experience building editorial tools within a major digital media organization"
+            ]
+          }
+        ],
+        "earlierLabel": "Earlier Leadership Experience",
+        "earlierRoles": [
+          {
+            "id": "lids-manager",
+            "company": "LIDS Sports Group",
+            "title": "Store Manager",
+            "dates": "June 2013–January 2015",
+            "location": "New York, NY",
+            "bullets": [
+              "Earned three promotions—from part-time sales associate to assistant manager and then store manager—within the first 12 months",
+              "Helped the store achieve the number-one sales ranking among 13 locations in the New York/New Jersey district",
+              "Increased store sales consistently and worked toward monthly performance goals",
+              "Supervised, scheduled, and trained a team of five employees",
+              "Managed merchandise, inventory, sales data, and daily store operations",
+              "Created customized logo designs for customer embroidery orders using LIDS design software",
+              "Developed early experience in leadership, customer service, visual design, and business operations"
+            ]
+          }
+        ]
       }
     ]
   },
   {
     "slug": "work",
-    "title": "Work",
+    "title": "Selected Work",
     "blocks": [
       {
-        "_type": "text",
-        "title": "Selected work",
-        "body": "<p>Projects and case studies coming soon. In the meantime, feel free to reach out if you'd like to hear more about the products I've helped build for sports fans at scale.</p>"
-      },
-      {
-        "_type": "gallery",
-        "title": "Projects",
+        "_type": "workGrid",
+        "eyebrow": "03 / Selected Work",
+        "title": "Selected ESPN & Disney Initiatives",
         "items": [
           {
-            "type": "image",
-            "src": "/placeholder-work-1.svg",
-            "alt": "Project placeholder — add your work here"
+            "title": "Where to Watch Guide",
+            "description": "Helping fans discover when/where to watch. Built personalized viewing, filters, date-selection, league filtering, and responsive behavior.",
+            "tags": ["React", "State Management", "Routing"],
+            "linkLabel": "Case Study Highlights"
           },
           {
-            "type": "image",
-            "src": "/placeholder-work-2.svg",
-            "alt": "Project placeholder — add your work here"
+            "title": "Breaking News & Contributor Experiences",
+            "description": "Built contributor pages, breaking-news carousel, follow-button functionality, and auth integration.",
+            "tags": ["Performance", "Component Architecture", "Publishing"],
+            "linkLabel": "Case Study Highlights"
           },
           {
-            "type": "image",
-            "src": "/placeholder-work-3.svg",
-            "alt": "Project placeholder — add your work here"
+            "title": "DraftCast",
+            "description": "Built Pick Predictor grid, Best Available, undo behavior, and completed-draft states for live draft experiences.",
+            "tags": ["Redux", "Real-Time", "Data Pipelines"],
+            "linkLabel": "Case Study Highlights"
+          },
+          {
+            "title": "ESPN Navigation",
+            "description": "Improved navigation patterns for accessibility, clarity, and cross-platform consistency.",
+            "tags": ["Accessibility", "Information Architecture"],
+            "linkLabel": "Case Study Highlights"
+          },
+          {
+            "title": "Market Landing Pages",
+            "description": "Shipped market-specific landing experiences with reusable modules and responsive layouts.",
+            "tags": ["CMS", "Responsive", "Performance"],
+            "linkLabel": "Case Study Highlights"
+          },
+          {
+            "title": "GameCast",
+            "description": "Contributed to live game experiences focused on clarity, speed, and fan-facing reliability.",
+            "tags": ["Live Data", "React", "UX"],
+            "linkLabel": "Case Study Highlights"
           }
         ]
-      },
+      }
+    ]
+  },
+  {
+    "slug": "projects",
+    "title": "Personal Projects",
+    "blocks": [
       {
-        "_type": "cta",
-        "label": "Let's connect",
-        "href": "/contact"
+        "_type": "projectList",
+        "eyebrow": "04 / Personal Projects",
+        "title": "Personal Projects & Passion Pursuits",
+        "items": [
+          {
+            "title": "Jordan Falcon Portfolio",
+            "description": "A content-driven Next.js portfolio with Sanity CMS, reusable block schemas, and a Figma-led visual system.",
+            "tags": ["Next.js", "Sanity", "TypeScript"]
+          },
+          {
+            "title": "Falcon Bros BBQ",
+            "description": "Community gathering focused on reconnecting people and creating lasting memories — built with intention, not profit.",
+            "tags": ["Community", "Events", "Brand"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "skills",
+    "title": "Skills",
+    "blocks": [
+      {
+        "_type": "skills",
+        "eyebrow": "05 / Skills",
+        "title": "Technical Capabilities",
+        "categories": [
+          {
+            "title": "Frontend Development",
+            "items": ["React", "JavaScript", "TypeScript", "Next.js", "HTML5", "CSS3 / SCSS"]
+          },
+          {
+            "title": "Application Architecture",
+            "items": ["Node.js", "Next.js", "GraphQL", "Data Management"]
+          },
+          {
+            "title": "Testing & Quality",
+            "items": ["Jest", "React Testing Library", "Cypress", "Unit / Integration Testing"]
+          },
+          {
+            "title": "Legacy Systems",
+            "items": ["Modernization", "Incremental refactors", "Maintainable upgrades"]
+          },
+          {
+            "title": "Tools & Platforms",
+            "items": ["Git", "GitHub", "Jira / Trello", "Docker", "VS Code"]
+          },
+          {
+            "title": "Additional Knowledge",
+            "items": ["Web Accessibility", "Performance", "SEO"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "education",
+    "title": "Education",
+    "blocks": [
+      {
+        "_type": "education",
+        "eyebrow": "06 / Education",
+        "title": "Education",
+        "items": [
+          {
+            "school": "CUNY Lehman College",
+            "detail": "Bachelor of Science in Computer Science",
+            "years": "2016–2019"
+          },
+          {
+            "school": "Flatiron School",
+            "detail": "Software Engineering Bootcamp",
+            "years": "2015"
+          }
+        ]
       }
     ]
   },
@@ -94,11 +381,12 @@
     "blocks": [
       {
         "_type": "contact",
-        "title": "Get in touch",
-        "subtitle": "I'm always excited to connect with people who are passionate about building meaningful products, creating memorable experiences, or simply sharing ideas. Thanks for stopping by.",
+        "eyebrow": "07 / Contact",
+        "title": "Let's build something meaningful",
+        "subtitle": "I'm always excited to connect with people who are passionate about building meaningful products, creating memorable experiences, or simply sharing ideas.",
         "email": "j.falcon122@gmail.com",
         "phone": "",
-        "location": "US Eastern",
+        "location": "New York City · Hybrid & Remote",
         "submitLabel": "Send message",
         "socialLinks": [
           { "label": "GitHub", "href": "https://github.com/j-falcon122" },

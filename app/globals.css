@@ -12,6 +12,7 @@
 @import "./styles/blocks/cta.css";
 @import "./styles/blocks/about.css";
 @import "./styles/blocks/contact.css";
+@import "./styles/blocks/figma-sections.css";
 
 html {
   scroll-behavior: smooth;
@@ -46,8 +47,14 @@ html {
   scroll-margin-top: var(--header-height);
 }
 
-/* Home stacks hero + intro text — height follows content, not one viewport per block */
-.page-section--home {
+/* Home and Figma sections size to content; contact keeps viewport fill */
+.page-section--home,
+.page-section--about,
+.page-section--experience,
+.page-section--work,
+.page-section--projects,
+.page-section--skills,
+.page-section--education {
   min-height: auto;
 }
 
@@ -179,12 +186,16 @@ body {
   max-width: min(var(--video-carousel-width), calc(100% - 2 * var(--page-gutter)));
 }
 
-/* Site header — Figma navy bar */
+/* Site header — Figma navy bar (always visible) */
 .site-header {
   width: 100%;
-  height: var(--header-height);
   left: 0;
   right: 0;
+}
+
+.site-header--persistent {
+  transform: none !important;
+  pointer-events: auto !important;
 }
 
 .site-header a,
@@ -197,7 +208,7 @@ body {
 
 .site-header--at-top,
 .site-header--solid {
-  background: rgba(14, 23, 42, 0.92);
+  background: rgba(14, 23, 42, 0.96);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   color: var(--figma-white);
   backdrop-filter: blur(12px);
@@ -217,13 +228,18 @@ body {
 .nav-link {
   color: inherit;
   opacity: 0.85;
-  padding: 0.25rem 0.35rem;
-  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 9999px;
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
+  white-space: nowrap;
   text-decoration: none;
-  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .nav-link:hover {
@@ -240,67 +256,140 @@ body {
 
 .site-header--at-top .nav-link--active,
 .site-header--solid .nav-link--active {
-  background: rgba(245, 183, 49, 0.12);
+  background: var(--figma-gold);
+  color: var(--figma-navy);
   opacity: 1;
-  color: var(--figma-gold);
+  box-shadow: 0 0 0 1px rgba(245, 183, 49, 0.35), var(--figma-shadow-gold);
+}
+
+.site-header--at-top .nav-link--active:hover,
+.site-header--solid .nav-link--active:hover {
+  color: var(--figma-navy);
+  background: #ffc94a;
+}
+
+.nav-link--admin {
+  opacity: 0.55;
 }
 
 .site-header__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   width: 100%;
   max-width: 100%;
-  height: var(--header-height);
+  min-height: var(--header-height);
   box-sizing: border-box;
   padding-inline: var(--page-gutter);
 }
 
 .site-header__brand-wrap {
+  display: flex;
+  align-items: center;
   flex: 0 0 auto;
-  margin-right: auto;
+  min-width: 0;
+  min-height: 2.5rem;
 }
 
 .site-header__brand {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-display);
   font-weight: 900;
   letter-spacing: -0.02em;
   color: var(--figma-white);
+  line-height: 1;
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  line-height: 1;
 }
 
 .site-brand__logo {
-  max-height: 36px;
+  display: block;
+  max-height: 2rem;
   width: auto;
-  height: auto;
+  height: 2rem;
+  object-fit: contain;
 }
 
 .site-brand__title {
-  line-height: 1.2;
+  display: block;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   letter-spacing: -0.03em;
   text-transform: uppercase;
   color: var(--figma-white);
 }
 
-.site-nav {
-  flex: 0 0 auto;
+.site-header__menu-toggle {
+  display: none;
   margin-left: auto;
-  justify-content: flex-end;
+  border: 1px solid rgba(245, 183, 49, 0.45);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--figma-gold);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
 }
 
-@media (max-width: 640px) {
-  .site-header__inner {
-    flex-wrap: nowrap;
-    height: var(--header-height);
-    min-height: var(--header-height);
-    padding-top: 0;
-    padding-bottom: 0;
+.site-nav {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem 0.35rem;
+  min-width: 0;
+}
+
+@media (max-width: 1100px) {
+  .site-header__menu-toggle {
+    display: inline-flex;
+    align-items: center;
   }
 
   .site-nav {
-    width: auto;
-    margin-left: auto;
-    justify-content: flex-end;
-    flex-wrap: nowrap;
-    gap: 0.75rem;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0.75rem var(--page-gutter) 1rem;
+    background: rgba(14, 23, 42, 0.98);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .site-nav--open {
+    display: flex;
+  }
+
+  .site-nav .nav-link {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.9375rem;
+    border-radius: var(--figma-radius-sm);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .site-nav .nav-link--active {
+    border-bottom-color: transparent;
   }
 }

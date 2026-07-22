@@ -1,7 +1,12 @@
 import {defineCliConfig} from "sanity/cli";
 
-const projectId = process.env.SANITY_PROJECT_ID?.trim();
-const dataset = process.env.SANITY_DATASET?.trim() || "development";
+const projectId =
+  process.env.SANITY_STUDIO_PROJECT_ID?.trim() ||
+  process.env.SANITY_PROJECT_ID?.trim();
+const dataset =
+  process.env.SANITY_STUDIO_DATASET?.trim() ||
+  process.env.SANITY_DATASET?.trim() ||
+  "development";
 
 if (!projectId) {
   throw new Error(

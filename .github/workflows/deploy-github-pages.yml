@@ -4,6 +4,15 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      sanity_env:
+        description: Sanity dataset for this Pages build (development = preview default)
+        required: true
+        default: development
+        type: choice
+        options:
+          - development
+          - production
 
 permissions:
   contents: read
@@ -17,6 +26,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Push → always development. Manual run → workflow input.
+      PAGES_SANITY_ENV: ${{ github.event.inputs.sanity_env || 'development' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,12 +51,11 @@ jobs:
         run: npm run build:pages
         env:
           GITHUB_PAGES: "true"
-          SITE_ENV: production
-          CMS_PROVIDER: ${{ vars.CMS_PROVIDER || 'mock' }}
+          SITE_ENV: ${{ env.PAGES_SANITY_ENV == 'production' && 'production' || 'qa' }}
+          CMS_PROVIDER: ${{ vars.CMS_PROVIDER || 'sanity' }}
           NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH || format('/{0}', github.event.repository.name) }}
           SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
-          # Free plan: use the single active dataset `development` for now.
-          SANITY_DATASET: ${{ vars.SANITY_DATASET || 'development' }}
+          SANITY_DATASET: ${{ env.PAGES_SANITY_ENV }}
           SANITY_API_VERSION: ${{ vars.SANITY_API_VERSION || '2024-01-01' }}
           SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
           SANITY_USE_CDN: ${{ vars.SANITY_USE_CDN || 'true' }}

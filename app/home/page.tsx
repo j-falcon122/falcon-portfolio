@@ -1,14 +1,11 @@
-import { notFound } from "next/navigation";
-import { getCms } from "portfolio-core/lib/cms";
+import { getFalconCms } from "@/lib/cms";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
 import { redirectToSinglePageAnchorIfNeeded } from "portfolio-core/lib/singlePageNav";
+import type { FalconBlock } from "@/lib/cms/falconTypes";
 
 export default async function HomeAliasPage() {
   const jump = await redirectToSinglePageAnchorIfNeeded("home");
   if (jump) return jump;
-
-  const cms = getCms();
-  const page = await cms.getPageBySlug("home");
-  if (!page) return notFound();
-  return <BlockRenderer blocks={page.blocks || []} />;
+  const page = await getFalconCms().getPageBySlug("home");
+  return <BlockRenderer blocks={(page?.blocks || []) as FalconBlock[]} />;
 }

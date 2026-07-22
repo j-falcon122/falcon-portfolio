@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { renderToReadableStream } from "react-dom/server";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
-import type { Block } from "portfolio-core/lib/cms/types";
+import type { FalconBlock } from "@/lib/cms/falconTypes";
 import pages from "../content/mock/pages.json";
 
 vi.mock("next/image", () => ({
@@ -14,7 +14,6 @@ vi.mock("next/image", () => ({
     src: string;
     [key: string]: unknown;
   }) {
-    // next/image → plain img for SSR smoke coverage
     return <img alt={alt} src={typeof src === "string" ? src : ""} {...rest} />;
   },
 }));
@@ -41,7 +40,7 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/",
 }));
 
-async function renderBlocks(blocks: Block[]): Promise<string> {
+async function renderBlocks(blocks: FalconBlock[]): Promise<string> {
   const stream = await renderToReadableStream(<BlockRenderer blocks={blocks} />);
   return new Response(stream).text();
 }
@@ -55,28 +54,27 @@ describe("BlockRenderer smoke (falcon mock content)", () => {
     const home = pages.find((page) => page.slug === "home");
     expect(home).toBeDefined();
 
-    const html = await renderBlocks(home!.blocks as Block[]);
+    const html = await renderBlocks(home!.blocks as FalconBlock[]);
 
     expect(html).toContain("Jordan Falcon");
     expect(html).toContain("Frontend-Focused Software Engineer");
     expect(html).toContain("View My Work");
   });
 
-  it("renders about, work, and contact blocks from content/mock/pages.json", async () => {
-    for (const slug of ["about", "work", "contact"] as const) {
+  it("renders about, experience, work, and contact blocks", async () => {
+    for (const slug of ["about", "experience", "work", "contact"] as const) {
       const page = pages.find((entry) => entry.slug === slug);
       expect(page, `missing ${slug}`).toBeDefined();
-
-      const html = await renderBlocks(page!.blocks as Block[]);
+      const html = await renderBlocks(page!.blocks as FalconBlock[]);
       expect(html.length).toBeGreaterThan(0);
     }
 
     const about = pages.find((page) => page.slug === "about")!;
-    const contact = pages.find((page) => page.slug === "contact")!;
+    const experience = pages.find((page) => page.slug === "experience")!;
 
-    expect(await renderBlocks(about.blocks as Block[])).toContain("About me");
-    expect(await renderBlocks(contact.blocks as Block[])).toContain(
-      "Get in touch"
+    expect(await renderBlocks(about.blocks as FalconBlock[])).toContain("About Me");
+    expect(await renderBlocks(experience.blocks as FalconBlock[])).toContain(
+      "Professional Track Record"
     );
   });
 });

@@ -1,42 +1,30 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { getCms } from "portfolio-core/lib/cms";
-import type { Block } from "portfolio-core/lib/cms/types";
+import { getFalconCms } from "./cms";
+import { FALCON_BLOCK_TYPES } from "./cms/falconTypes";
 import pages from "../content/mock/pages.json";
 import site from "../content/mock/site.json";
-
-const KNOWN_BLOCK_TYPES = new Set([
-  "hero",
-  "gallery",
-  "video",
-  "videoCarousel",
-  "text",
-  "cta",
-  "about",
-  "contact",
-]);
 
 describe("content/config wiring", () => {
   beforeEach(() => {
     process.env.CMS_PROVIDER = "mock";
   });
 
-  it("falcon mock site uses single-page navigation with expected sections", () => {
+  it("falcon mock site uses single-page navigation with Figma sections", () => {
     expect(site.navigationMode).toBe("single-page");
     expect(site.singlePageSectionSlugs).toEqual([
       "home",
       "about",
+      "experience",
       "work",
+      "projects",
+      "skills",
+      "education",
       "contact",
-    ]);
-    expect(site.nav.map((item) => item.href)).toEqual([
-      "/",
-      "/about",
-      "/work",
-      "/contact",
     ]);
   });
 
   it("falcon mock pages cover each section with known block types", () => {
+    const known = new Set<string>(FALCON_BLOCK_TYPES);
     const bySlug = Object.fromEntries(pages.map((page) => [page.slug, page]));
 
     for (const slug of site.singlePageSectionSlugs) {
@@ -44,21 +32,21 @@ describe("content/config wiring", () => {
       expect(page, `missing page for slug "${slug}"`).toBeDefined();
       expect(page.blocks.length).toBeGreaterThan(0);
 
-      for (const block of page.blocks as Block[]) {
-        expect(KNOWN_BLOCK_TYPES.has(block._type)).toBe(true);
+      for (const block of page.blocks) {
+        expect(known.has(block._type)).toBe(true);
       }
     }
   });
 
-  it("getCms mock provider returns pages for every configured section slug", async () => {
-    const cms = getCms();
+  it("getFalconCms mock provider returns pages for every configured section slug", async () => {
+    const cms = getFalconCms();
     const settings = await cms.getSiteSettings();
 
     expect(settings.navigationMode).toBe("single-page");
 
     for (const slug of site.singlePageSectionSlugs) {
       const page = await cms.getPageBySlug(slug);
-      expect(page, `getCms missing page "${slug}"`).not.toBeNull();
+      expect(page, `getFalconCms missing page "${slug}"`).not.toBeNull();
       expect(page!.blocks.length).toBeGreaterThan(0);
     }
   });

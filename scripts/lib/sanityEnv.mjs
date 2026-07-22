@@ -1,11 +1,9 @@
 /**
  * Sanity env helpers for Node scripts (.mjs).
  * Keep dataset mapping in sync with lib/sanityEnv.ts.
- *
- * Free plan: single active dataset `development` for all stages.
  */
 
-export const SANITY_DATASETS = ["development"];
+export const SANITY_DATASETS = ["development", "production"];
 export const DEFAULT_SANITY_DATASET = "development";
 
 /**
@@ -27,21 +25,24 @@ export function resolveDeployEnv(siteEnv, vercelEnv, nodeEnv) {
 }
 
 /**
- * @param {"local" | "qa" | "production"} _deploy
- * @returns {"development"}
+ * @param {"local" | "qa" | "production"} deploy
+ * @returns {"development" | "production"}
  */
-export function defaultDatasetForDeployEnv(_deploy) {
+export function defaultDatasetForDeployEnv(deploy) {
+  if (deploy === "production") return "production";
   return DEFAULT_SANITY_DATASET;
 }
 
 /**
- * Explicit SANITY_DATASET wins; otherwise development.
+ * Explicit SANITY_DATASET wins; otherwise map from SITE_ENV / deploy stage.
  * @param {NodeJS.ProcessEnv} [env]
  */
 export function resolveSanityDataset(env = process.env) {
   const explicit = env.SANITY_DATASET?.trim();
   if (explicit) return explicit;
-  return DEFAULT_SANITY_DATASET;
+  return defaultDatasetForDeployEnv(
+    resolveDeployEnv(env.SITE_ENV, env.VERCEL_ENV, env.NODE_ENV)
+  );
 }
 
 /**

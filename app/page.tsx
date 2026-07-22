@@ -1,16 +1,17 @@
-import { getCms } from "portfolio-core/lib/cms";
+import { getFalconCms } from "@/lib/cms";
 import { resolveSinglePageSectionSlugs } from "portfolio-core/lib/cms/singlePageSections";
 import { normalizePageSlug } from "portfolio-core/lib/normalizePageSlug";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
+import type { FalconBlock } from "@/lib/cms/falconTypes";
 
 export default async function HomePage() {
-  const cms = getCms();
+  const cms = getFalconCms();
   const site = await cms.getSiteSettings();
   const singlePage = (site.navigationMode ?? "routes") === "single-page";
 
   if (!singlePage) {
     const home = await cms.getPageBySlug("home");
-    return <BlockRenderer blocks={home?.blocks || []} />;
+    return <BlockRenderer blocks={(home?.blocks || []) as FalconBlock[]} />;
   }
 
   const sectionSlugs = resolveSinglePageSectionSlugs(site);
@@ -28,10 +29,7 @@ export default async function HomePage() {
             aria-label={p?.title || slug}
           >
             <div className="page-section__inner">
-              {slug !== "home" && p?.title ? (
-                <h2 className="page-section__title">{p.title}</h2>
-              ) : null}
-              <BlockRenderer blocks={p?.blocks || []} />
+              <BlockRenderer blocks={(p?.blocks || []) as FalconBlock[]} />
             </div>
           </section>
         );

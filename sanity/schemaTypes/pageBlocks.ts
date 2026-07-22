@@ -307,8 +307,20 @@ export const aboutBlockType = defineType({
   title: "About Block",
   type: "object",
   fields: [
+    defineField({
+      name: "eyebrow",
+      title: "Eyebrow",
+      type: "string",
+      description: 'e.g. "01 / About"',
+    }),
     defineField({name: "title", type: "string"}),
     defineField({name: "body", type: "text", rows: 8}),
+    defineField({
+      name: "playbookTitle",
+      title: "Playbook card title",
+      type: "string",
+      description: 'Defaults to "Personal Playbook"',
+    }),
     defineField({
       name: "image",
       type: "image",
@@ -317,13 +329,15 @@ export const aboutBlockType = defineType({
     }),
     defineField({
       name: "stats",
+      title: "Playbook rows",
+      description: "label = row title (gold), value = description",
       type: "array",
       of: [
         defineArrayMember({
           type: "object",
           fields: [
-            defineField({name: "value", type: "string"}),
-            defineField({name: "label", type: "string"}),
+            defineField({name: "label", type: "string", title: "Row title"}),
+            defineField({name: "value", type: "string", title: "Description"}),
           ],
         }),
       ],
@@ -342,6 +356,11 @@ export const contactBlockType = defineType({
   title: "Contact Block",
   type: "object",
   fields: [
+    defineField({
+      name: "eyebrow",
+      title: "Eyebrow",
+      type: "string",
+    }),
     defineField({name: "title", type: "string"}),
     defineField({name: "subtitle", type: "string"}),
     defineField({name: "email", type: "string"}),
@@ -359,17 +378,20 @@ export const contactBlockType = defineType({
             defineField({
               name: "href",
               type: "string",
-              description: "Full URL including https:// (required for publish)",
+              description:
+                "https://…, mailto:…, or tel:… URL (required for publish)",
               validation: (rule) =>
                 rule.custom((value) => {
                   if (!value) return true;
                   try {
                     const u = new URL(String(value));
-                    return u.protocol === "http:" || u.protocol === "https:"
+                    return ["http:", "https:", "mailto:", "tel:"].includes(
+                      u.protocol
+                    )
                       ? true
-                      : "Use a full URL starting with https://";
+                      : "Use https://, mailto:, or tel:";
                   } catch {
-                    return "Use a full URL starting with https://";
+                    return "Use https://, mailto:, or tel:";
                   }
                 }),
             }),
