@@ -115,6 +115,12 @@ export type EducationBlock = SectionEyebrow & {
 export type FalconAboutBlock = AboutBlock & {
   eyebrow?: string;
   playbookTitle?: string;
+  /** Sanity file asset (or public path in mock) for resume download. */
+  resume?: {
+    href: string;
+    label?: string;
+    filename?: string;
+  };
 };
 
 export type FalconContactBlock = ContactBlock & {

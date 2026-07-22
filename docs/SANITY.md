@@ -70,6 +70,11 @@ Repo secrets / vars needed:
 Page `blocks` in Studio can include: `hero`, `about`, `experience`, `workGrid`,
 `projectList`, `skills`, `education`, `contact` (plus legacy gallery/video/text/cta).
 
+On the **About** block you can upload:
+- **Headshot** (`image`) — portrait shown beside the playbook card
+- **Resume** (`file`, PDF/Word) — download link under the about copy
+  (optional `resumeLabel`, defaults to “Download resume”)
+
 `npm run seed:sanity` writes the mock portfolio content for all of these into
 the active dataset. The Next app reads them via `getFalconCms()` (local mock or
 falcon Sanity normalize — not portfolio-core’s older block allow-list alone).

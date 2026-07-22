@@ -323,9 +323,24 @@ export const aboutBlockType = defineType({
     }),
     defineField({
       name: "image",
+      title: "Headshot",
       type: "image",
       options: {hotspot: true},
+      description: "Portrait shown in the About section.",
       fields: [defineField({name: "alt", type: "string", title: "Alt text"})],
+    }),
+    defineField({
+      name: "resume",
+      title: "Resume",
+      type: "file",
+      options: {accept: ".pdf,.doc,.docx"},
+      description: "PDF (or Word) resume offered as a download link.",
+    }),
+    defineField({
+      name: "resumeLabel",
+      title: "Resume link label",
+      type: "string",
+      description: 'Defaults to "Download resume"',
     }),
     defineField({
       name: "stats",
@@ -344,9 +359,9 @@ export const aboutBlockType = defineType({
     }),
   ],
   preview: {
-    select: {title: "title"},
+    select: {title: "title", media: "image"},
     prepare(selection) {
-      return {title: selection.title || "About"};
+      return {title: selection.title || "About", media: selection.media};
     },
   },
 });

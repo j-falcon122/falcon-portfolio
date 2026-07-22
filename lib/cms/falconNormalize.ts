@@ -2,7 +2,7 @@
  * Shared Falcon block normalize + GROQ helpers (browser + server safe).
  * Keep free of Node-only imports so client components can use them.
  */
-import type { FalconBlock } from "./falconTypes";
+import type { FalconAboutBlock, FalconBlock } from "./falconTypes";
 
 function normalizePageSlug(slug: string | undefined | null): string {
   const trimmed = (slug ?? "").trim().replace(/^\/+|\/+$/g, "");
@@ -34,13 +34,52 @@ export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
               .map((c) => ({ label: c.label!, href: c.href! }))
           : undefined,
       };
-    case "about":
+    case "about": {
+      const imageRaw = block.image;
+      let image: FalconAboutBlock["image"];
+      if (imageRaw && typeof imageRaw === "object" && !Array.isArray(imageRaw)) {
+        const img = imageRaw as { src?: unknown; alt?: unknown };
+        const src = asString(img.src);
+        if (src) {
+          image = {
+            src,
+            ...(asString(img.alt) ? { alt: asString(img.alt) } : {}),
+          };
+        }
+      }
+
+      const resumeHref =
+        asString(block.resumeUrl) ||
+        (block.resume &&
+        typeof block.resume === "object" &&
+        !Array.isArray(block.resume)
+          ? asString((block.resume as { href?: unknown }).href)
+          : undefined);
+      const resumeLabel =
+        asString(block.resumeLabel) ||
+        (block.resume &&
+        typeof block.resume === "object" &&
+        !Array.isArray(block.resume)
+          ? asString((block.resume as { label?: unknown }).label)
+          : undefined);
+      const resume: FalconAboutBlock["resume"] = resumeHref
+        ? {
+            href: resumeHref,
+            ...(resumeLabel ? { label: resumeLabel } : {}),
+            ...(asString(block.resumeFilename)
+              ? { filename: asString(block.resumeFilename) }
+              : {}),
+          }
+        : undefined;
+
       return {
         _type: "about",
         eyebrow: asString(block.eyebrow),
         title: asString(block.title),
         body: asString(block.body),
         playbookTitle: asString(block.playbookTitle),
+        ...(image ? { image } : {}),
+        ...(resume ? { resume } : {}),
         stats: Array.isArray(block.stats)
           ? (block.stats as { value?: string; label?: string }[]).map((s) => ({
               value: s.value || "",
@@ -48,6 +87,7 @@ export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
             }))
           : undefined,
       };
+    }
     case "contact":
       return {
         _type: "contact",
@@ -301,7 +341,14 @@ export function pageGroq(slug: string): string {
     title,
     blocks[]{
       ...,
-      "_type": select(_type == "textBlock" => "text", _type)
+      "_type": select(_type == "textBlock" => "text", _type),
+      image{
+        "src": coalesce(asset->url, src),
+        "alt": coalesce(alt, asset->altText)
+      },
+      "resumeUrl": resume.asset->url,
+      "resumeFilename": resume.asset->originalFilename,
+      "videoUrl": coalesce(videoUrl, videoFile.asset->url)
     }
   }`;
 }
