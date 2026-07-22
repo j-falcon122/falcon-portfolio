@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import { getFalconCms } from "@/lib/cms";
 import { resolveSinglePageSectionSlugs } from "portfolio-core/lib/cms/singlePageSections";
 import { normalizePageSlug } from "portfolio-core/lib/normalizePageSlug";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
+import CmsDatasetPreview from "@/components/CmsDatasetPreview";
 import type { FalconBlock } from "@/lib/cms/falconTypes";
 
 export default async function HomePage() {
@@ -17,7 +19,7 @@ export default async function HomePage() {
   const sectionSlugs = resolveSinglePageSectionSlugs(site);
   const pages = await Promise.all(sectionSlugs.map((s) => cms.getPageBySlug(s)));
 
-  return (
+  const baked = (
     <>
       {pages.map((p, i) => {
         const slug = normalizePageSlug(p?.slug ?? sectionSlugs[i] ?? `section-${i}`);
@@ -35,5 +37,11 @@ export default async function HomePage() {
         );
       })}
     </>
+  );
+
+  return (
+    <Suspense fallback={baked}>
+      <CmsDatasetPreview>{baked}</CmsDatasetPreview>
+    </Suspense>
   );
 }

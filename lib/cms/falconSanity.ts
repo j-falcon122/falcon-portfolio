@@ -1,19 +1,45 @@
-import { createClient } from "@sanity/client";
+import { createClient, type SanityClient } from "@sanity/client";
 import { normalizePageSlug } from "portfolio-core/lib/normalizePageSlug";
 import type { CmsProvider, Page, SiteSettings } from "portfolio-core/lib/cms/types";
 import {
   resolveSanityDataset,
-  resolveSanityProjectId,
 } from "@/lib/sanityEnv";
 import type { FalconBlock, FalconPage } from "./falconTypes";
 
-function client() {
-  const token = process.env.SANITY_API_READ_TOKEN?.trim();
+export type FalconSanityClientOptions = {
+  projectId?: string;
+  dataset?: string;
+  apiVersion?: string;
+  useCdn?: boolean;
+  token?: string;
+};
+
+export function createFalconSanityClient(
+  options: FalconSanityClientOptions = {}
+): SanityClient {
+  const projectId =
+    options.projectId?.trim() ||
+    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID?.trim() ||
+    process.env.SANITY_PROJECT_ID?.trim();
+  if (!projectId) {
+    throw new Error(
+      "SANITY_PROJECT_ID is required. Set it in .env.local or your host environment."
+    );
+  }
+  const dataset =
+    options.dataset?.trim() ||
+    process.env.NEXT_PUBLIC_SANITY_DATASET?.trim() ||
+    resolveSanityDataset();
+  const token =
+    options.token?.trim() || process.env.SANITY_API_READ_TOKEN?.trim();
   return createClient({
-    projectId: resolveSanityProjectId(),
-    dataset: resolveSanityDataset(),
-    apiVersion: process.env.SANITY_API_VERSION?.trim() || "2024-01-01",
-    useCdn: process.env.SANITY_USE_CDN !== "false",
+    projectId,
+    dataset,
+    apiVersion:
+      options.apiVersion?.trim() ||
+      process.env.SANITY_API_VERSION?.trim() ||
+      "2024-01-01",
+    useCdn: options.useCdn ?? process.env.SANITY_USE_CDN !== "false",
     ...(token ? { token } : {}),
   });
 }
@@ -22,7 +48,7 @@ function asString(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() ? value.trim() : undefined;
 }
 
-function normalizeFalconBlock(raw: unknown): FalconBlock | null {
+export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
   if (!raw || typeof raw !== "object") return null;
   const block = raw as Record<string, unknown>;
   const type =
@@ -286,7 +312,7 @@ function normalizeFalconBlock(raw: unknown): FalconBlock | null {
   }
 }
 
-const SITE_GROQ = `coalesce(
+export const SITE_GROQ = `coalesce(
   *[_type == "siteSettings" && _id == "siteSettings"][0],
   *[_type == "siteSettings"][0]
 ){
@@ -297,7 +323,7 @@ const SITE_GROQ = `coalesce(
   footerText
 }`;
 
-function pageGroq(slug: string): string {
+export function pageGroq(slug: string): string {
   const normalized = normalizePageSlug(slug);
   const docId = JSON.stringify(`page-${normalized}`);
   const safe = JSON.stringify(normalized);
@@ -314,33 +340,40 @@ function pageGroq(slug: string): string {
   }`;
 }
 
-const falconSanityProvider: CmsProvider = {
-  async getSiteSettings(): Promise<SiteSettings> {
-    const data = await client().fetch(SITE_GROQ);
-    if (!data?.title) {
-      return {
-        title: "Jordan Falcon",
-        nav: [],
-        navigationMode: "single-page",
-      };
-    }
-    return data as SiteSettings;
-  },
+export function createFalconSanityProvider(
+  options: FalconSanityClientOptions = {}
+): CmsProvider {
+  const getClient = () => createFalconSanityClient(options);
+  return {
+    async getSiteSettings(): Promise<SiteSettings> {
+      const data = await getClient().fetch(SITE_GROQ);
+      if (!data?.title) {
+        return {
+          title: "Jordan Falcon",
+          nav: [],
+          navigationMode: "single-page",
+        };
+      }
+      return data as SiteSettings;
+    },
 
-  async getPageBySlug(slug: string): Promise<Page | null> {
-    const data = await client().fetch(pageGroq(slug));
-    if (!data) return null;
-    const blocks = Array.isArray(data.blocks)
-      ? data.blocks
-          .map((b: unknown) => normalizeFalconBlock(b))
-          .filter(Boolean)
-      : [];
-    return {
-      slug: normalizePageSlug(data.slug || slug),
-      title: data.title,
-      blocks,
-    } as FalconPage as Page;
-  },
-};
+    async getPageBySlug(slug: string): Promise<Page | null> {
+      const data = await getClient().fetch(pageGroq(slug));
+      if (!data) return null;
+      const blocks = Array.isArray(data.blocks)
+        ? data.blocks
+            .map((b: unknown) => normalizeFalconBlock(b))
+            .filter(Boolean)
+        : [];
+      return {
+        slug: normalizePageSlug(data.slug || slug),
+        title: data.title,
+        blocks,
+      } as FalconPage as Page;
+    },
+  };
+}
+
+const falconSanityProvider = createFalconSanityProvider();
 
 export default falconSanityProvider;

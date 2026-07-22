@@ -47,6 +47,9 @@ Pages builds against Sanity **`development` by default**.
 - **Actions → Deploy GitHub Pages → Run workflow** → choose:
   - `development` (default preview)
   - `production` (bake prod Sanity content into Pages)
+- **Runtime URL switch (no rebuild):** append `?dataset=production` or
+  `?dataset=development` on the Pages URL to load that dataset in the browser.
+  Example: `https://j-falcon122.github.io/falcon-portfolio/?dataset=production`
 
 Repo secrets / vars needed:
 
