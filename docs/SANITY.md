@@ -65,8 +65,9 @@ Repo secrets / vars needed:
 4. `SITE_ENV=production`
 5. Optional: `SANITY_API_READ_TOKEN`
 6. Studio URL: falcon defaults `/admin` to `https://jordan-falcon.sanity.studio`
-   when `SANITY_STUDIO_URL` / `ADMIN_NAV_URL` are unset (Admin is not shown in
-   the site header — open Studio directly or visit `/admin`).
+   via middleware (and page fallback) when `SANITY_STUDIO_URL` / `ADMIN_NAV_URL`
+   are unset. Admin is not shown in the site header — open Studio directly or
+   visit `/admin`.
 
 ## Figma block types
 

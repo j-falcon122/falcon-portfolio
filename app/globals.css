@@ -393,3 +393,56 @@ body {
     border-bottom-color: transparent;
   }
 }
+
+/* /admin fallback — always clear the fixed header */
+.admin-fallback {
+  box-sizing: border-box;
+  min-height: 100dvh;
+  padding: calc(var(--header-height) + 2rem) var(--page-gutter) 3rem;
+}
+
+.admin-fallback__panel {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--figma-white);
+}
+
+.admin-fallback__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--figma-white);
+}
+
+.admin-fallback__body {
+  margin: 1rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.admin-fallback__body a,
+.admin-fallback__list a {
+  color: var(--figma-gold);
+  text-underline-offset: 2px;
+}
+
+.admin-fallback__list {
+  margin: 1.25rem 0 0;
+  padding-left: 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.admin-fallback code {
+  border-radius: 0.35rem;
+  padding: 0.1rem 0.35rem;
+  background: rgba(0, 0, 0, 0.35);
+  font-size: 0.8125rem;
+}
