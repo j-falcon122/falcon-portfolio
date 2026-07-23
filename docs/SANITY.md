@@ -63,12 +63,20 @@ Repo secrets / vars needed:
 2. `SANITY_PROJECT_ID`
 3. `SANITY_DATASET=production`
 4. `SITE_ENV=production`
-5. Optional: `SANITY_API_READ_TOKEN`, `SANITY_STUDIO_URL` / `ADMIN_NAV_URL`
+5. Optional: `SANITY_API_READ_TOKEN`
+6. Studio URL: falcon defaults `/admin` to `https://jordan-falcon.sanity.studio`
+   when `SANITY_STUDIO_URL` / `ADMIN_NAV_URL` are unset (Admin is not shown in
+   the site header — open Studio directly or visit `/admin`).
 
 ## Figma block types
 
 Page `blocks` in Studio can include: `hero`, `about`, `experience`, `workGrid`,
 `projectList`, `skills`, `education`, `contact` (plus legacy gallery/video/text/cta).
+
+On the **About** block you can upload:
+- **Headshot** (`image`) — portrait shown beside the playbook card
+- **Resume** (`file`, PDF/Word) — download link under the about copy
+  (optional `resumeLabel`, defaults to “Download resume”)
 
 `npm run seed:sanity` writes the mock portfolio content for all of these into
 the active dataset. The Next app reads them via `getFalconCms()` (local mock or

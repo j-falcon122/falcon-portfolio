@@ -62,6 +62,7 @@ const client = createClient({
 });
 
 const imageCache = new Map();
+const fileCache = new Map();
 
 function loadJson(rel) {
   return JSON.parse(fs.readFileSync(path.join(root, rel), "utf8"));
@@ -107,6 +108,35 @@ async function uploadImageFromPublic(src) {
   });
   const ref = { _type: "reference", _ref: asset._id };
   imageCache.set(src, ref);
+  return ref;
+}
+
+async function uploadFileFromPublic(src) {
+  if (!src?.startsWith("/")) return null;
+  if (fileCache.has(src)) return fileCache.get(src);
+
+  const filePath = path.join(publicDir, src.replace(/^\//, ""));
+  if (!fs.existsSync(filePath)) {
+    console.warn(`  skip file (missing): ${src}`);
+    return null;
+  }
+
+  const ext = path.extname(filePath).toLowerCase();
+  const contentType =
+    ext === ".pdf"
+      ? "application/pdf"
+      : ext === ".doc"
+        ? "application/msword"
+        : ext === ".docx"
+          ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          : "application/octet-stream";
+
+  const asset = await client.assets.upload("file", fs.createReadStream(filePath), {
+    filename: path.basename(filePath),
+    contentType,
+  });
+  const ref = { _type: "reference", _ref: asset._id };
+  fileCache.set(src, ref);
   return ref;
 }
 
@@ -196,11 +226,20 @@ async function convertBlock(block, hosted) {
         ...(block.title ? { title: block.title } : {}),
         ...(block.body ? { body: block.body } : {}),
         ...(block.playbookTitle ? { playbookTitle: block.playbookTitle } : {}),
+        ...(block.resumeLabel ? { resumeLabel: block.resumeLabel } : {}),
         ...(block.stats ? { stats: block.stats } : {}),
       };
       if (block.image?.src) {
         const img = await imageFieldFromSrc(block.image.src, block.image.alt);
         if (img) row.image = img;
+      }
+      const resumeSrc =
+        typeof block.resume === "string"
+          ? block.resume
+          : block.resume?.href || block.resume?.src;
+      if (resumeSrc?.startsWith("/")) {
+        const asset = await uploadFileFromPublic(resumeSrc);
+        if (asset) row.resume = { _type: "file", asset };
       }
       return row;
     }

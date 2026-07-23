@@ -16,7 +16,7 @@ const dataset =
 
 if (!projectId) {
   throw new Error(
-    "SANITY_PROJECT_ID is required for Sanity Studio. Add it to .env.local (see .env.example)."
+    "SANITY_STUDIO_PROJECT_ID (or SANITY_PROJECT_ID) is required for Sanity Studio. Use `npm run sanity:deploy` so Studio env vars are mapped from .env.local."
   );
 }
 
