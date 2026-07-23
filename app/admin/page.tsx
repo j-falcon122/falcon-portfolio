@@ -1,20 +1,20 @@
 import { redirect } from "next/navigation";
 import { getDeployEnv } from "portfolio-core/lib/deployEnv";
+import { resolveFalconStudioUrl } from "@/lib/falconStudioUrl";
+
+/** Always evaluate env / defaults at request time (do not bake the help page at build). */
+export const dynamic = "force-dynamic";
 
 /**
- * Opens CMS / Sanity Studio. Hosted QA/PROD: set ADMIN_NAV_URL (or SANITY_STUDIO_URL).
- * Local deploy only (`getDeployEnv()` → `local`): redirects to `sanity dev` (:3333 by default).
+ * Opens CMS / Sanity Studio. Hosted QA/PROD: env or falcon hosted Studio URL.
+ * Local: redirects to `sanity dev` (:3333 by default).
  */
 export default function AdminPage() {
   const deploy = getDeployEnv();
-  const explicit =
-    process.env.SANITY_STUDIO_URL?.trim() ||
-    process.env.ADMIN_NAV_URL?.trim() ||
-    process.env.NEXT_PUBLIC_ADMIN_URL?.trim() ||
-    "";
+  const studioUrl = resolveFalconStudioUrl();
 
-  if (explicit && explicit !== "/admin" && !explicit.startsWith("/admin/")) {
-    redirect(explicit);
+  if (studioUrl) {
+    redirect(studioUrl);
   }
 
   if (
@@ -59,6 +59,17 @@ export default function AdminPage() {
           Local Studio:{" "}
           <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">npm run sanity:dev</code>
         </li>
+        <li>
+          Hosted Studio:{" "}
+          <a
+            className="text-neutral-900 underline underline-offset-2"
+            href="https://jordan-falcon.sanity.studio"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            jordan-falcon.sanity.studio
+          </a>
+        </li>
       </ul>
       {projectId ? (
         <p className="mt-4 text-sm">
@@ -74,7 +85,7 @@ export default function AdminPage() {
       ) : (
         <p className="mt-4 text-sm text-neutral-600">
           Set <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">SANITY_PROJECT_ID</code>{" "}
-          in GitHub Actions secrets to link your Sanity project here.
+          in the host environment to link your Sanity project here.
         </p>
       )}
     </div>

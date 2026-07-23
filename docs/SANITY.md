@@ -63,7 +63,10 @@ Repo secrets / vars needed:
 2. `SANITY_PROJECT_ID`
 3. `SANITY_DATASET=production`
 4. `SITE_ENV=production`
-5. Optional: `SANITY_API_READ_TOKEN`, `SANITY_STUDIO_URL` / `ADMIN_NAV_URL`
+5. Optional: `SANITY_API_READ_TOKEN`
+6. Admin / Studio: falcon defaults to `https://jordan-falcon.sanity.studio`
+   when `SANITY_STUDIO_URL` / `ADMIN_NAV_URL` are unset. Set those env vars
+   explicitly if the hostname changes.
 
 ## Figma block types
 

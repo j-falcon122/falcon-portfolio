@@ -19,4 +19,8 @@ export default defineCliConfig({
     projectId,
     dataset,
   },
+  studioHost: "jordan-falcon",
+  deployment: {
+    appId: "puzb9ivvtc4i2m91ro0za3uc",
+  },
 });
