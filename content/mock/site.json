@@ -20,5 +20,10 @@
     { "label": "Education", "href": "/education" },
     { "label": "Contact", "href": "/contact" }
   ],
-  "footerText": "© 2026 Jordan Falcon"
+  "footerText": "© 2026 Jordan Falcon",
+  "resume": {
+    "href": "/Jordan-Falcon-Resume.pdf",
+    "label": "View Résumé",
+    "filename": "Jordan-Falcon-Resume.pdf"
+  }
 }

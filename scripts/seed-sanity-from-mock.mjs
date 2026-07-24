@@ -491,6 +491,16 @@ async function seedSiteSettings(site) {
       ? { singlePageSectionSlugs: site.singlePageSectionSlugs }
       : {}),
   };
+
+  const resumeSrc =
+    typeof site.resume === "string"
+      ? site.resume
+      : site.resume?.href || site.resume?.src;
+  if (resumeSrc?.startsWith("/")) {
+    const asset = await uploadFileFromPublic(resumeSrc);
+    if (asset) doc.resume = { _type: "file", asset };
+  }
+
   await client.createOrReplace(doc);
 
   const duplicates = await client.fetch(

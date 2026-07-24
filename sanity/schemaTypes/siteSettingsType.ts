@@ -73,6 +73,14 @@ export const siteSettingsType = defineType({
       title: "Footer Text",
       type: "string",
     }),
+    defineField({
+      name: "resume",
+      title: "Resume (PDF)",
+      type: "file",
+      options: {accept: ".pdf,.doc,.docx"},
+      description:
+        'Upload once here. Hero buttons with href "/resume" (and About, if it has no file of its own) use this file.',
+    }),
   ],
   preview: {
     select: {

@@ -5,6 +5,14 @@ import SinglePageNavLink from "portfolio-core/components/SinglePageNavLink";
 
 const HERO_PANEL_SRC = "/figma/hero-logo.png";
 
+function isFileOrExternalHref(href: string): boolean {
+  return (
+    href.startsWith("http://") ||
+    href.startsWith("https://") ||
+    /\.pdf($|\?)/i.test(href)
+  );
+}
+
 /**
  * Sync / client-safe: do not import getCms (pulls node:fs via the mock CMS provider).
  * Falcon is single-page; navigationMode is fixed accordingly.
@@ -41,16 +49,37 @@ export default function HeroBlock({
 
             {heroCtas.length ? (
               <div className="hero__ctas">
-                {heroCtas.map((item, index) => (
-                  <SinglePageNavLink
-                    key={`${item.href}-${index}`}
-                    href={item.href}
-                    navigationMode="single-page"
-                    className={`hero__cta${index > 0 ? " hero__cta--secondary" : ""}`}
-                  >
-                    {item.label}
-                  </SinglePageNavLink>
-                ))}
+                {heroCtas.map((item, index) => {
+                  const className = `hero__cta${index > 0 ? " hero__cta--secondary" : ""}`;
+                  if (isFileOrExternalHref(item.href)) {
+                    const href =
+                      item.href.startsWith("http://") ||
+                      item.href.startsWith("https://")
+                        ? item.href
+                        : withAssetPath(item.href);
+                    return (
+                      <a
+                        key={`${item.href}-${index}`}
+                        href={href}
+                        className={className}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {item.label}
+                      </a>
+                    );
+                  }
+                  return (
+                    <SinglePageNavLink
+                      key={`${item.href}-${index}`}
+                      href={item.href}
+                      navigationMode="single-page"
+                      className={className}
+                    >
+                      {item.label}
+                    </SinglePageNavLink>
+                  );
+                })}
               </div>
             ) : null}
           </div>

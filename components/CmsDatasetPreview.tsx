@@ -4,6 +4,10 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
 import {
+  applySiteResumeToBlocks,
+  normalizeSiteResume,
+} from "@/lib/cms/applySiteResume";
+import {
   normalizeFalconBlock,
   pageGroq,
   SITE_GROQ,
@@ -97,7 +101,11 @@ export default function CmsDatasetPreview({
         const site = await fetchSanityQuery<{
           title?: string;
           singlePageSectionSlugs?: string[];
+          resumeUrl?: string;
+          resumeFilename?: string;
         } | null>(projectId, requested, SITE_GROQ);
+
+        const siteResume = site ? normalizeSiteResume(site) : undefined;
 
         const rawSlugs = site?.singlePageSectionSlugs;
         const slugs =
@@ -114,15 +122,16 @@ export default function CmsDatasetPreview({
               title?: string;
               blocks?: unknown[];
             } | null>(projectId, requested, pageGroq(slug));
-            const blocks = Array.isArray(page?.blocks)
-              ? page.blocks
-                  .map((b) => normalizeFalconBlock(b))
-                  .filter(Boolean)
-              : [];
+            const blocks = applySiteResumeToBlocks(
+              (Array.isArray(page?.blocks) ? page.blocks : [])
+                .map((b) => normalizeFalconBlock(b))
+                .filter(Boolean) as FalconBlock[],
+              siteResume
+            );
             return {
               slug: normalizeSlug(page?.slug ?? slug),
               title: page?.title,
-              blocks: blocks as FalconBlock[],
+              blocks,
             };
           })
         );
