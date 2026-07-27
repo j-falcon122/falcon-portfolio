@@ -24,6 +24,10 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description:
       "Jordan Falcon — frontend-focused software engineer with experience at ESPN and Disney. React, TypeScript, Next.js.",
+    icons: {
+      icon: [{ url: "/icon.png", type: "image/png", sizes: "64x64" }],
+      apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
+    },
     openGraph: {
       title: site.title,
       type: "website",
