@@ -6,6 +6,7 @@ import type {
   GalleryBlock,
   HeroBlock,
   Page as CorePage,
+  SiteSettings,
   TextBlock,
   VideoBlock,
   VideoCarouselBlock,
@@ -112,15 +113,21 @@ export type EducationBlock = SectionEyebrow & {
 };
 
 /** About with Figma section chrome + playbook card (stats). */
+export type FalconResumeAsset = {
+  href: string;
+  label?: string;
+  filename?: string;
+};
+
 export type FalconAboutBlock = AboutBlock & {
   eyebrow?: string;
   playbookTitle?: string;
-  /** Sanity file asset (or public path in mock) for resume download. */
-  resume?: {
-    href: string;
-    label?: string;
-    filename?: string;
-  };
+  /** Block-level resume; falls back to Site Settings resume when missing. */
+  resume?: FalconResumeAsset;
+};
+
+export type FalconSiteSettings = SiteSettings & {
+  resume?: FalconResumeAsset;
 };
 
 export type FalconContactBlock = ContactBlock & {

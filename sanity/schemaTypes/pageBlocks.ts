@@ -28,6 +28,8 @@ export const heroBlockType = defineType({
             defineField({
               name: "href",
               type: "string",
+              description:
+                'Page path (e.g. /work), or "/resume" to open the PDF from Site Settings → Resume.',
               validation: (rule) => rule.required(),
             }),
           ],

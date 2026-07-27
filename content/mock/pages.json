@@ -10,7 +10,7 @@
         "subheadline": "I'm a software engineer with seven years of experience at ESPN and Disney, building responsive, accessible, and user-friendly digital experiences for sports fans. My background spans media, content management systems, consumer products, and high-traffic web applications.\n\nCurrently open to software engineering opportunities in New York City, hybrid, or remote.",
         "ctas": [
           { "label": "View My Work", "href": "/work" },
-          { "label": "View Résumé", "href": "/contact" },
+          { "label": "View Résumé", "href": "/resume" },
           { "label": "Contact Me", "href": "/contact" }
         ]
       }

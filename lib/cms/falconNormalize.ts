@@ -326,7 +326,9 @@ export const SITE_GROQ = `coalesce(
   navigationMode,
   singlePageSectionSlugs,
   nav[]{ label, href },
-  footerText
+  footerText,
+  "resumeUrl": resume.asset->url,
+  "resumeFilename": resume.asset->originalFilename
 }`;
 
 export function pageGroq(slug: string): string {

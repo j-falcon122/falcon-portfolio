@@ -2,7 +2,11 @@ import { createClient, type SanityClient } from "@sanity/client";
 import { normalizePageSlug } from "portfolio-core/lib/normalizePageSlug";
 import type { CmsProvider, Page, SiteSettings } from "portfolio-core/lib/cms/types";
 import { resolveSanityDataset } from "@/lib/sanityEnv";
-import type { FalconPage } from "./falconTypes";
+import {
+  applySiteResumeToBlocks,
+  normalizeSiteResume,
+} from "./applySiteResume";
+import type { FalconBlock, FalconPage, FalconSiteSettings } from "./falconTypes";
 import {
   normalizeFalconBlock,
   pageGroq,
@@ -53,6 +57,26 @@ export {
   SITE_GROQ,
 } from "./falconNormalize";
 
+function normalizeFalconSiteSettings(data: Record<string, unknown>): FalconSiteSettings {
+  const resume = normalizeSiteResume(data);
+  return {
+    title: typeof data.title === "string" ? data.title : "Jordan Falcon",
+    nav: Array.isArray(data.nav) ? (data.nav as SiteSettings["nav"]) : [],
+    ...(typeof data.footerText === "string" ? { footerText: data.footerText } : {}),
+    ...(data.navigationMode === "routes" || data.navigationMode === "single-page"
+      ? { navigationMode: data.navigationMode }
+      : { navigationMode: "single-page" as const }),
+    ...(Array.isArray(data.singlePageSectionSlugs)
+      ? {
+          singlePageSectionSlugs: data.singlePageSectionSlugs.filter(
+            (s): s is string => typeof s === "string"
+          ),
+        }
+      : {}),
+    ...(resume ? { resume } : {}),
+  };
+}
+
 export function createFalconSanityProvider(
   options: FalconSanityClientOptions = {}
 ): CmsProvider {
@@ -67,17 +91,29 @@ export function createFalconSanityProvider(
           navigationMode: "single-page",
         };
       }
-      return data as SiteSettings;
+      return normalizeFalconSiteSettings(data as Record<string, unknown>);
     },
 
     async getPageBySlug(slug: string): Promise<Page | null> {
-      const data = await getClient().fetch(pageGroq(slug));
+      const client = getClient();
+      const [data, siteRaw] = await Promise.all([
+        client.fetch(pageGroq(slug)),
+        client.fetch(SITE_GROQ),
+      ]);
       if (!data) return null;
-      const blocks = Array.isArray(data.blocks)
-        ? data.blocks
-            .map((b: unknown) => normalizeFalconBlock(b))
-            .filter(Boolean)
-        : [];
+
+      const site = siteRaw?.title
+        ? normalizeFalconSiteSettings(siteRaw as Record<string, unknown>)
+        : undefined;
+
+      const rawBlocks: unknown[] = Array.isArray(data.blocks) ? data.blocks : [];
+      const normalizedBlocks: FalconBlock[] = [];
+      for (const raw of rawBlocks) {
+        const block = normalizeFalconBlock(raw);
+        if (block) normalizedBlocks.push(block);
+      }
+      const blocks = applySiteResumeToBlocks(normalizedBlocks, site?.resume);
+
       return {
         slug: normalizePageSlug(data.slug || slug),
         title: data.title,
