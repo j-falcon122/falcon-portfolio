@@ -106,12 +106,13 @@ export function createFalconSanityProvider(
         ? normalizeFalconSiteSettings(siteRaw as Record<string, unknown>)
         : undefined;
 
-      const blocks = applySiteResumeToBlocks(
-        (Array.isArray(data.blocks) ? data.blocks : [])
-          .map((b: unknown) => normalizeFalconBlock(b))
-          .filter((b): b is FalconBlock => Boolean(b)),
-        site?.resume
-      );
+      const rawBlocks: unknown[] = Array.isArray(data.blocks) ? data.blocks : [];
+      const normalizedBlocks: FalconBlock[] = [];
+      for (const raw of rawBlocks) {
+        const block = normalizeFalconBlock(raw);
+        if (block) normalizedBlocks.push(block);
+      }
+      const blocks = applySiteResumeToBlocks(normalizedBlocks, site?.resume);
 
       return {
         slug: normalizePageSlug(data.slug || slug),
