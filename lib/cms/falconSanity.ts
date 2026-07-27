@@ -6,7 +6,7 @@ import {
   applySiteResumeToBlocks,
   normalizeSiteResume,
 } from "./applySiteResume";
-import type { FalconPage, FalconSiteSettings } from "./falconTypes";
+import type { FalconBlock, FalconPage, FalconSiteSettings } from "./falconTypes";
 import {
   normalizeFalconBlock,
   pageGroq,
@@ -109,7 +109,7 @@ export function createFalconSanityProvider(
       const blocks = applySiteResumeToBlocks(
         (Array.isArray(data.blocks) ? data.blocks : [])
           .map((b: unknown) => normalizeFalconBlock(b))
-          .filter(Boolean),
+          .filter((b): b is FalconBlock => Boolean(b)),
         site?.resume
       );
 

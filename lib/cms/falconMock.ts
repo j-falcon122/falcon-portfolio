@@ -5,7 +5,7 @@ import {
   applySiteResumeToBlocks,
   normalizeSiteResume,
 } from "./applySiteResume";
-import type { FalconPage, FalconSiteSettings } from "./falconTypes";
+import type { FalconBlock, FalconPage, FalconSiteSettings } from "./falconTypes";
 import { normalizeFalconBlock } from "./falconNormalize";
 
 function getMockSite(): FalconSiteSettings {
@@ -29,7 +29,7 @@ const falconMockProvider: CmsProvider = {
     const blocks = applySiteResumeToBlocks(
       (page.blocks || [])
         .map((b) => normalizeFalconBlock(b))
-        .filter(Boolean),
+        .filter((b): b is FalconBlock => Boolean(b)),
       siteSettings.resume
     );
     return { ...page, blocks } as Page;
