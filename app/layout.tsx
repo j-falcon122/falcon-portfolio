@@ -3,6 +3,7 @@ import { Outfit } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { getFalconCms } from "@/lib/cms";
+import { resolveFalconAdminNav } from "@/lib/falconAdminNav";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "portfolio-core/components/SiteFooter";
 import SkipLink from "portfolio-core/components/SkipLink";
@@ -38,6 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const cms = getFalconCms();
   const site = await cms.getSiteSettings();
+  const adminNav = resolveFalconAdminNav();
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -46,7 +48,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         suppressHydrationWarning
       >
         <SkipLink />
-        <SiteHeader site={site} />
+        <SiteHeader site={site} adminNav={adminNav} />
         <SinglePageHashScroll />
         <main id="main-content">{children}</main>
         <SiteFooter site={site} />

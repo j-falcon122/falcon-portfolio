@@ -1,60 +1,37 @@
 import { redirect } from "next/navigation";
-import { getDeployEnv } from "portfolio-core/lib/deployEnv";
-import { resolveFalconStudioUrl } from "@/lib/falconStudioUrl";
+import AdminStudioRedirect from "@/components/AdminStudioRedirect";
+import { resolveFalconAdminNav } from "@/lib/falconAdminNav";
+import { FALCON_SANITY_STUDIO_URL } from "@/lib/falconStudioUrl";
 
-/** Always evaluate env / defaults at request time (do not bake the help page at build). */
-export const dynamic = "force-dynamic";
+const isStaticHost = process.env.GITHUB_PAGES === "true";
 
 /**
- * Opens CMS / Sanity Studio. Hosted QA/PROD: env or falcon hosted Studio URL.
- * Local: redirects to `sanity dev` (:3333 by default).
+ * Opens CMS / Sanity Studio.
+ * - Local: localhost Sanity dev server
+ * - GitHub Pages: client redirect (static export)
+ * - Amplify: server redirect to hosted Studio
  */
 export default function AdminPage() {
-  const deploy = getDeployEnv();
-  const studioUrl = resolveFalconStudioUrl();
+  const admin = resolveFalconAdminNav();
 
-  if (studioUrl) {
-    redirect(studioUrl);
-  }
-
-  if (
-    deploy === "local" &&
-    process.env.DISABLE_DEV_SANITY_MANAGE_NAV !== "1"
-  ) {
-    const port = process.env.SANITY_DEV_PORT?.trim() || "3333";
-    redirect(`http://localhost:${port}`);
+  if (admin?.href) {
+    if (isStaticHost) {
+      return <AdminStudioRedirect url={admin.href} />;
+    }
+    redirect(admin.href);
   }
 
   const projectId = process.env.SANITY_PROJECT_ID?.trim();
-  const isStaticHost = process.env.GITHUB_PAGES === "true";
 
   return (
     <div className="mx-auto max-w-lg px-6 py-20 text-neutral-800">
       <h1 className="text-xl font-semibold tracking-tight">Admin</h1>
-      {isStaticHost ? (
-        <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-          This site is a static export on GitHub Pages. The header <strong>Admin</strong> link opens
-          this page. To jump straight to Sanity Studio from the nav, set repository variable{" "}
-          <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">ADMIN_NAV_URL</code> to your
-          hosted Studio URL, then re-run the Deploy GitHub Pages workflow.
-        </p>
-      ) : (
-        <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-          Set <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">SANITY_STUDIO_URL</code>{" "}
-          or <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">ADMIN_NAV_URL</code> to
-          your deployed Sanity Studio URL. For local editing, run{" "}
-          <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">npm run sanity:dev</code>{" "}
-          (default port {process.env.SANITY_DEV_PORT || "3333"}), keep this site in{" "}
-          <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">next dev</code>, then visit{" "}
-          <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">/admin</code> — it redirects
-          to Studio.
-        </p>
-      )}
+      <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+        Run <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">npm run sanity:dev</code>{" "}
+        locally, then visit <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">/admin</code>
+        , or open the hosted Studio directly.
+      </p>
       <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-neutral-600">
-        <li>
-          Deploy Studio:{" "}
-          <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">npm run sanity:deploy</code>
-        </li>
         <li>
           Local Studio:{" "}
           <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">npm run sanity:dev</code>
@@ -63,7 +40,7 @@ export default function AdminPage() {
           Hosted Studio:{" "}
           <a
             className="text-neutral-900 underline underline-offset-2"
-            href="https://jordan-falcon.sanity.studio"
+            href={FALCON_SANITY_STUDIO_URL}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -82,12 +59,7 @@ export default function AdminPage() {
             Open project in Sanity manage
           </a>
         </p>
-      ) : (
-        <p className="mt-4 text-sm text-neutral-600">
-          Set <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs">SANITY_PROJECT_ID</code>{" "}
-          in the host environment to link your Sanity project here.
-        </p>
-      )}
+      ) : null}
     </div>
   );
 }

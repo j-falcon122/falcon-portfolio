@@ -61,8 +61,8 @@ jobs:
           SANITY_API_VERSION: ${{ vars.SANITY_API_VERSION || '2024-01-01' }}
           SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
           SANITY_USE_CDN: ${{ vars.SANITY_USE_CDN || 'true' }}
-          ADMIN_NAV_URL: ${{ vars.ADMIN_NAV_URL }}
-          NEXT_PUBLIC_ADMIN_URL: ${{ vars.NEXT_PUBLIC_ADMIN_URL }}
+          ADMIN_NAV_URL: ${{ vars.ADMIN_NAV_URL || 'https://jordan-falcon.sanity.studio' }}
+          NEXT_PUBLIC_ADMIN_URL: ${{ vars.ADMIN_NAV_URL || 'https://jordan-falcon.sanity.studio' }}
           # Contact form (static-friendly). Add repo secret WEB3FORMS_ACCESS_KEY.
           NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ secrets.WEB3FORMS_ACCESS_KEY }}
 

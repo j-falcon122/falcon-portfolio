@@ -21,8 +21,8 @@ if (!projectId) {
 }
 
 export default defineConfig({
-  name: "development",
-  title: "Falcon Portfolio",
+  name: dataset,
+  title: `Falcon Portfolio (${dataset})`,
   projectId,
   dataset,
   plugins: [structureTool(), visionTool()],
