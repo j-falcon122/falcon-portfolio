@@ -22,7 +22,9 @@
     "cleanup:sanity-pages": "node --env-file=.env.local scripts/cleanup-sanity-duplicate-pages.mjs",
     "sanity:dev": "node scripts/run-sanity.mjs dev",
     "sanity:dev:polling": "CHOKIDAR_USEPOLLING=1 node scripts/run-sanity.mjs dev",
-    "sanity:deploy": "node scripts/run-sanity.mjs deploy"
+    "sanity:deploy": "node scripts/run-sanity.mjs deploy",
+    "sanity:deploy:development": "SANITY_DATASET=development npm run sanity:deploy",
+    "sanity:deploy:production": "SANITY_DATASET=production npm run sanity:deploy"
   },
   "dependencies": {
     "@sanity/client": "^7.22.0",
