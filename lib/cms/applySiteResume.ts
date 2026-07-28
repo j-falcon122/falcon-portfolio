@@ -12,10 +12,18 @@ const RESUME_HREF_ALIASES = new Set([
   "#resume",
 ]);
 
+const RESUME_LABEL = /(?:resume|r[eé]sum[eé]|cv)/i;
+
 export function isResumeHref(href: string | undefined | null): boolean {
   if (!href?.trim()) return false;
   const normalized = href.trim().toLowerCase();
   return RESUME_HREF_ALIASES.has(normalized);
+}
+
+/** Hero CTA is for the résumé when href is `/resume` or the label says so. */
+export function isResumeCta(cta: { label: string; href: string }): boolean {
+  if (isResumeHref(cta.href)) return true;
+  return RESUME_LABEL.test(cta.label.trim());
 }
 
 export function normalizeSiteResume(raw: {
@@ -63,7 +71,7 @@ export function applySiteResumeToBlocks(
   return blocks.map((block) => {
     if (block._type === "hero") {
       const rewrite = (cta?: { label: string; href: string }) =>
-        cta && isResumeHref(cta.href)
+        cta && isResumeCta(cta)
           ? { ...cta, href: siteResume.href }
           : cta;
 

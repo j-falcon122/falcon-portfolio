@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   applySiteResumeToBlocks,
   isResumeHref,
+  isResumeCta,
   normalizeSiteResume,
 } from "./applySiteResume";
 import type { FalconBlock } from "./falconTypes";
@@ -12,6 +13,14 @@ describe("isResumeHref", () => {
     expect(isResumeHref("resume")).toBe(true);
     expect(isResumeHref("#resume")).toBe(true);
     expect(isResumeHref("/work")).toBe(false);
+  });
+});
+
+describe("isResumeCta", () => {
+  it("matches résumé labels even when href is wrong", () => {
+    expect(isResumeCta({ label: "View Résumé", href: "/contact" })).toBe(true);
+    expect(isResumeCta({ label: "Download CV", href: "#contact" })).toBe(true);
+    expect(isResumeCta({ label: "Contact Me", href: "/contact" })).toBe(false);
   });
 });
 
@@ -59,6 +68,23 @@ describe("applySiteResumeToBlocks", () => {
     expect(blocks[1]).toMatchObject({
       _type: "about",
       resume: { href: "https://cdn.example/resume.pdf" },
+    });
+  });
+
+  it("rewrites View Résumé when href still points at contact", () => {
+    const blocks = applySiteResumeToBlocks(
+      [
+        {
+          _type: "hero",
+          headline: "Hi",
+          ctas: [{ label: "View Résumé", href: "/contact" }],
+        },
+      ],
+      { href: "https://cdn.example/resume.pdf", filename: "resume.pdf" }
+    );
+
+    expect(blocks[0]).toMatchObject({
+      ctas: [{ label: "View Résumé", href: "https://cdn.example/resume.pdf" }],
     });
   });
 });
