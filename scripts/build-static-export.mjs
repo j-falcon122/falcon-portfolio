@@ -44,6 +44,8 @@ if (existsSync(apiDir)) {
 run("npm", ["run", "build"], {
   ...process.env,
   GITHUB_PAGES: "true",
+  // Client preview falls back to Google Docs viewer when API routes are absent.
+  NEXT_PUBLIC_STATIC_EXPORT: "true",
 });
 
 const outDir = join(root, "out");

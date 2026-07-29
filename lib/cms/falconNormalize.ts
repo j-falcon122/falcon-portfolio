@@ -222,18 +222,56 @@ export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
                 tags?: string[];
                 href?: string;
                 linkLabel?: string;
+                screenshot?: { src?: unknown; alt?: unknown };
+                caseStudy?: {
+                  project?: string;
+                  problem?: string;
+                  myRole?: string;
+                  actionsAndDecisions?: string;
+                  challenge?: string;
+                  result?: string;
+                  learning?: string;
+                };
               }[]
             )
               .filter((i) => i?.title && i?.description)
-              .map((i) => ({
-                title: i.title!,
-                description: i.description!,
-                tags: Array.isArray(i.tags)
-                  ? i.tags.filter((t): t is string => typeof t === "string")
-                  : undefined,
-                href: asString(i.href),
-                linkLabel: asString(i.linkLabel),
-              }))
+              .map((i) => {
+                const cs = i.caseStudy;
+                const caseStudy = cs
+                  ? {
+                      project: asString(cs.project),
+                      problem: asString(cs.problem),
+                      myRole: asString(cs.myRole),
+                      actionsAndDecisions: asString(cs.actionsAndDecisions),
+                      challenge: asString(cs.challenge),
+                      result: asString(cs.result),
+                      learning: asString(cs.learning),
+                    }
+                  : undefined;
+                const hasCaseStudy =
+                  caseStudy &&
+                  Object.values(caseStudy).some((v) => Boolean(v));
+                const shotSrc = asString(i.screenshot?.src);
+                const screenshot = shotSrc
+                  ? {
+                      src: shotSrc,
+                      ...(asString(i.screenshot?.alt)
+                        ? { alt: asString(i.screenshot?.alt) }
+                        : {}),
+                    }
+                  : undefined;
+                return {
+                  title: i.title!,
+                  description: i.description!,
+                  tags: Array.isArray(i.tags)
+                    ? i.tags.filter((t): t is string => typeof t === "string")
+                    : undefined,
+                  href: asString(i.href),
+                  linkLabel: asString(i.linkLabel),
+                  ...(screenshot ? { screenshot } : {}),
+                  caseStudy: hasCaseStudy ? caseStudy : undefined,
+                };
+              })
           : [],
       };
     case "projectList":
@@ -347,6 +385,17 @@ export function pageGroq(slug: string): string {
       image{
         "src": coalesce(asset->url, src),
         "alt": coalesce(alt, asset->altText)
+      },
+      items[]{
+        ...,
+        screenshot{
+          "src": coalesce(asset->url, src),
+          "alt": coalesce(alt, asset->altText)
+        },
+        image{
+          "src": coalesce(asset->url, src),
+          "alt": coalesce(alt, asset->altText)
+        }
       },
       "resumeUrl": resume.asset->url,
       "resumeFilename": resume.asset->originalFilename,

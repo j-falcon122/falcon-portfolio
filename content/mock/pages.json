@@ -256,37 +256,91 @@
             "title": "Where to Watch Guide",
             "description": "Helping fans discover when/where to watch. Built personalized viewing, filters, date-selection, league filtering, and responsive behavior.",
             "tags": ["React", "State Management", "Routing"],
-            "linkLabel": "Case Study Highlights"
+            "linkLabel": "Case Study Highlights",
+            "caseStudy": {
+              "project": "A fan-facing guide that helps viewers find when and where to watch games, leagues, and live events across ESPN platforms.",
+              "problem": "Fans struggled to discover viewing options quickly—filters, dates, and league context were fragmented and hard to personalize across devices.",
+              "myRole": "Frontend engineer owning interactive filtering, personalized viewing flows, date selection, and responsive layout behavior.",
+              "actionsAndDecisions": "Modeled filter and date state for predictable updates, wired league filtering into the guide experience, and prioritized mobile-first responsive patterns so discovery stayed usable on every screen size.",
+              "challenge": "Keeping filter combinations, date ranges, and personalized defaults coherent without slowing the UI or overwhelming fans with options.",
+              "result": "Shipped a clearer Where to Watch experience with personalized viewing, multi-filter discovery, and consistent responsive behavior.",
+              "learning": "Discovery UIs succeed when state, filters, and layout decisions reinforce one mental model—especially under sports-calendar complexity."
+            }
           },
           {
             "title": "Breaking News & Contributor Experiences",
             "description": "Built contributor pages, breaking-news carousel, follow-button functionality, and auth integration.",
             "tags": ["Performance", "Component Architecture", "Publishing"],
-            "linkLabel": "Case Study Highlights"
+            "linkLabel": "Case Study Highlights",
+            "caseStudy": {
+              "project": "Contributor and breaking-news surfaces that surface trusted voices and urgent stories across ESPN publishing experiences.",
+              "problem": "Contributor pages and breaking-news modules needed faster, more modular UI with follow/auth flows that still felt native to the site.",
+              "myRole": "Built contributor page structure, the breaking-news carousel, follow-button behavior, and auth integration points.",
+              "actionsAndDecisions": "Broke experiences into reusable components, optimized carousel and page performance, and integrated follow/auth so engagement actions stayed in-context.",
+              "challenge": "Balancing publishing flexibility and performance while wiring auth-gated follow actions into high-traffic news surfaces.",
+              "result": "Delivered contributor pages and breaking-news carousel experiences with follow functionality and auth integration.",
+              "learning": "Component architecture and auth edges should be designed together so engagement features stay fast and coherent under publishing pressure."
+            }
           },
           {
             "title": "DraftCast",
             "description": "Built Pick Predictor grid, Best Available, undo behavior, and completed-draft states for live draft experiences.",
             "tags": ["Redux", "Real-Time", "Data Pipelines"],
-            "linkLabel": "Case Study Highlights"
+            "linkLabel": "Case Study Highlights",
+            "caseStudy": {
+              "project": "Live draft experiences where fans track picks, predictions, and board state as the draft unfolds in real time.",
+              "problem": "Draft UIs needed reliable pick prediction, best-available views, undo paths, and clear completed-draft states under live data pressure.",
+              "myRole": "Implemented Pick Predictor grid, Best Available views, undo behavior, and completed-draft state handling.",
+              "actionsAndDecisions": "Used Redux-backed state for draft board updates, designed undo-friendly transitions, and defined completed-draft UI so the experience stayed readable after the final pick.",
+              "challenge": "Keeping real-time draft state, undo, and prediction grids consistent when pick data arrives quickly and out of order.",
+              "result": "Shipped DraftCast features that support live prediction, board clarity, and graceful end-of-draft states.",
+              "learning": "Live sports UIs need explicit state machines for undo and completion—not just optimistic renders of the latest event."
+            }
           },
           {
             "title": "ESPN Navigation",
             "description": "Improved navigation patterns for accessibility, clarity, and cross-platform consistency.",
             "tags": ["Accessibility", "Information Architecture"],
-            "linkLabel": "Case Study Highlights"
+            "linkLabel": "Case Study Highlights",
+            "caseStudy": {
+              "project": "Navigation patterns used across ESPN experiences to help fans move between sports, scores, and content with less friction.",
+              "problem": "Existing navigation patterns were inconsistent across platforms and created accessibility and clarity gaps for fans.",
+              "myRole": "Improved navigation information architecture and interaction patterns with an accessibility-first lens.",
+              "actionsAndDecisions": "Clarified hierarchy and labeling, strengthened keyboard and assistive-tech affordances, and aligned patterns for cross-platform consistency.",
+              "challenge": "Improving accessibility and clarity without breaking established mental models fans already relied on.",
+              "result": "Delivered clearer, more accessible navigation patterns with stronger cross-platform consistency.",
+              "learning": "Navigation work is product strategy: accessibility and IA improvements compound when they are treated as shared system decisions."
+            }
           },
           {
             "title": "Market Landing Pages",
             "description": "Shipped market-specific landing experiences with reusable modules and responsive layouts.",
             "tags": ["CMS", "Responsive", "Performance"],
-            "linkLabel": "Case Study Highlights"
+            "linkLabel": "Case Study Highlights",
+            "caseStudy": {
+              "project": "Market-specific landing experiences that localize ESPN storytelling and promotions for different audiences.",
+              "problem": "Teams needed market landings that could vary by region without rebuilding layouts or sacrificing performance each time.",
+              "myRole": "Shipped reusable landing modules and responsive layouts for market-specific experiences.",
+              "actionsAndDecisions": "Designed modular page building blocks, kept layouts responsive by default, and prioritized performance so localized pages stayed fast.",
+              "challenge": "Supporting market variation through reusable modules without letting CMS flexibility erode performance or design consistency.",
+              "result": "Launched market landing pages built from reusable modules with responsive, performant layouts.",
+              "learning": "CMS-driven landings scale when modules encode responsive and performance constraints—not just content slots."
+            }
           },
           {
             "title": "GameCast",
             "description": "Contributed to live game experiences focused on clarity, speed, and fan-facing reliability.",
             "tags": ["Live Data", "React", "UX"],
-            "linkLabel": "Case Study Highlights"
+            "linkLabel": "Case Study Highlights",
+            "caseStudy": {
+              "project": "Live game experiences that keep fans oriented around score, play, and context as games unfold.",
+              "problem": "Live game surfaces must stay clear and reliable when data updates constantly and fans scan for the next meaningful signal.",
+              "myRole": "Contributed to live GameCast experiences with focus on clarity, speed, and fan-facing reliability.",
+              "actionsAndDecisions": "Prioritized readable live states, React patterns suited to frequent updates, and UX choices that surface the most important game signals first.",
+              "challenge": "Maintaining clarity and perceived speed when live data volume and update frequency spike during high-stakes moments.",
+              "result": "Helped deliver GameCast experiences oriented around clarity, speed, and reliable fan-facing updates.",
+              "learning": "In live sports UI, restraint is a feature—showing the right signal at the right moment beats showing everything at once."
+            }
           }
         ]
       }

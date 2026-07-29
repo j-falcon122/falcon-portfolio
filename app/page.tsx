@@ -5,8 +5,23 @@ import { normalizePageSlug } from "portfolio-core/lib/normalizePageSlug";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
 import CmsDatasetPreview from "@/components/CmsDatasetPreview";
 import type { FalconBlock } from "@/lib/cms/falconTypes";
+import {
+  hasJsonViewParam,
+  renderCmsJsonView,
+} from "@/lib/cms/renderCmsJsonView";
 
-export default async function HomePage() {
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const params = await searchParams;
+  if (hasJsonViewParam(params)) {
+    return renderCmsJsonView({ slug: params.slug });
+  }
+
   const cms = getFalconCms();
   const site = await cms.getSiteSettings();
   const singlePage = (site.navigationMode ?? "routes") === "single-page";
