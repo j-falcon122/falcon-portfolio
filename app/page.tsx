@@ -12,14 +12,20 @@ import {
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
+const isStaticExport =
+  process.env.GITHUB_PAGES === "true" || process.env.NEXT_OUTPUT === "export";
+
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams?: SearchParams;
 }) {
-  const params = await searchParams;
-  if (hasJsonViewParam(params)) {
-    return renderCmsJsonView({ slug: params.slug });
+  // searchParams opts the route into dynamic rendering — skip on static Pages export.
+  if (!isStaticExport && searchParams) {
+    const params = await searchParams;
+    if (hasJsonViewParam(params)) {
+      return renderCmsJsonView({ slug: params.slug });
+    }
   }
 
   const cms = getFalconCms();

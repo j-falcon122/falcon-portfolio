@@ -1,23 +1,9 @@
-import {
-  hasJsonViewParam,
-  renderCmsJsonView,
-} from "@/lib/cms/renderCmsJsonView";
-
-type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+import { renderCmsJsonView } from "@/lib/cms/renderCmsJsonView";
 
 /**
- * Personal CMS debug page. Prefer `/?_jsonView` or open `/cms-json` directly.
+ * Personal CMS debug page. Prefer `/?_jsonView` when running a Node server.
+ * Static Pages builds render this without searchParams so `output: "export"` works.
  */
-export default async function CmsJsonPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
-  const params = await searchParams;
-  // Allow `/cms-json` always; also accept `?_jsonView` if someone lands here.
-  void hasJsonViewParam(params);
-  return renderCmsJsonView({
-    slug: params.slug,
-    from: params.from,
-  });
+export default async function CmsJsonPage() {
+  return renderCmsJsonView();
 }
