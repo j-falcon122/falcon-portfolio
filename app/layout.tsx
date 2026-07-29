@@ -9,6 +9,9 @@ import SiteFooter from "portfolio-core/components/SiteFooter";
 import SkipLink from "portfolio-core/components/SkipLink";
 import SinglePageHashScroll from "portfolio-core/components/SinglePageHashScroll";
 
+/** ISR window for Sanity-backed pages (Amplify). Keeps CMS edits from sticking forever. */
+export const revalidate = 60;
+
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",

@@ -21,6 +21,15 @@ export type FalconSanityClientOptions = {
   token?: string;
 };
 
+/**
+ * Next.js App Router patches `fetch` and will cache Sanity GETs indefinitely
+ * unless we set revalidate. Without this, Amplify keeps serving CMS snapshots
+ * from the last deploy (e.g. work cards without newly uploaded screenshots).
+ */
+const SANITY_FETCH_OPTIONS = {
+  next: { revalidate: 60 },
+} as const;
+
 export function createFalconSanityClient(
   options: FalconSanityClientOptions = {}
 ): SanityClient {
@@ -83,7 +92,7 @@ export function createFalconSanityProvider(
   const getClient = () => createFalconSanityClient(options);
   return {
     async getSiteSettings(): Promise<SiteSettings> {
-      const data = await getClient().fetch(SITE_GROQ);
+      const data = await getClient().fetch(SITE_GROQ, {}, SANITY_FETCH_OPTIONS);
       if (!data?.title) {
         return {
           title: "Jordan Falcon",
@@ -97,8 +106,8 @@ export function createFalconSanityProvider(
     async getPageBySlug(slug: string): Promise<Page | null> {
       const client = getClient();
       const [data, siteRaw] = await Promise.all([
-        client.fetch(pageGroq(slug)),
-        client.fetch(SITE_GROQ),
+        client.fetch(pageGroq(slug), {}, SANITY_FETCH_OPTIONS),
+        client.fetch(SITE_GROQ, {}, SANITY_FETCH_OPTIONS),
       ]);
       if (!data) return null;
 

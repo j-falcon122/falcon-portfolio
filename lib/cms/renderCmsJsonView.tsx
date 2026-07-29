@@ -1,4 +1,4 @@
-import { getFalconCms } from "@/lib/cms";
+import { getFalconCms, resolveCmsProviderKey } from "@/lib/cms";
 import { resolveSinglePageSectionSlugs } from "portfolio-core/lib/cms/singlePageSections";
 import { normalizePageSlug } from "portfolio-core/lib/normalizePageSlug";
 import { resolveSanityDataset } from "@/lib/sanityEnv";
@@ -43,7 +43,7 @@ export async function renderCmsJsonView(options?: {
   );
 
   const payload = {
-    provider: (process.env.CMS_PROVIDER ?? "mock").trim().toLowerCase(),
+    provider: resolveCmsProviderKey(),
     dataset: resolveSanityDataset(),
     site,
     pages,

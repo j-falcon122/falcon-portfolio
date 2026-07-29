@@ -51,3 +51,10 @@ Sanity `development`; use **Actions → Deploy GitHub Pages → Run workflow** a
 set `sanity_env=production` to bake prod content. For Sanity-backed deploys, set
 `CMS_PROVIDER=sanity` and the right `SANITY_DATASET` (see `.env.example` and
 [docs/SANITY.md](docs/SANITY.md)).
+
+## URL params (runtime)
+
+| Param | Example | Purpose |
+| --- | --- | --- |
+| `dataset` | `/?dataset=development` or `/?dataset=production` | Load that Sanity dataset in the browser (no rebuild). Needs `NEXT_PUBLIC_SANITY_PROJECT_ID` (and ideally `NEXT_PUBLIC_SANITY_DATASET`) in the build. Only switches when the param differs from the baked dataset. |
+| `_jsonView` | `/?_jsonView` | CMS JSON debug dump of site settings + pages. Node server only (`next start` / AWS); use `/cms-json` on static Pages. |

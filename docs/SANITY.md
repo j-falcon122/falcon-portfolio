@@ -59,14 +59,18 @@ Repo secrets / vars needed:
 
 ## Hosting checklist (AWS prod)
 
-1. `CMS_PROVIDER=sanity`
-2. `SANITY_PROJECT_ID`
-3. `SANITY_DATASET=production`
+1. `CMS_PROVIDER=sanity` (also set `NEXT_PUBLIC_CMS_PROVIDER=sanity` on Amplify)
+2. `SANITY_PROJECT_ID` and `NEXT_PUBLIC_SANITY_PROJECT_ID` (same value)
+3. `SANITY_DATASET=production` and `NEXT_PUBLIC_SANITY_DATASET=production`
 4. `SITE_ENV=production`
 5. Optional: `SANITY_API_READ_TOKEN`
 6. Studio URL: falcon defaults `/admin` to `https://jordan-falcon.sanity.studio`
    when `SANITY_STUDIO_URL` / `ADMIN_NAV_URL` are unset (Admin is not shown in
    the site header — open Studio directly or visit `/admin`).
+
+After changing Amplify env vars, trigger a **new build** (not “redeploy this
+version”). Confirm with `/?_jsonView` — status should say `provider sanity`.
+If it still says `mock`, the running build never received those variables.
 
 ## Figma block types
 
