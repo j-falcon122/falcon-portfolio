@@ -1,16 +1,30 @@
+"use client";
+
 import Image from "next/image";
+import { useCallback, useState } from "react";
 import type { HeroBlock as HeroBlockType } from "portfolio-core/lib/cms/types";
 import { withAssetPath } from "portfolio-core/lib/basePath";
 import SinglePageNavLink from "portfolio-core/components/SinglePageNavLink";
+import ResumePreviewModal from "./ResumePreviewModal";
 
 const HERO_PANEL_SRC = "/figma/hero-logo.png";
+
+function isPdfHref(href: string): boolean {
+  return /\.pdf($|\?)/i.test(href);
+}
 
 function isFileOrExternalHref(href: string): boolean {
   return (
     href.startsWith("http://") ||
     href.startsWith("https://") ||
-    /\.pdf($|\?)/i.test(href)
+    isPdfHref(href)
   );
+}
+
+function resolveAssetHref(href: string): string {
+  return href.startsWith("http://") || href.startsWith("https://")
+    ? href
+    : withAssetPath(href);
 }
 
 /**
@@ -24,6 +38,9 @@ export default function HeroBlock({
   cta,
   ctas,
 }: HeroBlockType) {
+  const [resumeHref, setResumeHref] = useState<string | null>(null);
+  const closeResume = useCallback(() => setResumeHref(null), []);
+
   const heroCtas =
     ctas?.length
       ? ctas
@@ -52,11 +69,23 @@ export default function HeroBlock({
                 {heroCtas.map((item, index) => {
                   const className = `hero__cta${index > 0 ? " hero__cta--secondary" : ""}`;
                   if (isFileOrExternalHref(item.href)) {
-                    const href =
-                      item.href.startsWith("http://") ||
-                      item.href.startsWith("https://")
-                        ? item.href
-                        : withAssetPath(item.href);
+                    const href = resolveAssetHref(item.href);
+                    if (isPdfHref(href)) {
+                      return (
+                        <a
+                          key={`${item.href}-${index}`}
+                          href={href}
+                          className={className}
+                          aria-haspopup="dialog"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setResumeHref(href);
+                          }}
+                        >
+                          {item.label}
+                        </a>
+                      );
+                    }
                     return (
                       <a
                         key={`${item.href}-${index}`}
@@ -99,6 +128,8 @@ export default function HeroBlock({
           </div>
         </div>
       </div>
+
+      <ResumePreviewModal href={resumeHref} onClose={closeResume} />
     </section>
   );
 }

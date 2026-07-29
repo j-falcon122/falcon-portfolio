@@ -67,12 +67,26 @@ export type ExperienceDetailsBlock = SectionEyebrow & {
   collapseHref?: string;
 };
 
+/** Narrative sections shown in the Selected Work case-study modal. */
+export type WorkCaseStudy = {
+  project?: string;
+  problem?: string;
+  myRole?: string;
+  actionsAndDecisions?: string;
+  challenge?: string;
+  result?: string;
+  learning?: string;
+};
+
 export type WorkItem = {
   title: string;
   description: string;
   tags?: string[];
   href?: string;
   linkLabel?: string;
+  /** Optional product/UI screenshot shown on the card and in the case-study modal. */
+  screenshot?: { src: string; alt?: string };
+  caseStudy?: WorkCaseStudy;
 };
 
 export type WorkGridBlock = SectionEyebrow & {

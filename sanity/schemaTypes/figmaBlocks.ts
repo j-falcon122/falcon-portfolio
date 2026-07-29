@@ -210,11 +210,90 @@ export const workGridBlockType = defineType({
               type: "array",
               of: [defineArrayMember({type: "string"})],
             }),
-            defineField({name: "href", type: "string"}),
-            defineField({name: "linkLabel", type: "string"}),
+            defineField({
+              name: "screenshot",
+              title: "Screenshot",
+              type: "image",
+              options: {hotspot: true},
+              description: "Optional product/UI screenshot for the card and case-study modal.",
+              fields: [
+                defineField({
+                  name: "alt",
+                  type: "string",
+                  title: "Alt text",
+                  description: "Describe the screenshot for accessibility.",
+                }),
+              ],
+            }),
+            defineField({
+              name: "linkLabel",
+              title: "Card CTA label",
+              type: "string",
+              description: 'e.g. "Case Study Highlights". Opens the modal when case study fields are set.',
+            }),
+            defineField({
+              name: "href",
+              title: "External link (optional)",
+              type: "string",
+              description:
+                "Used only when no case study modal content is provided. Prefer filling the Case Study fields below.",
+            }),
+            defineField({
+              name: "caseStudy",
+              title: "Case Study Modal",
+              type: "object",
+              description:
+                "Opens in a modal when the card is clicked. Fill any sections you want to show.",
+              options: {collapsible: true, collapsed: false},
+              fields: [
+                defineField({
+                  name: "project",
+                  title: "Project",
+                  type: "text",
+                  rows: 3,
+                  description: "What the initiative was and why it mattered.",
+                }),
+                defineField({
+                  name: "problem",
+                  title: "Problem",
+                  type: "text",
+                  rows: 3,
+                }),
+                defineField({
+                  name: "myRole",
+                  title: "My role",
+                  type: "text",
+                  rows: 3,
+                }),
+                defineField({
+                  name: "actionsAndDecisions",
+                  title: "Actions and decisions",
+                  type: "text",
+                  rows: 4,
+                }),
+                defineField({
+                  name: "challenge",
+                  title: "Challenge",
+                  type: "text",
+                  rows: 3,
+                }),
+                defineField({
+                  name: "result",
+                  title: "Result",
+                  type: "text",
+                  rows: 3,
+                }),
+                defineField({
+                  name: "learning",
+                  title: "Learning",
+                  type: "text",
+                  rows: 3,
+                }),
+              ],
+            }),
           ],
           preview: {
-            select: {title: "title"},
+            select: {title: "title", media: "screenshot"},
           },
         }),
       ],

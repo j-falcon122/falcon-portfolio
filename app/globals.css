@@ -19,6 +19,40 @@ html {
   scroll-padding-top: var(--header-height);
 }
 
+/* Personal CMS debug: ?_jsonView */
+.cms-json-view {
+  padding: calc(var(--header-height) + 1rem) clamp(1rem, 4vw, 2rem) 3rem;
+  min-height: 60vh;
+}
+
+.cms-json-view__status {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  color: var(--figma-gold);
+}
+
+.cms-json-view__status--error {
+  color: #fca5a5;
+}
+
+.cms-json-view__status code {
+  font-size: 0.85em;
+}
+
+.cms-json-view__pre {
+  margin: 0;
+  overflow: auto;
+  max-height: calc(100vh - 8rem);
+  border: 1px solid rgba(123, 179, 212, 0.3);
+  border-radius: 0.75rem;
+  background: #0a1220;
+  padding: 1.25rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #e2e8f0;
+  white-space: pre;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
