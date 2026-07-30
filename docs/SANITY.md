@@ -79,12 +79,9 @@ Page `blocks` in Studio can include: `hero`, `about`, `experience`, `workGrid`,
 
 On the **About** block you can upload:
 - **Headshot** (`image`) — portrait shown beside the playbook card
-- **Resume** (`file`, PDF/Word) — optional block-level download link
-  (optional `resumeLabel`, defaults to “Download resume”)
 
 Prefer uploading the résumé once under **Site Settings → Resume**. Hero CTAs with
-`href: "/resume"` (e.g. “View Résumé”) open that file. About uses the Site
-Settings file when the About block has no resume of its own.
+`href: "/resume"` (e.g. “View Résumé”) open that file.
 
 `npm run seed:sanity` writes the mock portfolio content for all of these into
 the active dataset. The Next app reads them via `getFalconCms()` (local mock or

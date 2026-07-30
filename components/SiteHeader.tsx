@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  useEffect,
   useId,
   useState,
   useSyncExternalStore,
@@ -13,7 +12,11 @@ import type { SiteSettings } from "portfolio-core/lib/cms/types";
 import { withBasePath } from "portfolio-core/lib/basePath";
 import { resolveNavHref } from "portfolio-core/lib/resolveNavHref";
 import { scrollToPageSectionWhenReady } from "portfolio-core/lib/scrollToPageSection";
+import { useAutoHideHeader } from "portfolio-core/lib/useAutoHideHeader";
 import SiteBrand from "portfolio-core/components/SiteBrand";
+
+/** Matches the CSS hamburger breakpoint in globals.css */
+const MOBILE_NAV_MQ = "(max-width: 1100px)";
 
 function sectionKeyFromNavHref(href: string): string | null {
   if (href === "/" || href === "") return "home";
@@ -32,7 +35,6 @@ export default function SiteHeader({
   const navMode = site.navigationMode ?? "routes";
   const singlePage = navMode === "single-page";
   const isHome = pathname === "/";
-  const [isAtTop, setIsAtTop] = useState(true);
   const [menuOpenForRoute, setMenuOpenForRoute] = useState<string | null>(null);
   const menuId = useId();
 
@@ -55,19 +57,21 @@ export default function SiteHeader({
   const routeKey = `${pathname}${hash}`;
   const menuOpen = menuOpenForRoute === routeKey;
 
-  useEffect(() => {
-    const onScroll = () => setIsAtTop(window.scrollY <= 0);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const { isAtTop, headerVisible } = useAutoHideHeader({
+    mode: "scroll-direction",
+    forceVisible: menuOpen,
+    mediaQuery: MOBILE_NAV_MQ,
+  });
 
   const useHeroNavStyle = hasMounted
     ? isHome && isAtTop && isHomeHash
     : isHome;
-  const headerState = useHeroNavStyle
-    ? "site-header--at-top"
-    : "site-header--solid";
+  const headerState = [
+    useHeroNavStyle ? "site-header--at-top" : "site-header--solid",
+    !headerVisible ? "site-header--hidden" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   function closeMenu() {
     setMenuOpenForRoute(null);
@@ -119,7 +123,10 @@ export default function SiteHeader({
   const navItems = site.nav ?? [];
 
   return (
-    <header className={`site-header site-header--persistent fixed inset-x-0 top-0 z-50 w-full ${headerState}`}>
+    <header
+      className={`site-header site-header--persistent fixed inset-x-0 top-0 z-50 w-full ${headerState}`}
+      data-nav-hidden={headerVisible ? "false" : "true"}
+    >
       <div className="site-header__inner">
         <div className="site-header__brand-wrap shrink-0">
           {singlePage && isHome ? (

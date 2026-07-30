@@ -34,6 +34,22 @@ export default defineConfig({
           },
         },
         test: {
+          name: "components",
+          environment: "jsdom",
+          include: ["components/**/*.test.tsx"],
+          setupFiles: ["./vitest.a11y.setup.ts"],
+        },
+      },
+      {
+        esbuild: {
+          jsx: "automatic",
+        },
+        resolve: {
+          alias: {
+            "@": path.resolve(__dirname, "."),
+          },
+        },
+        test: {
           name: "smoke",
           environment: "node",
           include: ["lib/**/*.smoke.test.tsx"],
