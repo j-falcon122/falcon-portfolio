@@ -3,9 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  useEffect,
   useId,
-  useRef,
   useState,
   useSyncExternalStore,
   type MouseEvent as ReactMouseEvent,
@@ -14,11 +12,11 @@ import type { SiteSettings } from "portfolio-core/lib/cms/types";
 import { withBasePath } from "portfolio-core/lib/basePath";
 import { resolveNavHref } from "portfolio-core/lib/resolveNavHref";
 import { scrollToPageSectionWhenReady } from "portfolio-core/lib/scrollToPageSection";
+import { useAutoHideHeader } from "portfolio-core/lib/useAutoHideHeader";
 import SiteBrand from "portfolio-core/components/SiteBrand";
 
 /** Matches the CSS hamburger breakpoint in globals.css */
 const MOBILE_NAV_MQ = "(max-width: 1100px)";
-const SCROLL_DELTA = 8;
 
 function sectionKeyFromNavHref(href: string): string | null {
   if (href === "/" || href === "") return "home";
@@ -37,10 +35,7 @@ export default function SiteHeader({
   const navMode = site.navigationMode ?? "routes";
   const singlePage = navMode === "single-page";
   const isHome = pathname === "/";
-  const [isAtTop, setIsAtTop] = useState(true);
-  const [navHidden, setNavHidden] = useState(false);
   const [menuOpenForRoute, setMenuOpenForRoute] = useState<string | null>(null);
-  const lastScrollY = useRef(0);
   const menuId = useId();
 
   const hasMounted = useSyncExternalStore(
@@ -62,74 +57,18 @@ export default function SiteHeader({
   const routeKey = `${pathname}${hash}`;
   const menuOpen = menuOpenForRoute === routeKey;
 
-  useEffect(() => {
-    const mq = window.matchMedia(MOBILE_NAV_MQ);
-    lastScrollY.current = window.scrollY;
-    let ticking = false;
-
-    const isMobileNav = () => mq.matches;
-
-    const revealNav = () => setNavHidden(false);
-
-    const updateFromScroll = () => {
-      const y = window.scrollY;
-      setIsAtTop(y <= 0);
-
-      if (!isMobileNav() || menuOpen) {
-        setNavHidden(false);
-        lastScrollY.current = y;
-        return;
-      }
-
-      const delta = y - lastScrollY.current;
-      if (y <= 12) {
-        setNavHidden(false);
-      } else if (delta > SCROLL_DELTA) {
-        setNavHidden(true);
-      } else if (delta < -SCROLL_DELTA) {
-        setNavHidden(false);
-      }
-      lastScrollY.current = y;
-    };
-
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(() => {
-        updateFromScroll();
-        ticking = false;
-      });
-    };
-
-    const onTapReveal = () => {
-      if (isMobileNav()) revealNav();
-    };
-
-    const onMqChange = () => {
-      if (!isMobileNav()) setNavHidden(false);
-    };
-
-    updateFromScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    // Tap/click (not scroll) brings the bar back after it auto-hides
-    window.addEventListener("click", onTapReveal, { capture: true });
-    window.addEventListener("keydown", onTapReveal);
-    mq.addEventListener("change", onMqChange);
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("click", onTapReveal, { capture: true });
-      window.removeEventListener("keydown", onTapReveal);
-      mq.removeEventListener("change", onMqChange);
-    };
-  }, [menuOpen]);
+  const { isAtTop, headerVisible } = useAutoHideHeader({
+    mode: "scroll-direction",
+    forceVisible: menuOpen,
+    mediaQuery: MOBILE_NAV_MQ,
+  });
 
   const useHeroNavStyle = hasMounted
     ? isHome && isAtTop && isHomeHash
     : isHome;
   const headerState = [
     useHeroNavStyle ? "site-header--at-top" : "site-header--solid",
-    navHidden && !menuOpen ? "site-header--hidden" : "",
+    !headerVisible ? "site-header--hidden" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -186,7 +125,7 @@ export default function SiteHeader({
   return (
     <header
       className={`site-header site-header--persistent fixed inset-x-0 top-0 z-50 w-full ${headerState}`}
-      data-nav-hidden={navHidden && !menuOpen ? "true" : "false"}
+      data-nav-hidden={headerVisible ? "false" : "true"}
     >
       <div className="site-header__inner">
         <div className="site-header__brand-wrap shrink-0">

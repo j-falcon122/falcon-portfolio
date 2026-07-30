@@ -35,7 +35,7 @@
     "next": "^16.2.0",
     "next-auth": "^4.24.13",
     "pdfjs-dist": "^5.7.284",
-    "portfolio-core": "github:j-falcon122/portfolio-core#v1.0.3",
+    "portfolio-core": "github:j-falcon122/portfolio-core#v1.0.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "resend": "^6.12.4",
