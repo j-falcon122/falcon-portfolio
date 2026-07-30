@@ -1,14 +1,17 @@
 import { Suspense } from "react";
-import { getFalconCms } from "@/lib/cms";
+import { getFalconCms, resolveCmsProviderKey } from "@/lib/cms";
 import { resolveSinglePageSectionSlugs } from "portfolio-core/lib/cms/singlePageSections";
 import { normalizePageSlug } from "portfolio-core/lib/normalizePageSlug";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
 import CmsDatasetPreview from "@/components/CmsDatasetPreview";
+import CmsJsonViewClient from "@/components/CmsJsonViewClient";
 import type { FalconBlock } from "@/lib/cms/falconTypes";
+import type { CmsJsonViewPayload } from "@/lib/cms/cmsJsonViewTypes";
 import {
   hasJsonViewParam,
   renderCmsJsonView,
 } from "@/lib/cms/renderCmsJsonView";
+import { resolveSanityDataset } from "@/lib/sanityEnv";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -34,35 +37,72 @@ export default async function HomePage({
 
   if (!singlePage) {
     const home = await cms.getPageBySlug("home");
-    return <BlockRenderer blocks={(home?.blocks || []) as FalconBlock[]} />;
+    const bakedPayload: CmsJsonViewPayload = {
+      provider: resolveCmsProviderKey(),
+      dataset: resolveSanityDataset(),
+      site,
+      pages: [
+        {
+          slug: "home",
+          title: home?.title,
+          blocks: home?.blocks ?? [],
+        },
+      ],
+    };
+    const homeView = (
+      <BlockRenderer blocks={(home?.blocks || []) as FalconBlock[]} />
+    );
+    if (!isStaticExport) return homeView;
+    return (
+      <Suspense fallback={homeView}>
+        <CmsJsonViewClient bakedPayload={bakedPayload}>
+          {homeView}
+        </CmsJsonViewClient>
+      </Suspense>
+    );
   }
 
   const sectionSlugs = resolveSinglePageSectionSlugs(site);
   const pages = await Promise.all(sectionSlugs.map((s) => cms.getPageBySlug(s)));
 
+  const pageViews = pages.map((p, i) => {
+    const slug = normalizePageSlug(p?.slug ?? sectionSlugs[i] ?? `section-${i}`);
+    return {
+      slug,
+      title: p?.title,
+      blocks: (p?.blocks || []) as FalconBlock[],
+    };
+  });
+
+  const bakedPayload: CmsJsonViewPayload = {
+    provider: resolveCmsProviderKey(),
+    dataset: resolveSanityDataset(),
+    site,
+    pages: pageViews,
+  };
+
   const baked = (
     <>
-      {pages.map((p, i) => {
-        const slug = normalizePageSlug(p?.slug ?? sectionSlugs[i] ?? `section-${i}`);
-        return (
-          <section
-            id={slug}
-            key={slug}
-            className={`page-section page-section--${slug}`}
-            aria-label={p?.title || slug}
-          >
-            <div className="page-section__inner">
-              <BlockRenderer blocks={(p?.blocks || []) as FalconBlock[]} />
-            </div>
-          </section>
-        );
-      })}
+      {pageViews.map((section) => (
+        <section
+          id={section.slug}
+          key={section.slug}
+          className={`page-section page-section--${section.slug}`}
+          aria-label={section.title || section.slug}
+        >
+          <div className="page-section__inner">
+            <BlockRenderer blocks={section.blocks} />
+          </div>
+        </section>
+      ))}
     </>
   );
 
   return (
     <Suspense fallback={baked}>
-      <CmsDatasetPreview>{baked}</CmsDatasetPreview>
+      <CmsJsonViewClient bakedPayload={bakedPayload}>
+        <CmsDatasetPreview>{baked}</CmsDatasetPreview>
+      </CmsJsonViewClient>
     </Suspense>
   );
 }

@@ -57,4 +57,4 @@ set `sanity_env=production` to bake prod content. For Sanity-backed deploys, set
 | Param | Example | Purpose |
 | --- | --- | --- |
 | `dataset` | `/?dataset=development` or `/?dataset=production` | Load that Sanity dataset in the browser (no rebuild). Needs `NEXT_PUBLIC_SANITY_PROJECT_ID` (and ideally `NEXT_PUBLIC_SANITY_DATASET`) in the build. Only switches when the param differs from the baked dataset. |
-| `_jsonView` | `/?_jsonView` | CMS JSON debug dump of site settings + pages. Node server only (`next start` / AWS); use `/cms-json` on static Pages. |
+| `_jsonView` | `/?_jsonView` | CMS JSON debug dump of site settings + pages. Works on Node (`next start` / AWS) and static GitHub Pages (client-side; uses the build snapshot, or a live Sanity fetch when combined with `?dataset=`). `/cms-json` is a static fallback route. |

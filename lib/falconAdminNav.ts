@@ -1,7 +1,10 @@
 import { getDeployEnv } from "portfolio-core/lib/deployEnv";
 import { FALCON_SANITY_STUDIO_URL } from "./falconStudioUrl";
 
-/** Admin link for the site header and /admin redirect (Falcon-specific). */
+/**
+ * Studio URL for `/admin` redirects (Falcon-specific).
+ * Not passed into the public site header — Admin stays out of the nav.
+ */
 export function resolveFalconAdminNav():
   | { href: string; label: string }
   | undefined {

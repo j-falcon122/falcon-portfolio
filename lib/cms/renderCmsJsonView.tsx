@@ -2,6 +2,9 @@ import { getFalconCms, resolveCmsProviderKey } from "@/lib/cms";
 import { resolveSinglePageSectionSlugs } from "portfolio-core/lib/cms/singlePageSections";
 import { normalizePageSlug } from "portfolio-core/lib/normalizePageSlug";
 import { resolveSanityDataset } from "@/lib/sanityEnv";
+import type { CmsJsonViewPayload } from "./cmsJsonViewTypes";
+
+export type { CmsJsonViewPayload };
 
 function firstParam(
   value: string | string[] | undefined,
@@ -10,10 +13,10 @@ function firstParam(
   return value;
 }
 
-export async function renderCmsJsonView(options?: {
+export async function buildCmsJsonViewPayload(options?: {
   slug?: string | string[];
   from?: string | string[];
-}) {
+}): Promise<CmsJsonViewPayload> {
   const slugParam = firstParam(options?.slug)?.trim();
   const fromPath = firstParam(options?.from)?.trim() || "/";
 
@@ -42,12 +45,19 @@ export async function renderCmsJsonView(options?: {
     }),
   );
 
-  const payload = {
+  return {
     provider: resolveCmsProviderKey(),
     dataset: resolveSanityDataset(),
     site,
     pages,
   };
+}
+
+export async function renderCmsJsonView(options?: {
+  slug?: string | string[];
+  from?: string | string[];
+}) {
+  const payload = await buildCmsJsonViewPayload(options);
 
   return (
     <div className="cms-json-view">

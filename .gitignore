@@ -30,6 +30,7 @@ yarn-error.log*
 # next.js
 /.next/
 /out/
+.tmp/
 .tmp-static-export-api/
 
 # production
