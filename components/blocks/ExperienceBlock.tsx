@@ -6,7 +6,9 @@ import {
   useRef,
   useState,
   type KeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
   type ReactNode,
+  type MouseEvent as ReactMouseEvent,
 } from "react";
 import Link from "next/link";
 import type {
@@ -57,6 +59,7 @@ function MilestoneCard({
         href={href}
         className="experience-block__card experience-block__card--link"
         aria-label={`Open full details for ${m.title}`}
+        draggable={false}
       >
         {children}
       </Link>
@@ -67,6 +70,8 @@ function MilestoneCard({
 
 /** Scroll about three milestone cards (200px + 20px gap). */
 const SCROLL_STEP = 660;
+/** Ignore click/tap activation after a horizontal drag past this distance. */
+const DRAG_CLICK_THRESHOLD_PX = 10;
 
 export default function ExperienceBlock({
   eyebrow = "02 / Experience",
@@ -80,6 +85,12 @@ export default function ExperienceBlock({
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{
+    pointerId: number | null;
+    startX: number;
+    startY: number;
+    moved: boolean;
+  }>({ pointerId: null, startX: 0, startY: 0, moved: false });
   const detailsBase = ctaHref || "/experience-details";
 
   const updateScrollState = useCallback(() => {
@@ -126,6 +137,57 @@ export default function ExperienceBlock({
     }
   };
 
+  const onScrollerPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      moved: false,
+    };
+  };
+
+  const onScrollerPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (drag.pointerId !== event.pointerId || drag.moved) return;
+    const dx = Math.abs(event.clientX - drag.startX);
+    const dy = Math.abs(event.clientY - drag.startY);
+    if (dx > DRAG_CLICK_THRESHOLD_PX || dy > DRAG_CLICK_THRESHOLD_PX) {
+      drag.moved = true;
+      // Don't leave a mid-swipe card expanded / focused
+      const active = document.activeElement;
+      const scroller = scrollerRef.current;
+      if (
+        scroller &&
+        active instanceof HTMLElement &&
+        active !== scroller &&
+        scroller.contains(active)
+      ) {
+        active.blur();
+      }
+    }
+  };
+
+  const clearDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (dragRef.current.pointerId === event.pointerId) {
+      // Keep `moved` until click so we can cancel activation after a swipe.
+      window.setTimeout(() => {
+        if (dragRef.current.pointerId === event.pointerId) {
+          dragRef.current.pointerId = null;
+          dragRef.current.moved = false;
+        }
+      }, 0);
+    }
+  };
+
+  const onScrollerClickCapture = (event: ReactMouseEvent<HTMLDivElement>) => {
+    if (!dragRef.current.moved) return;
+    event.preventDefault();
+    event.stopPropagation();
+    dragRef.current.moved = false;
+    dragRef.current.pointerId = null;
+  };
+
   return (
     <section className="experience-block">
       <div className="experience-block__inner">
@@ -168,6 +230,11 @@ export default function ExperienceBlock({
             role="region"
             aria-label="Career timeline"
             onKeyDown={onScrollerKeyDown}
+            onPointerDown={onScrollerPointerDown}
+            onPointerMove={onScrollerPointerMove}
+            onPointerUp={clearDrag}
+            onPointerCancel={clearDrag}
+            onClickCapture={onScrollerClickCapture}
           >
             <div className="experience-block__track">
               <div className="experience-block__line" aria-hidden="true">

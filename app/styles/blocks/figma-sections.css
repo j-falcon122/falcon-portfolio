@@ -295,12 +295,14 @@
 }
 
 .experience-block__scroller {
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: hidden;
-  overscroll-behavior-x: none;
+  overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
   padding-bottom: 0.75rem;
-  touch-action: none;
+  /* Allow horizontal swipe; taps still activate cards / links */
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -435,6 +437,8 @@ a.experience-block__card--link:focus-visible {
     max-height: 16rem;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    /* Prefer vertical detail scroll once expanded; timeline swipe still works on dates/track */
+    touch-action: pan-y;
     scrollbar-width: thin;
     scrollbar-color: var(--figma-gold) rgba(14, 23, 42, 0.35);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
@@ -450,6 +454,10 @@ a.experience-block__card--link:focus-visible {
     border-color: var(--figma-gold);
     outline: 2px solid rgba(245, 183, 49, 0.45);
     outline-offset: 2px;
+  }
+
+  .experience-block__milestone {
+    cursor: pointer;
   }
 }
 
