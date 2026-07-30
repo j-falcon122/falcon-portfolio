@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   useEffect,
   useId,
+  useRef,
   useState,
   useSyncExternalStore,
   type MouseEvent as ReactMouseEvent,
@@ -14,6 +15,10 @@ import { withBasePath } from "portfolio-core/lib/basePath";
 import { resolveNavHref } from "portfolio-core/lib/resolveNavHref";
 import { scrollToPageSectionWhenReady } from "portfolio-core/lib/scrollToPageSection";
 import SiteBrand from "portfolio-core/components/SiteBrand";
+
+/** Matches the CSS hamburger breakpoint in globals.css */
+const MOBILE_NAV_MQ = "(max-width: 1100px)";
+const SCROLL_DELTA = 8;
 
 function sectionKeyFromNavHref(href: string): string | null {
   if (href === "/" || href === "") return "home";
@@ -33,7 +38,9 @@ export default function SiteHeader({
   const singlePage = navMode === "single-page";
   const isHome = pathname === "/";
   const [isAtTop, setIsAtTop] = useState(true);
+  const [navHidden, setNavHidden] = useState(false);
   const [menuOpenForRoute, setMenuOpenForRoute] = useState<string | null>(null);
+  const lastScrollY = useRef(0);
   const menuId = useId();
 
   const hasMounted = useSyncExternalStore(
@@ -56,18 +63,76 @@ export default function SiteHeader({
   const menuOpen = menuOpenForRoute === routeKey;
 
   useEffect(() => {
-    const onScroll = () => setIsAtTop(window.scrollY <= 0);
-    onScroll();
+    const mq = window.matchMedia(MOBILE_NAV_MQ);
+    lastScrollY.current = window.scrollY;
+    let ticking = false;
+
+    const isMobileNav = () => mq.matches;
+
+    const revealNav = () => setNavHidden(false);
+
+    const updateFromScroll = () => {
+      const y = window.scrollY;
+      setIsAtTop(y <= 0);
+
+      if (!isMobileNav() || menuOpen) {
+        setNavHidden(false);
+        lastScrollY.current = y;
+        return;
+      }
+
+      const delta = y - lastScrollY.current;
+      if (y <= 12) {
+        setNavHidden(false);
+      } else if (delta > SCROLL_DELTA) {
+        setNavHidden(true);
+      } else if (delta < -SCROLL_DELTA) {
+        setNavHidden(false);
+      }
+      lastScrollY.current = y;
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        updateFromScroll();
+        ticking = false;
+      });
+    };
+
+    const onTapReveal = () => {
+      if (isMobileNav()) revealNav();
+    };
+
+    const onMqChange = () => {
+      if (!isMobileNav()) setNavHidden(false);
+    };
+
+    updateFromScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    // Tap/click (not scroll) brings the bar back after it auto-hides
+    window.addEventListener("click", onTapReveal, { capture: true });
+    window.addEventListener("keydown", onTapReveal);
+    mq.addEventListener("change", onMqChange);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("click", onTapReveal, { capture: true });
+      window.removeEventListener("keydown", onTapReveal);
+      mq.removeEventListener("change", onMqChange);
+    };
+  }, [menuOpen]);
 
   const useHeroNavStyle = hasMounted
     ? isHome && isAtTop && isHomeHash
     : isHome;
-  const headerState = useHeroNavStyle
-    ? "site-header--at-top"
-    : "site-header--solid";
+  const headerState = [
+    useHeroNavStyle ? "site-header--at-top" : "site-header--solid",
+    navHidden && !menuOpen ? "site-header--hidden" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   function closeMenu() {
     setMenuOpenForRoute(null);
@@ -119,7 +184,10 @@ export default function SiteHeader({
   const navItems = site.nav ?? [];
 
   return (
-    <header className={`site-header site-header--persistent fixed inset-x-0 top-0 z-50 w-full ${headerState}`}>
+    <header
+      className={`site-header site-header--persistent fixed inset-x-0 top-0 z-50 w-full ${headerState}`}
+      data-nav-hidden={navHidden && !menuOpen ? "true" : "false"}
+    >
       <div className="site-header__inner">
         <div className="site-header__brand-wrap shrink-0">
           {singlePage && isHome ? (

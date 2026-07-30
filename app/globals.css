@@ -16,7 +16,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: var(--header-height);
+  scroll-padding-top: calc(var(--header-height) + 0.75rem);
 }
 
 /* Personal CMS debug: ?_jsonView */
@@ -78,7 +78,7 @@ html {
 .page-section {
   min-height: 100dvh;
   min-height: 100vh;
-  scroll-margin-top: var(--header-height);
+  scroll-margin-top: calc(var(--header-height) + 0.75rem);
 }
 
 /* Home and Figma sections size to content; contact keeps viewport fill */
@@ -220,16 +220,35 @@ body {
   max-width: min(var(--video-carousel-width), calc(100% - 2 * var(--page-gutter)));
 }
 
-/* Site header — Figma navy bar (always visible) */
+/* Site header — Figma navy bar */
 .site-header {
   width: 100%;
   left: 0;
   right: 0;
+  transition: transform 0.28s ease;
+  will-change: transform;
 }
 
 .site-header--persistent {
-  transform: none !important;
-  pointer-events: auto !important;
+  pointer-events: auto;
+}
+
+.site-header--hidden {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+@media (min-width: 1101px) {
+  .site-header--hidden {
+    transform: none;
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header {
+    transition: none;
+  }
 }
 
 .site-header a,

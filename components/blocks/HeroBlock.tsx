@@ -49,7 +49,7 @@ export default function HeroBlock({
         : [];
 
   return (
-    <section className="hero relative -mt-[var(--header-height)] min-h-screen w-full overflow-hidden">
+    <section className="hero relative min-h-screen w-full overflow-hidden">
       <div className="hero__inner">
         <div className="hero__layout">
           <div className="hero__content">
