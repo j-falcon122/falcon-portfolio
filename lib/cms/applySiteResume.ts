@@ -1,8 +1,4 @@
-import type {
-  FalconAboutBlock,
-  FalconBlock,
-  FalconResumeAsset,
-} from "./falconTypes";
+import type { FalconBlock, FalconResumeAsset } from "./falconTypes";
 
 const RESUME_HREF_ALIASES = new Set([
   "/resume",
@@ -61,7 +57,7 @@ export function normalizeSiteResume(raw: {
   };
 }
 
-/** Point hero `/resume` CTAs at the Site Settings PDF; fill About when empty. */
+/** Point hero `/resume` CTAs at the Site Settings PDF. */
 export function applySiteResumeToBlocks(
   blocks: FalconBlock[],
   siteResume?: FalconResumeAsset
@@ -83,16 +79,6 @@ export function applySiteResumeToBlocks(
               ctas: block.ctas.map((cta) => rewrite(cta) || cta),
             }
           : {}),
-      };
-    }
-
-    if (block._type === "about") {
-      // FalconBlock also includes portfolio-core AboutBlock via CoreBlock.
-      const about = block as FalconAboutBlock;
-      if (about.resume?.href) return about;
-      return {
-        ...about,
-        resume: siteResume,
       };
     }
 
