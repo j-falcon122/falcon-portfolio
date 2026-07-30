@@ -311,22 +311,51 @@ async function convertBlock(block, hosted) {
       };
     }
 
-    case "workGrid":
-      return {
-        _type: "workGrid",
-        _key: key,
-        ...(block.eyebrow ? { eyebrow: block.eyebrow } : {}),
-        ...(block.title ? { title: block.title } : {}),
-        ...(block.subtitle ? { subtitle: block.subtitle } : {}),
-        items: (block.items || []).map((item, i) => ({
+    case "workGrid": {
+      const items = [];
+      for (let i = 0; i < (block.items || []).length; i++) {
+        const item = block.items[i];
+        const row = {
           _key: `work-${i}`,
           title: item.title,
           description: item.description,
           ...(item.tags?.length ? { tags: item.tags } : {}),
           ...(item.href ? { href: item.href } : {}),
           ...(item.linkLabel ? { linkLabel: item.linkLabel } : {}),
-        })),
+        };
+        if (item.screenshot?.src) {
+          const shot = await imageFieldFromSrc(
+            item.screenshot.src,
+            item.screenshot.alt
+          );
+          if (shot) row.screenshot = shot;
+        }
+        if (item.caseStudy && typeof item.caseStudy === "object") {
+          const cs = {};
+          for (const field of [
+            "project",
+            "problem",
+            "myRole",
+            "actionsAndDecisions",
+            "challenge",
+            "result",
+            "learning",
+          ]) {
+            if (item.caseStudy[field]) cs[field] = item.caseStudy[field];
+          }
+          if (Object.keys(cs).length) row.caseStudy = cs;
+        }
+        items.push(row);
+      }
+      return {
+        _type: "workGrid",
+        _key: key,
+        ...(block.eyebrow ? { eyebrow: block.eyebrow } : {}),
+        ...(block.title ? { title: block.title } : {}),
+        ...(block.subtitle ? { subtitle: block.subtitle } : {}),
+        items,
       };
+    }
 
     case "projectList":
       return {

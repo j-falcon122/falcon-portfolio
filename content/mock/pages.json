@@ -269,77 +269,77 @@
           },
           {
             "title": "Breaking News & Contributor Experiences",
-            "description": "Built contributor pages, breaking-news carousel, follow-button functionality, and auth integration.",
-            "tags": ["Performance", "Component Architecture", "Publishing"],
+            "description": "Contributor pages, homepage breaking-news strip and carousel, reusable follow controls, and sign-in integration for fans discovering timely reporting.",
+            "tags": ["Auth", "Component Architecture", "Cross-Platform"],
             "linkLabel": "Case Study Highlights",
             "caseStudy": {
-              "project": "Contributor and breaking-news surfaces that surface trusted voices and urgent stories across ESPN publishing experiences.",
-              "problem": "Contributor pages and breaking-news modules needed faster, more modular UI with follow/auth flows that still felt native to the site.",
-              "myRole": "Built contributor page structure, the breaking-news carousel, follow-button behavior, and auth integration points.",
-              "actionsAndDecisions": "Broke experiences into reusable components, optimized carousel and page performance, and integrated follow/auth so engagement actions stayed in-context.",
-              "challenge": "Balancing publishing flexibility and performance while wiring auth-gated follow actions into high-traffic news surfaces.",
-              "result": "Delivered contributor pages and breaking-news carousel experiences with follow functionality and auth integration.",
-              "learning": "Component architecture and auth edges should be designed together so engagement features stay fast and coherent under publishing pressure."
+              "project": "A set of ESPN web experiences that made breaking news and contributor content easier for fans to discover and follow—including contributor pages, a homepage breaking-news strip and carousel, follow controls, and sign-in integration.",
+              "problem": "Fans needed a clearer way to find timely reporting, explore a contributor's latest work, and personalize their ESPN experience. Follow behavior also had to work consistently across the web experience, authenticated accounts, and supported native webviews.",
+              "myRole": "Frontend engineer on a cross-functional team. I implemented key user-facing features and integrations while partnering with product, design, backend, and native-app engineers; I did not own the overall product design.",
+              "actionsAndDecisions": "Built contributor pages that surfaced an author's identity, latest reporting, and follow state; breaking-news strip and carousel presentation for the homepage; and reusable follow-button behavior for contributors and players across signed-out, signed-in, web, and supported webview states. Implemented the interfaces with the team's existing JavaScript frontend stack, using reusable components and event-driven state updates. The follow flow connected ESPN preference APIs with OneID authentication and, when embedded in supported apps, a native bridge. Shared completion-state keys kept the interface synchronized after follow or unfollow actions.",
+              "challenge": "Keeping one follow control accurate across several environments and authentication states—a user could begin signed out, authenticate through an overlay, or act from an embedded webview. I separated UI state from the environment-specific action, then updated all interested views through a shared follow-change event.",
+              "result": "Fans gained a more direct path from breaking news to contributor content and could personalize what they followed without leaving the experience. Reusable follow behavior also gave the team a consistent foundation for additional contributor and player surfaces.",
+              "learning": "Strengthened my understanding of authentication flows, cross-platform integrations, and state synchronization in a mature product. With more time, I would add broader analytics instrumentation and more automated coverage around sign-in cancellation, API failure, and webview edge cases."
             }
           },
           {
             "title": "DraftCast",
-            "description": "Built Pick Predictor grid, Best Available, undo behavior, and completed-draft states for live draft experiences.",
-            "tags": ["Redux", "Real-Time", "Data Pipelines"],
+            "description": "Interactive draft tools—Pick Predictor, Best Available, undo behavior, and completed-draft states—for following live ESPN draft selections.",
+            "tags": ["Live Data", "State Management", "React"],
             "linkLabel": "Case Study Highlights",
             "caseStudy": {
-              "project": "Live draft experiences where fans track picks, predictions, and board state as the draft unfolds in real time.",
-              "problem": "Draft UIs needed reliable pick prediction, best-available views, undo paths, and clear completed-draft states under live data pressure.",
-              "myRole": "Implemented Pick Predictor grid, Best Available views, undo behavior, and completed-draft state handling.",
-              "actionsAndDecisions": "Used Redux-backed state for draft board updates, designed undo-friendly transitions, and defined completed-draft UI so the experience stayed readable after the final pick.",
-              "challenge": "Keeping real-time draft state, undo, and prediction grids consistent when pick data arrives quickly and out of order.",
-              "result": "Shipped DraftCast features that support live prediction, board clarity, and graceful end-of-draft states.",
-              "learning": "Live sports UIs need explicit state machines for undo and completion—not just optimistic renders of the latest event."
+              "project": "A live ESPN draft experience that helped fans follow selections, evaluate available players, and understand how a draft was progressing. My work focused on interactive draft tools and the states surrounding live and completed picks.",
+              "problem": "During a fast-moving draft, fans needed information that was easy to scan and updated predictably. The interface had to communicate likely selections, the best players still available, corrections to picks, and the transition from an active draft to a completed one.",
+              "myRole": "Frontend engineer on the DraftCast team. I owned implementation for specific interactive modules and states while collaborating with teammates responsible for product direction, visual design, data, and the broader live-draft platform.",
+              "actionsAndDecisions": "Built the Pick Predictor grid for scannable likely selections, the Best Available experience for players not yet selected, and undo plus completed-draft/end-card states so the interface stayed accurate when draft data changed or the event ended. Implemented these in the existing ESPN web application by translating live draft data into clear component states—treating active, corrected, loading, empty, and completed conditions as explicit states so the UI could respond predictably.",
+              "challenge": "Live data does not always move in a straight line. A pick could be corrected or undone, and components that depended on that pick also had to return to the correct prior state—without leaving stale player information or controls on screen.",
+              "result": "Gave fans a clearer, more resilient way to follow draft activity and gave the product defined behavior for corrections and the end of the event.",
+              "learning": "Learned to model live-event interfaces as a collection of explicit states and transitions. I would improve the work by documenting those states earlier and building more scenario-based tests from real draft sequences before launch."
             }
           },
           {
             "title": "ESPN Navigation",
-            "description": "Improved navigation patterns for accessibility, clarity, and cross-platform consistency.",
-            "tags": ["Accessibility", "Information Architecture"],
+            "description": "Input-aware navigation improvements for keyboard, mouse, and touch users across desktop and mobile web.",
+            "tags": ["Accessibility", "React", "Interaction Design"],
             "linkLabel": "Case Study Highlights",
             "caseStudy": {
-              "project": "Navigation patterns used across ESPN experiences to help fans move between sports, scores, and content with less friction.",
-              "problem": "Existing navigation patterns were inconsistent across platforms and created accessibility and clarity gaps for fans.",
-              "myRole": "Improved navigation information architecture and interaction patterns with an accessibility-first lens.",
-              "actionsAndDecisions": "Clarified hierarchy and labeling, strengthened keyboard and assistive-tech affordances, and aligned patterns for cross-platform consistency.",
-              "challenge": "Improving accessibility and clarity without breaking established mental models fans already relied on.",
-              "result": "Delivered clearer, more accessible navigation patterns with stronger cross-platform consistency.",
-              "learning": "Navigation work is product strategy: accessibility and IA improvements compound when they are treated as shared system decisions."
+              "project": "Improvements to ESPN's navigation behavior across desktop and mobile web experiences, focused on making interactions clearer and more consistent for keyboard, mouse, and touch users.",
+              "problem": "A navigation system used across many ESPN pages has to support different input methods, screen sizes, and accessibility needs. Inconsistent hover, focus, and touch behavior can make menus difficult to understand and can create regressions across products that share the navigation.",
+              "myRole": "Frontend engineer on targeted navigation improvements. I implemented interaction logic and responsive behavior in partnership with design, accessibility, product, and other engineers; overall navigation design and platform architecture were shared team responsibilities.",
+              "actionsAndDecisions": "Built input-aware behavior that distinguished keyboard, mouse, and touch interactions; responsive mobile and desktop logic for opening, closing, and moving through navigation elements; and accessibility-focused updates that preserved focus visibility and predictable control behavior. Using React and the team's frontend stack, I worked with an InteractionTypeContext to share the user's latest input method with navigation components—so they could respond appropriately without duplicating detection logic.",
+              "challenge": "The same interaction can mean different things depending on device and input method. Hover that feels natural with a mouse can interfere with keyboard focus or confuse touch users. I helped centralize input detection and used it to make component behavior intentional for each mode.",
+              "result": "More predictable navigation patterns across screen sizes and input methods, plus reusable logic for other components that needed to understand interaction type.",
+              "learning": "Deepened my knowledge of accessible interaction patterns and learned to test responsive components by input method, not only by viewport size. I would expand automated keyboard-navigation tests and include assistive-technology checks earlier in development."
             }
           },
           {
             "title": "Market Landing Pages",
-            "description": "Shipped market-specific landing experiences with reusable modules and responsive layouts.",
-            "tags": ["CMS", "Responsive", "Performance"],
+            "description": "Market-specific ESPN landing pages assembled from reusable content modules and responsive layouts.",
+            "tags": ["Modular UI", "Responsive", "CMS"],
             "linkLabel": "Case Study Highlights",
             "caseStudy": {
-              "project": "Market-specific landing experiences that localize ESPN storytelling and promotions for different audiences.",
-              "problem": "Teams needed market landings that could vary by region without rebuilding layouts or sacrificing performance each time.",
-              "myRole": "Shipped reusable landing modules and responsive layouts for market-specific experiences.",
-              "actionsAndDecisions": "Designed modular page building blocks, kept layouts responsive by default, and prioritized performance so localized pages stayed fast.",
-              "challenge": "Supporting market variation through reusable modules without letting CMS flexibility erode performance or design consistency.",
-              "result": "Launched market landing pages built from reusable modules with responsive, performant layouts.",
-              "learning": "CMS-driven landings scale when modules encode responsive and performance constraints—not just content slots."
+              "project": "Market-specific ESPN landing pages assembled from reusable content modules and responsive layouts—packaging relevant stories and sports content for distinct audiences while staying consistent with the broader ESPN experience.",
+              "problem": "Different markets needed landing experiences that could highlight locally relevant content without a completely separate frontend for every page. The business needed a flexible approach that supported editorial variation, responsive behavior, and maintainable releases.",
+              "myRole": "Frontend engineer building and integrating page modules within an established design and content system. Product, design, editorial, backend, and analytics partners shaped the experience; my responsibility centered on implementation, responsive behavior, testing, and production support.",
+              "actionsAndDecisions": "Built reusable content modules configurable for different market pages, responsive layouts that adapted content hierarchy across desktop and mobile, and integration plus production fixes to keep modules consistent as content and configurations changed. Composed pages from reusable modules rather than market-specific one-offs, using clear component boundaries and configuration-driven content so teams could vary the page while preserving shared behavior.",
+              "challenge": "Reusable modules had to support different content lengths and combinations without breaking the layout. I worked through responsive and content edge cases, coordinated when requirements differed by market, and kept shared behavior from fragmenting into special-case code.",
+              "result": "Market pages could launch with a consistent ESPN experience while giving content teams room to tailor what fans saw—reducing the need to rebuild common page patterns for each market.",
+              "learning": "Improved at balancing reuse with real content variation and at testing components against unpredictable editorial data. I would create a clearer content-constraint matrix and add visual regression coverage for representative module combinations."
             }
           },
           {
             "title": "GameCast",
-            "description": "Contributed to live game experiences focused on clarity, speed, and fan-facing reliability.",
-            "tags": ["Live Data", "React", "UX"],
+            "description": "Contributions to ESPN's live GameCast experiences—fan-facing UI, responsive clarity, and production debugging under live data pressure.",
+            "tags": ["Live Data", "React", "Production Support"],
             "linkLabel": "Case Study Highlights",
             "caseStudy": {
-              "project": "Live game experiences that keep fans oriented around score, play, and context as games unfold.",
-              "problem": "Live game surfaces must stay clear and reliable when data updates constantly and fans scan for the next meaningful signal.",
-              "myRole": "Contributed to live GameCast experiences with focus on clarity, speed, and fan-facing reliability.",
-              "actionsAndDecisions": "Prioritized readable live states, React patterns suited to frequent updates, and UX choices that surface the most important game signals first.",
-              "challenge": "Maintaining clarity and perceived speed when live data volume and update frequency spike during high-stakes moments.",
-              "result": "Helped deliver GameCast experiences oriented around clarity, speed, and reliable fan-facing updates.",
-              "learning": "In live sports UI, restraint is a feature—showing the right signal at the right moment beats showing everything at once."
+              "project": "Contributions to ESPN's live GameCast experiences, where fans follow game status, scoring, and other time-sensitive updates. My work supported the clarity, responsiveness, and reliability expected from a high-traffic live sports product.",
+              "problem": "Fans rely on GameCast when they cannot watch a game directly, so information must update quickly and remain understandable during high-traffic moments. The product needed frontend behavior that handled changing data, responsive layouts, and production issues without confusing the user.",
+              "myRole": "Frontend engineer within the larger GameCast organization. I worked on assigned fan-facing components, debugging, and production support while collaborating with product, design, data, backend, QA, and other frontend engineers.",
+              "actionsAndDecisions": "Delivered fan-facing UI updates for live game information, responsive and presentation fixes for changing game states, and testing plus production debugging for issues that appeared with live data or under real event conditions. Worked in ESPN's established frontend codebase, connecting components to live game data and focusing on clear state handling and defensive UI so incomplete or changing data did not create a broken experience.",
+              "challenge": "Live sports data can expose conditions that are difficult to reproduce before an event—feeds arrive late, change quickly, or omit expected values. I used production evidence and representative data states to isolate issues, then coordinated with partners when a fix crossed team boundaries.",
+              "result": "Helped maintain a clearer, more dependable live-game experience for fans and supported the team's ability to diagnose and resolve production issues during real events.",
+              "learning": "Became more effective at debugging data-driven interfaces under time pressure and communicating across teams during live events. I would invest further in replayable test fixtures and monitoring that connects data anomalies to the exact component state a fan experienced."
             }
           }
         ]
