@@ -17,6 +17,12 @@ export type SanityDataset = (typeof SANITY_DATASETS)[number];
 /** Default dataset for preview / local when nothing else is set. */
 export const DEFAULT_SANITY_DATASET: SanityDataset = "development";
 
+/**
+ * Public Sanity project id for this portfolio (also appears in CDN URLs).
+ * Used when Amplify SSR omits SANITY_PROJECT_ID from the Lambda env.
+ */
+export const FALCON_SANITY_PROJECT_ID = "59l1zlij";
+
 export function resolveDeployEnvFromProcessEnv(
   env: NodeJS.ProcessEnv = process.env
 ): DeployEnv {
@@ -40,11 +46,12 @@ export function defaultDatasetForDeployEnv(
   return DEFAULT_SANITY_DATASET;
 }
 
-/** Explicit SANITY_DATASET wins; otherwise map from deploy stage. */
+/** Explicit SANITY_DATASET / NEXT_PUBLIC_SANITY_DATASET wins; else map from deploy stage. */
 export function resolveSanityDataset(
   env: NodeJS.ProcessEnv = process.env
 ): string {
-  const explicit = env.SANITY_DATASET?.trim();
+  const explicit =
+    env.SANITY_DATASET?.trim() || env.NEXT_PUBLIC_SANITY_DATASET?.trim();
   if (explicit) return explicit;
   return defaultDatasetForDeployEnv(resolveDeployEnvFromProcessEnv(env));
 }
@@ -52,11 +59,9 @@ export function resolveSanityDataset(
 export function resolveSanityProjectId(
   env: NodeJS.ProcessEnv = process.env
 ): string {
-  const projectId = env.SANITY_PROJECT_ID?.trim();
-  if (!projectId) {
-    throw new Error(
-      "SANITY_PROJECT_ID is required. Set it in .env.local or your host environment."
-    );
-  }
+  const projectId =
+    env.SANITY_PROJECT_ID?.trim() ||
+    env.NEXT_PUBLIC_SANITY_PROJECT_ID?.trim() ||
+    FALCON_SANITY_PROJECT_ID;
   return projectId;
 }

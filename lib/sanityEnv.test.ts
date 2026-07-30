@@ -43,9 +43,15 @@ describe("sanityEnv", () => {
     expect(dataset).toBe("production");
   });
 
-  it("requires SANITY_PROJECT_ID", () => {
-    expect(() =>
-      resolveSanityProjectId({} as NodeJS.ProcessEnv)
-    ).toThrow(/SANITY_PROJECT_ID/);
+  it("falls back to the Falcon project id when env is unset", () => {
+    expect(resolveSanityProjectId({} as NodeJS.ProcessEnv)).toBe("59l1zlij");
+  });
+
+  it("prefers SANITY_PROJECT_ID over the Falcon fallback", () => {
+    expect(
+      resolveSanityProjectId({
+        SANITY_PROJECT_ID: "custom-project",
+      } as NodeJS.ProcessEnv),
+    ).toBe("custom-project");
   });
 });

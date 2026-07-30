@@ -1,7 +1,11 @@
 import { createClient, type SanityClient } from "@sanity/client";
 import { normalizePageSlug } from "portfolio-core/lib/normalizePageSlug";
 import type { CmsProvider, Page, SiteSettings } from "portfolio-core/lib/cms/types";
-import { resolveSanityDataset } from "@/lib/sanityEnv";
+import {
+  FALCON_SANITY_PROJECT_ID,
+  resolveSanityDataset,
+  resolveSanityProjectId,
+} from "@/lib/sanityEnv";
 import {
   applySiteResumeToBlocks,
   normalizeSiteResume,
@@ -35,13 +39,8 @@ export function createFalconSanityClient(
 ): SanityClient {
   const projectId =
     options.projectId?.trim() ||
-    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID?.trim() ||
-    process.env.SANITY_PROJECT_ID?.trim();
-  if (!projectId) {
-    throw new Error(
-      "SANITY_PROJECT_ID is required. Set it in .env.local or your host environment."
-    );
-  }
+    resolveSanityProjectId() ||
+    FALCON_SANITY_PROJECT_ID;
   const dataset =
     options.dataset?.trim() ||
     process.env.NEXT_PUBLIC_SANITY_DATASET?.trim() ||

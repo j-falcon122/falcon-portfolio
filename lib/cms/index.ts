@@ -5,9 +5,10 @@ import type { FalconPage } from "./falconTypes";
 
 /**
  * Resolve which CMS backend to use.
- * Explicit CMS_PROVIDER / NEXT_PUBLIC_CMS_PROVIDER wins. If unset, prefer
- * Sanity when a project id is configured (Amplify SSR sometimes omits
- * non-NEXT_PUBLIC vars unless a fresh build re-injects them).
+ * Explicit CMS_PROVIDER / NEXT_PUBLIC_CMS_PROVIDER wins.
+ * Otherwise: Sanity in production builds, or whenever a project id is set.
+ * Amplify SSR often omits custom env vars from the Lambda — production must
+ * still hit Sanity without relying on CMS_PROVIDER being present at runtime.
  */
 export function resolveCmsProviderKey(
   env: NodeJS.ProcessEnv = process.env,
@@ -23,6 +24,8 @@ export function resolveCmsProviderKey(
   if (env.SANITY_PROJECT_ID?.trim() || env.NEXT_PUBLIC_SANITY_PROJECT_ID?.trim()) {
     return "sanity";
   }
+  // next build / Amplify set NODE_ENV=production even when CMS_PROVIDER is missing
+  if (env.NODE_ENV === "production") return "sanity";
   return "mock";
 }
 
