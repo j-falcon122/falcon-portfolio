@@ -105,39 +105,6 @@
   object-fit: cover;
 }
 
-.about-block__resume {
-  margin: 1.5rem 0 0;
-}
-
-.about-block__resume-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.75rem;
-  padding: 0.7rem 1.25rem;
-  border-radius: 0.65rem;
-  background: var(--figma-navy);
-  color: var(--figma-white);
-  font-size: 0.9375rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition:
-    background 160ms ease,
-    color 160ms ease,
-    transform 160ms ease;
-}
-
-.about-block__resume-link:hover {
-  background: var(--figma-gold);
-  color: var(--figma-navy);
-  transform: translateY(-1px);
-}
-
-.about-block__resume-link:focus-visible {
-  outline: 2px solid var(--figma-gold);
-  outline-offset: 3px;
-}
-
 .about-block__playbook {
   border: 1.5px solid var(--figma-sky);
   border-radius: 1rem;

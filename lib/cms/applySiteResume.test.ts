@@ -39,7 +39,7 @@ describe("normalizeSiteResume", () => {
 });
 
 describe("applySiteResumeToBlocks", () => {
-  it("rewrites hero /resume CTAs and fills about when empty", () => {
+  it("rewrites hero /resume CTAs without adding an About download", () => {
     const blocks = applySiteResumeToBlocks(
       [
         {
@@ -65,9 +65,9 @@ describe("applySiteResumeToBlocks", () => {
         { label: "View Résumé", href: "https://cdn.example/resume.pdf" },
       ],
     });
-    expect(blocks[1]).toMatchObject({
+    expect(blocks[1]).toEqual({
       _type: "about",
-      resume: { href: "https://cdn.example/resume.pdf" },
+      title: "About",
     });
   });
 

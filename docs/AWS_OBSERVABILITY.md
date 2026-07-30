@@ -49,6 +49,23 @@ aws sns create-topic --region us-east-1 --name falcon-portfolio-alerts
 
 Or run the script in Phase 3 (creates topic + subscription).
 
+## Phase 3b — One daily log digest (email)
+
+You already get **immediate** email only when the uptime canary goes into **ALARM**.
+For a calm once-a-day summary of Amplify SSR logs + canary health:
+
+```bash
+TOPIC_ARN=arn:aws:sns:us-east-1:ACCOUNT:falcon-portfolio-alerts \
+SEND_NOW=1 \
+./scripts/deploy-daily-digest.sh
+```
+
+- Schedule default: `cron(0 13 * * ? *)` → **09:00 America/New_York** (EDT)
+- Subject is `Daily OK · …` or `Daily ATTENTION · …` based on errors / canary failures
+- Reuses the same SNS topic as uptime alerts
+
+Source: [`scripts/daily-digest/handler.py`](../scripts/daily-digest/handler.py)
+
 ## Phase 3 — Uptime canary + alarm
 
 Script (repo): [`scripts/aws-uptime-monitoring.sh`](../scripts/aws-uptime-monitoring.sh)

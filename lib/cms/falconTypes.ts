@@ -136,7 +136,7 @@ export type FalconResumeAsset = {
 export type FalconAboutBlock = AboutBlock & {
   eyebrow?: string;
   playbookTitle?: string;
-  /** Block-level resume; falls back to Site Settings resume when missing. */
+  /** Optional CMS resume field (not rendered on About; use Site Settings + hero CTA). */
   resume?: FalconResumeAsset;
 };
 
