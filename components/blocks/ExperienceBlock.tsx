@@ -2,7 +2,7 @@
 
 import {
   useCallback,
-  useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type KeyboardEvent,
@@ -102,10 +102,12 @@ export default function ExperienceBlock({
     setCanScrollRight(maxScroll > 2 && left < maxScroll - 2);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
 
+    // Start at the end so the latest milestone is in view first.
+    el.scrollLeft = el.scrollWidth - el.clientWidth;
     updateScrollState();
     el.addEventListener("scroll", updateScrollState, { passive: true });
 

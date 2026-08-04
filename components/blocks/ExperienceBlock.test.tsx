@@ -111,6 +111,71 @@ describe("ExperienceBlock", () => {
     ).toHaveAttribute("href", "/experience-details#nyt-intern");
   });
 
+  it("starts scrolled to the end so the latest milestone is visible", () => {
+    const scrollWidthDesc = Object.getOwnPropertyDescriptor(
+      HTMLElement.prototype,
+      "scrollWidth",
+    );
+    const clientWidthDesc = Object.getOwnPropertyDescriptor(
+      HTMLElement.prototype,
+      "clientWidth",
+    );
+
+    Object.defineProperty(HTMLElement.prototype, "scrollWidth", {
+      configurable: true,
+      get() {
+        return (this as HTMLElement).classList.contains(
+          "experience-block__scroller",
+        )
+          ? 1200
+          : (scrollWidthDesc?.get?.call(this) ?? 0);
+      },
+    });
+    Object.defineProperty(HTMLElement.prototype, "clientWidth", {
+      configurable: true,
+      get() {
+        return (this as HTMLElement).classList.contains(
+          "experience-block__scroller",
+        )
+          ? 400
+          : (clientWidthDesc?.get?.call(this) ?? 0);
+      },
+    });
+
+    try {
+      render(
+        <ExperienceBlock
+          _type="experience"
+          milestones={milestones}
+        />,
+      );
+
+      const scroller = screen.getByRole("region", { name: "Career timeline" });
+      expect(scroller.scrollLeft).toBe(800);
+      expect(
+        screen.getByRole("button", { name: "Scroll timeline backward" }),
+      ).toBeTruthy();
+      expect(
+        screen.queryByRole("button", { name: "Scroll timeline forward" }),
+      ).toBeNull();
+    } finally {
+      if (scrollWidthDesc) {
+        Object.defineProperty(
+          HTMLElement.prototype,
+          "scrollWidth",
+          scrollWidthDesc,
+        );
+      }
+      if (clientWidthDesc) {
+        Object.defineProperty(
+          HTMLElement.prototype,
+          "clientWidth",
+          clientWidthDesc,
+        );
+      }
+    }
+  });
+
   it("shows forward arrow when content overflows and scrolls on click", () => {
     render(
       <ExperienceBlock
