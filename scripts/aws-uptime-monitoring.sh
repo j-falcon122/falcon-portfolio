@@ -9,10 +9,11 @@
 #   - SNS topic + email subscription (confirm the email!)
 #   - Private S3 bucket for Synthetics artifacts (31-day expiry)
 #   - IAM role for the canary
-#   - CloudWatch Synthetics heartbeat (every 15 minutes)
+#   - CloudWatch Synthetics heartbeat (once daily via cron; stays under Free Tier 100 runs/mo)
 #   - CloudWatch alarm on SuccessPercent < 90%
 #
-# Cost ballpark: ~$3–4/mo for a 15-minute canary (varies by region/pricing).
+# Cost ballpark: Free Tier covers 100 runs/mo. rate() max is 1 hour (~720/mo = paid);
+# use cron for once/twice daily to stay free.
 
 set -euo pipefail
 
@@ -147,7 +148,7 @@ if aws synthetics get-canary --region "$REGION" --name "$CANARY_NAME" >/dev/null
   aws synthetics update-canary --region "$REGION" --name "$CANARY_NAME" \
     --code "ZipFile=${ZIP_B64},Handler=pageLoadBlueprint.handler" \
     --runtime-version "$RUNTIME" \
-    --schedule 'Expression=rate(15 minutes)' \
+    --schedule 'Expression=cron(0 14 * * ? *)' \
     --run-config "TimeoutInSeconds=60,EnvironmentVariables={${ENV_VARS}}" \
     --success-retention-period-in-days 2 \
     --failure-retention-period-in-days 14 \
@@ -159,7 +160,7 @@ else
     --code "ZipFile=${ZIP_B64},Handler=pageLoadBlueprint.handler" \
     --artifact-s3-location "s3://${BUCKET}/canary-artifacts" \
     --execution-role-arn "$ROLE_ARN" \
-    --schedule 'Expression=rate(15 minutes)' \
+    --schedule 'Expression=cron(0 14 * * ? *)' \
     --runtime-version "$RUNTIME" \
     --run-config "TimeoutInSeconds=60,EnvironmentVariables={${ENV_VARS}}" \
     --success-retention-period-in-days 2 \
@@ -189,7 +190,7 @@ aws cloudwatch put-metric-alarm --region "$REGION" \
 echo
 echo "Done."
 echo "  Topic:   $TOPIC_ARN"
-echo "  Canary:  $CANARY_NAME (rate 15 minutes)"
+echo "  Canary:  $CANARY_NAME (cron daily 14:00 UTC)"
 echo "  Alarm:   ${CANARY_NAME}-success"
 echo "  Next:    Confirm the SNS email, then wait for the first canary run."
 echo "  Console: https://${REGION}.console.aws.amazon.com/cloudwatch/home?region=${REGION}#synthetics:/canary/detail/${CANARY_NAME}"

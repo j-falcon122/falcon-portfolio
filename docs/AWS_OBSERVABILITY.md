@@ -83,12 +83,12 @@ Creates:
 
 - SNS topic `{slug}-alerts` + email sub (confirm!)
 - S3 artifact bucket (private, 31-day expiry)
-- Synthetics canary every **15 minutes** (cheaper than 5m while learning)
+- Synthetics canary **once daily** (`cron(0 14 * * ? *)` = 14:00 UTC; ~30 runs/month under Free Tier)
 - Alarm if `SuccessPercent` &lt; 90% for 2 periods (`treat-missing-data=breaching`)
 
 **For the next site:** change `SITE_URL`, `PROJECT_SLUG`, and optional `BRAND_CHECK`.
 
-Approximate cost: a few dollars/month per 15‑minute canary.
+Approximate cost: Free Tier includes 100 canary runs/month. `rate()` max is hourly (~720/mo = billable); use daily cron to stay free.
 
 ## Phase 4 — Later (when you outgrow this)
 
