@@ -47,3 +47,34 @@ describe("normalizeFalconBlock about media", () => {
     });
   });
 });
+
+describe("normalizeFalconBlock projectList tags", () => {
+  it("omits blank tag strings and whitespace-only copy", () => {
+    const block = normalizeFalconBlock({
+      _type: "projectList",
+      items: [
+        {
+          title: "  Falcon Finds  ",
+          description: "Word puzzle game.",
+          tags: ["TypeScript", "", "  ", "React"],
+        },
+        {
+          title: "   ",
+          description: "No title",
+          tags: ["Next.js"],
+        },
+      ],
+    });
+
+    expect(block).toMatchObject({
+      _type: "projectList",
+      items: [
+        {
+          title: "Falcon Finds",
+          description: "Word puzzle game.",
+          tags: ["TypeScript", "React"],
+        },
+      ],
+    });
+  });
+});

@@ -14,6 +14,14 @@ function asString(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() ? value.trim() : undefined;
 }
 
+function asStringList(values: unknown): string[] | undefined {
+  if (!Array.isArray(values)) return undefined;
+  const items = values
+    .map((value) => asString(value))
+    .filter((value): value is string => Boolean(value));
+  return items.length ? items : undefined;
+}
+
 export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
   if (!raw || typeof raw !== "object") return null;
   const block = raw as Record<string, unknown>;
@@ -263,9 +271,7 @@ export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
                 return {
                   title: i.title!,
                   description: i.description!,
-                  tags: Array.isArray(i.tags)
-                    ? i.tags.filter((t): t is string => typeof t === "string")
-                    : undefined,
+                  tags: asStringList(i.tags),
                   href: asString(i.href),
                   linkLabel: asString(i.linkLabel),
                   ...(screenshot ? { screenshot } : {}),
@@ -288,7 +294,7 @@ export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
                 screenshot?: { src?: unknown; alt?: unknown };
               }[]
             )
-              .filter((i) => i?.title && i?.description)
+              .filter((i) => asString(i?.title) && asString(i?.description))
               .map((i) => {
                 const shotSrc = asString(i.screenshot?.src);
                 const screenshot = shotSrc
@@ -300,11 +306,9 @@ export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
                     }
                   : undefined;
                 return {
-                  title: i.title!,
-                  description: i.description!,
-                  tags: Array.isArray(i.tags)
-                    ? i.tags.filter((t): t is string => typeof t === "string")
-                    : undefined,
+                  title: asString(i.title)!,
+                  description: asString(i.description)!,
+                  tags: asStringList(i.tags),
                   ...(screenshot ? { screenshot } : {}),
                 };
               })

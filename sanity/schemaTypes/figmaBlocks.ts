@@ -335,7 +335,12 @@ export const projectListBlockType = defineType({
             defineField({
               name: "tags",
               type: "array",
-              of: [defineArrayMember({type: "string"})],
+              of: [
+                defineArrayMember({
+                  type: "string",
+                  validation: (rule) => rule.required().min(1),
+                }),
+              ],
             }),
             defineField({
               name: "screenshot",

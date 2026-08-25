@@ -11,6 +11,10 @@ function resolveImageSrc(src: string): string {
     : withAssetPath(src);
 }
 
+function textEntries(values?: string[]): string[] {
+  return (values ?? []).map((value) => value.trim()).filter(Boolean);
+}
+
 function CardScreenshot({ item }: { item: ProjectItem }) {
   if (!item.screenshot?.src) return null;
   return (
@@ -20,8 +24,6 @@ function CardScreenshot({ item }: { item: ProjectItem }) {
         src={resolveImageSrc(item.screenshot.src)}
         alt={item.screenshot.alt || `${item.title} screenshot`}
         className="project-list-block__screenshot"
-        width={480}
-        height={270}
         loading="lazy"
         decoding="async"
       />
@@ -41,27 +43,40 @@ export default function ProjectListBlock({
         <div className="project-list-block__list">
           {items.map((item, i) => {
             const hasScreenshot = Boolean(item.screenshot?.src);
+            const cardTitle = item.title.trim();
+            const cardDescription = item.description.trim();
+            const tags = textEntries(item.tags);
+            const hasCopy = Boolean(cardTitle || cardDescription || tags.length);
+            if (!hasCopy && !hasScreenshot) return null;
             return (
               <article
                 key={`${item.title}-${i}`}
                 className={`project-list-block__card${hasScreenshot ? " project-list-block__card--has-media" : ""}`}
               >
                 <CardScreenshot item={item} />
-                <div className="project-list-block__body">
-                  <h3 className="project-list-block__card-title">{item.title}</h3>
-                  <p className="project-list-block__card-body">
-                    {item.description}
-                  </p>
-                  {item.tags?.length ? (
-                    <div className="project-list-block__tags">
-                      {item.tags.map((tag) => (
-                        <span key={tag} className="project-list-block__tag">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
+                {hasCopy ? (
+                  <div className="project-list-block__body">
+                    {cardTitle ? (
+                      <h3 className="project-list-block__card-title">
+                        {cardTitle}
+                      </h3>
+                    ) : null}
+                    {cardDescription ? (
+                      <p className="project-list-block__card-body">
+                        {cardDescription}
+                      </p>
+                    ) : null}
+                    {tags.length ? (
+                      <div className="project-list-block__tags">
+                        {tags.map((tag) => (
+                          <span key={tag} className="project-list-block__tag">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
               </article>
             );
           })}

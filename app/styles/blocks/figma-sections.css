@@ -1351,24 +1351,31 @@ a.experience-block__card--link:focus-visible {
 }
 
 .project-list-block__card--has-media .project-list-block__body {
-  padding: 0 1.75rem 1.75rem;
+  padding: 1rem 1.75rem 1.25rem;
+  min-height: 0;
 }
 
 .project-list-block__media {
   flex: 0 0 auto;
   width: 100%;
+  max-height: 11rem;
   aspect-ratio: 16 / 9;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(14, 23, 42, 0.06);
   border-bottom: 1px solid rgba(58, 90, 140, 0.12);
 }
 
 .project-list-block__screenshot {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
 }
 
 .project-list-block__body {
@@ -1376,12 +1383,18 @@ a.experience-block__card--link:focus-visible {
 }
 
 .project-list-block__card-title {
-  margin: 0 0 0.75rem;
+  margin: 0;
   font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 800;
   color: var(--figma-navy);
   overflow-wrap: anywhere;
+}
+
+.project-list-block__card-title + .project-list-block__card-body,
+.project-list-block__card-title + .project-list-block__tags,
+.project-list-block__card-body + .project-list-block__tags {
+  margin-top: 0.75rem;
 }
 
 .project-list-block__card-body {
@@ -1393,18 +1406,28 @@ a.experience-block__card--link:focus-visible {
 
 .project-list-block__tags {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin-top: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.project-list-block__tags::-webkit-scrollbar {
+  display: none;
 }
 
 .project-list-block__tag {
+  flex: 0 0 auto;
   border-radius: 9999px;
   background: rgba(14, 23, 42, 0.06);
   color: var(--figma-navy);
   font-size: 0.75rem;
   font-weight: 700;
   padding: 0.25rem 0.65rem;
+  white-space: nowrap;
 }
 
 @media (min-width: 720px) {
@@ -1412,23 +1435,35 @@ a.experience-block__card--link:focus-visible {
     flex-direction: row;
     align-items: stretch;
     padding: 0;
+    max-height: 14rem;
   }
 
   .project-list-block__card--has-media .project-list-block__media {
-    width: min(42%, 22rem);
-    flex: 0 0 min(42%, 22rem);
+    width: min(38%, 16rem);
+    flex: 0 0 min(38%, 16rem);
+    max-height: none;
+    height: auto;
+    min-height: 0;
     aspect-ratio: auto;
-    min-height: 12rem;
+    align-self: stretch;
     border-bottom: none;
     border-right: 1px solid rgba(58, 90, 140, 0.12);
   }
 
   .project-list-block__card--has-media .project-list-block__body {
     flex: 1;
-    padding: 1.75rem;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1.5rem 1.75rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  .project-list-block__tags {
+    flex-wrap: wrap;
+    overflow-x: visible;
   }
 }
 
