@@ -358,12 +358,20 @@
           {
             "title": "Jordan Falcon Portfolio",
             "description": "A content-driven Next.js portfolio with Sanity CMS, reusable block schemas, and a Figma-led visual system.",
-            "tags": ["Next.js", "Sanity", "TypeScript"]
+            "tags": ["Next.js", "Sanity", "TypeScript"],
+            "screenshot": {
+              "src": "/placeholder-work-1.jpg",
+              "alt": "Jordan Falcon Portfolio homepage screenshot"
+            }
           },
           {
             "title": "Falcon Bros BBQ",
             "description": "Community gathering focused on reconnecting people and creating lasting memories — built with intention, not profit.",
-            "tags": ["Community", "Events", "Brand"]
+            "tags": ["Community", "Events", "Brand"],
+            "screenshot": {
+              "src": "/placeholder-work-2.jpg",
+              "alt": "Falcon Bros BBQ event brand screenshot"
+            }
           }
         ]
       }

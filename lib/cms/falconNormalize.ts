@@ -285,16 +285,29 @@ export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
                 title?: string;
                 description?: string;
                 tags?: string[];
+                screenshot?: { src?: unknown; alt?: unknown };
               }[]
             )
               .filter((i) => i?.title && i?.description)
-              .map((i) => ({
-                title: i.title!,
-                description: i.description!,
-                tags: Array.isArray(i.tags)
-                  ? i.tags.filter((t): t is string => typeof t === "string")
-                  : undefined,
-              }))
+              .map((i) => {
+                const shotSrc = asString(i.screenshot?.src);
+                const screenshot = shotSrc
+                  ? {
+                      src: shotSrc,
+                      ...(asString(i.screenshot?.alt)
+                        ? { alt: asString(i.screenshot?.alt) }
+                        : {}),
+                    }
+                  : undefined;
+                return {
+                  title: i.title!,
+                  description: i.description!,
+                  tags: Array.isArray(i.tags)
+                    ? i.tags.filter((t): t is string => typeof t === "string")
+                    : undefined,
+                  ...(screenshot ? { screenshot } : {}),
+                };
+              })
           : [],
       };
     case "skills":

@@ -98,6 +98,8 @@ export type ProjectItem = {
   title: string;
   description: string;
   tags?: string[];
+  /** Optional product/UI screenshot shown on the project card. */
+  screenshot?: { src: string; alt?: string };
 };
 
 export type ProjectListBlock = SectionEyebrow & {

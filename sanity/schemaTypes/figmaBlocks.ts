@@ -337,9 +337,24 @@ export const projectListBlockType = defineType({
               type: "array",
               of: [defineArrayMember({type: "string"})],
             }),
+            defineField({
+              name: "screenshot",
+              title: "Screenshot",
+              type: "image",
+              options: {hotspot: true},
+              description: "Optional product/UI screenshot for the project card.",
+              fields: [
+                defineField({
+                  name: "alt",
+                  type: "string",
+                  title: "Alt text",
+                  description: "Describe the screenshot for accessibility.",
+                }),
+              ],
+            }),
           ],
           preview: {
-            select: {title: "title"},
+            select: {title: "title", media: "screenshot"},
           },
         }),
       ],

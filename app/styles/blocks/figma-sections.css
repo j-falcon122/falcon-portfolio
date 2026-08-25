@@ -1339,6 +1339,40 @@ a.experience-block__card--link:focus-visible {
   border-radius: 1rem;
   background: #f8fafc;
   padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.project-list-block__card--has-media {
+  padding: 0;
+}
+
+.project-list-block__card--has-media .project-list-block__body {
+  padding: 0 1.75rem 1.75rem;
+}
+
+.project-list-block__media {
+  flex: 0 0 auto;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: rgba(14, 23, 42, 0.06);
+  border-bottom: 1px solid rgba(58, 90, 140, 0.12);
+}
+
+.project-list-block__screenshot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.project-list-block__body {
+  min-width: 0;
 }
 
 .project-list-block__card-title {
@@ -1347,12 +1381,14 @@ a.experience-block__card--link:focus-visible {
   font-size: 1.35rem;
   font-weight: 800;
   color: var(--figma-navy);
+  overflow-wrap: anywhere;
 }
 
 .project-list-block__card-body {
   margin: 0;
   color: #334155;
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .project-list-block__tags {
@@ -1369,6 +1405,31 @@ a.experience-block__card--link:focus-visible {
   font-size: 0.75rem;
   font-weight: 700;
   padding: 0.25rem 0.65rem;
+}
+
+@media (min-width: 720px) {
+  .project-list-block__card--has-media {
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .project-list-block__card--has-media .project-list-block__media {
+    width: min(42%, 22rem);
+    flex: 0 0 min(42%, 22rem);
+    aspect-ratio: auto;
+    min-height: 12rem;
+    border-bottom: none;
+    border-right: 1px solid rgba(58, 90, 140, 0.12);
+  }
+
+  .project-list-block__card--has-media .project-list-block__body {
+    flex: 1;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 /* Skills */
