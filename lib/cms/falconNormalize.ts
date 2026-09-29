@@ -22,6 +22,15 @@ function asStringList(values: unknown): string[] | undefined {
   return items.length ? items : undefined;
 }
 
+/** Site-relative paths and http(s) URLs only. */
+function asHref(value: unknown): string | undefined {
+  const href = asString(value);
+  if (!href) return undefined;
+  if (href.startsWith("/") && !href.startsWith("//")) return href;
+  if (/^https?:\/\//i.test(href)) return href;
+  return undefined;
+}
+
 export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
   if (!raw || typeof raw !== "object") return null;
   const block = raw as Record<string, unknown>;
@@ -226,9 +235,11 @@ export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
           ? (
               block.items as {
                 title?: string;
+                id?: string;
                 description?: string;
                 tags?: string[];
                 href?: string;
+                exampleLabel?: string;
                 linkLabel?: string;
                 screenshot?: { src?: unknown; alt?: unknown };
                 caseStudy?: {
@@ -270,9 +281,11 @@ export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
                   : undefined;
                 return {
                   title: i.title!,
+                  id: asString(i.id),
                   description: i.description!,
                   tags: asStringList(i.tags),
-                  href: asString(i.href),
+                  href: asHref(i.href),
+                  exampleLabel: asString(i.exampleLabel),
                   linkLabel: asString(i.linkLabel),
                   ...(screenshot ? { screenshot } : {}),
                   caseStudy: hasCaseStudy ? caseStudy : undefined,
@@ -289,8 +302,11 @@ export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
           ? (
               block.items as {
                 title?: string;
+                id?: string;
                 description?: string;
                 tags?: string[];
+                href?: string;
+                linkLabel?: string;
                 screenshot?: { src?: unknown; alt?: unknown };
               }[]
             )
@@ -307,8 +323,11 @@ export function normalizeFalconBlock(raw: unknown): FalconBlock | null {
                   : undefined;
                 return {
                   title: asString(i.title)!,
+                  id: asString(i.id),
                   description: asString(i.description)!,
                   tags: asStringList(i.tags),
+                  href: asHref(i.href),
+                  linkLabel: asString(i.linkLabel),
                   ...(screenshot ? { screenshot } : {}),
                 };
               })

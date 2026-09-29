@@ -358,6 +358,8 @@
           {
             "title": "Jordan Falcon Portfolio",
             "description": "A content-driven Next.js portfolio with Sanity CMS, reusable block schemas, and a Figma-led visual system.",
+            "href": "https://github.com/j-falcon122/falcon-portfolio",
+            "linkLabel": "View project",
             "tags": ["Next.js", "Sanity", "TypeScript"],
             "screenshot": {
               "src": "/placeholder-work-1.jpg",

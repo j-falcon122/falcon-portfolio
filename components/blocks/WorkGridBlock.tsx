@@ -1,10 +1,15 @@
 "use client";
 
-import { useCallback, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type {
   WorkGridBlock as WorkGridBlockType,
   WorkItem,
 } from "@/lib/cms/falconTypes";
+import {
+  catalogItemHashHref,
+  hashFromLocation,
+  uniqueCatalogAnchorIds,
+} from "@/lib/catalogItemAnchor";
 import { withAssetPath } from "portfolio-core/lib/basePath";
 import SectionHeader from "./SectionHeader";
 import WorkCaseStudyModal, {
@@ -35,6 +40,23 @@ function CardContent({ item }: { item: WorkItem }) {
   );
 }
 
+function isExternalHref(href: string): boolean {
+  return /^https?:\/\//i.test(href);
+}
+
+function ExampleLink({ href, label }: { href: string; label: string }) {
+  const external = isExternalHref(href);
+  return (
+    <a
+      className="work-grid-block__example"
+      href={href}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
+      {label}
+    </a>
+  );
+}
+
 function CardScreenshot({ item }: { item: WorkItem }) {
   if (!item.screenshot?.src) return null;
   return (
@@ -53,27 +75,58 @@ function CardScreenshot({ item }: { item: WorkItem }) {
   );
 }
 
+function setLocationHash(href: string) {
+  if (typeof window === "undefined") return;
+  const next = new URL(href, window.location.origin);
+  const current = `${window.location.pathname}${window.location.hash}`;
+  const target = `${next.pathname}${next.hash}`;
+  if (current === target) return;
+  window.history.pushState(null, "", target);
+  window.dispatchEvent(new HashChangeEvent("hashchange"));
+}
+
 export default function WorkGridBlock({
   eyebrow = "03 / Selected Work",
   title = "Selected ESPN & Disney Initiatives",
   items = [],
 }: WorkGridBlockType) {
   const [activeItem, setActiveItem] = useState<WorkItem | null>(null);
-  const closeModal = useCallback(() => setActiveItem(null), []);
-
-  const openItem = useCallback((item: WorkItem) => {
-    setActiveItem(item);
-  }, []);
-
-  const onCardKeyDown = useCallback(
-    (event: KeyboardEvent<HTMLElement>, item: WorkItem) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openItem(item);
-      }
-    },
-    [openItem],
+  const anchorIds = useMemo(
+    () => uniqueCatalogAnchorIds("work", items),
+    [items],
   );
+
+  const itemForHash = useCallback(
+    (hash: string) => {
+      const index = anchorIds.indexOf(hash);
+      return index >= 0 ? items[index] : undefined;
+    },
+    [anchorIds, items],
+  );
+
+  useEffect(() => {
+    function syncFromHash() {
+      const match = itemForHash(hashFromLocation());
+      setActiveItem(
+        match && hasCaseStudyContent(match.caseStudy) ? match : null,
+      );
+    }
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, [itemForHash]);
+
+  const closeModal = useCallback(() => {
+    setActiveItem(null);
+    if (itemForHash(hashFromLocation())) {
+      setLocationHash(catalogItemHashHref("work"));
+    }
+  }, [itemForHash]);
+
+  const openItem = useCallback((item: WorkItem, id: string) => {
+    setActiveItem(item);
+    setLocationHash(catalogItemHashHref(id));
+  }, []);
 
   return (
     <section className="work-grid-block">
@@ -83,24 +136,35 @@ export default function WorkGridBlock({
           {items.map((item, i) => {
             const canOpenModal = hasCaseStudyContent(item.caseStudy);
             const label = item.linkLabel || "Case Study Highlights";
+            const href = item.href?.trim();
+            const exampleLabel = item.exampleLabel?.trim() || "View live work";
+            const anchorId = anchorIds[i];
+            const hashHref = catalogItemHashHref(anchorId);
 
             if (canOpenModal) {
               return (
                 <article
                   key={`${item.title}-${i}`}
+                  id={anchorId}
                   className="work-grid-block__card work-grid-block__card--interactive"
-                  role="button"
-                  tabIndex={0}
-                  aria-haspopup="dialog"
-                  aria-label={`Open case study: ${item.title}`}
-                  onClick={() => openItem(item)}
-                  onKeyDown={(event) => onCardKeyDown(event, item)}
                 >
-                  <CardContent item={item} />
-                  <CardScreenshot item={item} />
-                  <span className="work-grid-block__link" aria-hidden="true">
-                    {label}
-                  </span>
+                  <a
+                    className="work-grid-block__open"
+                    href={hashHref}
+                    aria-haspopup="dialog"
+                    aria-label={`Open case study: ${item.title}`}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      openItem(item, anchorId);
+                    }}
+                  >
+                    <CardContent item={item} />
+                    <CardScreenshot item={item} />
+                    <span className="work-grid-block__link">{label}</span>
+                  </a>
+                  {href ? (
+                    <ExampleLink href={href} label={exampleLabel} />
+                  ) : null}
                 </article>
               );
             }
@@ -108,14 +172,13 @@ export default function WorkGridBlock({
             return (
               <article
                 key={`${item.title}-${i}`}
+                id={anchorId}
                 className="work-grid-block__card"
               >
                 <CardContent item={item} />
                 <CardScreenshot item={item} />
-                {item.href ? (
-                  <a className="work-grid-block__link" href={item.href}>
-                    {label}
-                  </a>
+                {href ? (
+                  <ExampleLink href={href} label={exampleLabel} />
                 ) : (
                   <span className="work-grid-block__link work-grid-block__link--static">
                     {label}

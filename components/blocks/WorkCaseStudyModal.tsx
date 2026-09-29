@@ -126,6 +126,17 @@ export default function WorkCaseStudyModal({
               </p>
             </section>
           ))}
+          {item.href ? (
+            <a
+              className="work-case-study-modal__example"
+              href={item.href}
+              {...(/^https?:\/\//i.test(item.href)
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
+              {item.exampleLabel?.trim() || "View live work"}
+            </a>
+          ) : null}
         </div>
       </div>
     </div>

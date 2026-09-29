@@ -193,11 +193,45 @@ export const workGridBlockType = defineType({
       of: [
         defineArrayMember({
           type: "object",
+          fieldsets: [
+            {
+              name: "external",
+              title: "External link",
+              options: {collapsible: false},
+            },
+          ],
           fields: [
             defineField({
               name: "title",
               type: "string",
               validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "href",
+              title: "External URL",
+              type: "url",
+              fieldset: "external",
+              description:
+                "Live page, repo, or article that points to this work (https://…). Shown on the card and in the case study.",
+              validation: (rule) =>
+                rule.uri({
+                  scheme: ["http", "https"],
+                  allowRelative: true,
+                }),
+            }),
+            defineField({
+              name: "exampleLabel",
+              title: "External link label",
+              type: "string",
+              fieldset: "external",
+              description: 'Button text. Defaults to "View live work".',
+            }),
+            defineField({
+              name: "id",
+              title: "Link anchor",
+              type: "string",
+              description:
+                'Optional URL hash for this card (e.g. "draftcast" → /#draftcast). Defaults from the title.',
             }),
             defineField({
               name: "description",
@@ -229,14 +263,7 @@ export const workGridBlockType = defineType({
               name: "linkLabel",
               title: "Card CTA label",
               type: "string",
-              description: 'e.g. "Case Study Highlights". Opens the modal when case study fields are set.',
-            }),
-            defineField({
-              name: "href",
-              title: "External link (optional)",
-              type: "string",
-              description:
-                "Used only when no case study modal content is provided. Prefer filling the Case Study fields below.",
+              description: 'e.g. "Case Study Highlights". Clicking the card still opens the case study modal.',
             }),
             defineField({
               name: "caseStudy",
@@ -293,7 +320,14 @@ export const workGridBlockType = defineType({
             }),
           ],
           preview: {
-            select: {title: "title", media: "screenshot"},
+            select: {title: "title", media: "screenshot", href: "href"},
+            prepare({title, media, href}) {
+              return {
+                title: title || "Work item",
+                subtitle: href || "No external link",
+                media,
+              };
+            },
           },
         }),
       ],
@@ -320,11 +354,45 @@ export const projectListBlockType = defineType({
       of: [
         defineArrayMember({
           type: "object",
+          fieldsets: [
+            {
+              name: "external",
+              title: "External link",
+              options: {collapsible: false},
+            },
+          ],
           fields: [
             defineField({
               name: "title",
               type: "string",
               validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "href",
+              title: "External URL",
+              type: "url",
+              fieldset: "external",
+              description:
+                "Live demo, site, or repo (https://…). The project card links here when this is set.",
+              validation: (rule) =>
+                rule.uri({
+                  scheme: ["http", "https"],
+                  allowRelative: true,
+                }),
+            }),
+            defineField({
+              name: "linkLabel",
+              title: "External link label",
+              type: "string",
+              fieldset: "external",
+              description: 'Shown on the card. Defaults to "View project".',
+            }),
+            defineField({
+              name: "id",
+              title: "Link anchor",
+              type: "string",
+              description:
+                'Optional URL hash for this card (e.g. "falcon-finds" → /#falcon-finds). Defaults from the title.',
             }),
             defineField({
               name: "description",
@@ -359,7 +427,14 @@ export const projectListBlockType = defineType({
             }),
           ],
           preview: {
-            select: {title: "title", media: "screenshot"},
+            select: {title: "title", media: "screenshot", href: "href"},
+            prepare({title, media, href}) {
+              return {
+                title: title || "Project",
+                subtitle: href || "No external link",
+                media,
+              };
+            },
           },
         }),
       ],

@@ -2,6 +2,10 @@ import type {
   ProjectItem,
   ProjectListBlock as ProjectListBlockType,
 } from "@/lib/cms/falconTypes";
+import {
+  catalogItemHashHref,
+  uniqueCatalogAnchorIds,
+} from "@/lib/catalogItemAnchor";
 import { withAssetPath } from "portfolio-core/lib/basePath";
 import SectionHeader from "./SectionHeader";
 
@@ -13,6 +17,10 @@ function resolveImageSrc(src: string): string {
 
 function textEntries(values?: string[]): string[] {
   return (values ?? []).map((value) => value.trim()).filter(Boolean);
+}
+
+function isExternalHref(href: string): boolean {
+  return /^https?:\/\//i.test(href);
 }
 
 function CardScreenshot({ item }: { item: ProjectItem }) {
@@ -36,6 +44,8 @@ export default function ProjectListBlock({
   title = "Personal Projects & Passion Pursuits",
   items = [],
 }: ProjectListBlockType) {
+  const anchorIds = uniqueCatalogAnchorIds("project", items);
+
   return (
     <section className="project-list-block">
       <div className="project-list-block__inner">
@@ -46,12 +56,32 @@ export default function ProjectListBlock({
             const cardTitle = item.title.trim();
             const cardDescription = item.description.trim();
             const tags = textEntries(item.tags);
+            const href = item.href?.trim();
+            const linkLabel = item.linkLabel?.trim() || "View project";
             const hasCopy = Boolean(cardTitle || cardDescription || tags.length);
             if (!hasCopy && !hasScreenshot) return null;
+
+            const anchorId = anchorIds[i];
+            const hashHref = catalogItemHashHref(anchorId);
+            const cardHref = href || hashHref;
+            const external = Boolean(href && isExternalHref(href));
+            const className = [
+              "project-list-block__card",
+              hasScreenshot ? "project-list-block__card--has-media" : "",
+              "project-list-block__card--link",
+            ]
+              .filter(Boolean)
+              .join(" ");
+
             return (
-              <article
+              <a
                 key={`${item.title}-${i}`}
-                className={`project-list-block__card${hasScreenshot ? " project-list-block__card--has-media" : ""}`}
+                id={anchorId}
+                className={className}
+                href={cardHref}
+                {...(external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
               >
                 <CardScreenshot item={item} />
                 {hasCopy ? (
@@ -75,9 +105,12 @@ export default function ProjectListBlock({
                         ))}
                       </div>
                     ) : null}
+                    {href ? (
+                      <span className="project-list-block__link">{linkLabel}</span>
+                    ) : null}
                   </div>
                 ) : null}
-              </article>
+              </a>
             );
           })}
         </div>

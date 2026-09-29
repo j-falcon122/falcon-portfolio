@@ -930,6 +930,12 @@ a.experience-block__card--link:focus-visible {
   min-height: 16rem;
   overflow: hidden;
   text-align: left;
+  scroll-margin-top: calc(var(--header-height, 4rem) + 1rem);
+}
+
+.work-grid-block__card:target {
+  border-color: rgba(245, 183, 49, 0.55);
+  box-shadow: 0 0 0 2px rgba(245, 183, 49, 0.35);
 }
 
 .work-grid-block__card > * {
@@ -959,7 +965,6 @@ a.experience-block__card--link:focus-visible {
 }
 
 .work-grid-block__card--interactive {
-  cursor: pointer;
   font: inherit;
   color: inherit;
   transition:
@@ -969,18 +974,53 @@ a.experience-block__card--link:focus-visible {
 }
 
 .work-grid-block__card--interactive:hover,
-.work-grid-block__card--interactive:focus-visible {
+.work-grid-block__card--interactive:focus-within {
   border-color: rgba(245, 183, 49, 0.55);
   background: var(--figma-navy-elevated);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
-  outline: none;
 }
 
-.work-grid-block__card--interactive:focus-visible {
+.work-grid-block__card--interactive:focus-within {
   box-shadow:
     0 0 0 2px var(--figma-navy),
     0 0 0 4px var(--figma-gold),
     0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.work-grid-block__open {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.work-grid-block__open:focus {
+  outline: none;
+}
+
+.work-grid-block__example {
+  align-self: flex-start;
+  color: var(--figma-gold);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.work-grid-block__example:hover,
+.work-grid-block__example:focus-visible {
+  color: #ffe08a;
 }
 
 .work-grid-block__tags {
@@ -1160,6 +1200,20 @@ a.experience-block__card--link:focus-visible {
   font-size: 0.975rem;
   line-height: 1.65;
   color: var(--figma-muted);
+}
+
+.work-case-study-modal__example {
+  align-self: flex-start;
+  color: var(--figma-gold);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.work-case-study-modal__example:hover,
+.work-case-study-modal__example:focus-visible {
+  color: #ffe08a;
 }
 
 /* Resume PDF preview modal */
@@ -1344,6 +1398,50 @@ a.experience-block__card--link:focus-visible {
   gap: 1.25rem;
   min-width: 0;
   overflow: hidden;
+  scroll-margin-top: calc(var(--header-height, 4rem) + 1rem);
+}
+
+.project-list-block__card:target {
+  border-color: rgba(245, 183, 49, 0.75);
+  box-shadow: 0 0 0 2px rgba(245, 183, 49, 0.28);
+}
+
+.project-list-block__card--link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.project-list-block__card--link:hover,
+.project-list-block__card--link:focus-visible {
+  border-color: rgba(245, 183, 49, 0.75);
+  box-shadow: 0 10px 28px rgba(14, 23, 42, 0.12);
+  outline: none;
+}
+
+.project-list-block__card--link:focus-visible {
+  box-shadow:
+    0 0 0 2px #f8fafc,
+    0 0 0 4px var(--figma-gold),
+    0 10px 28px rgba(14, 23, 42, 0.12);
+}
+
+.project-list-block__link {
+  display: inline-flex;
+  margin-top: 0.85rem;
+  color: var(--figma-navy);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.project-list-block__card--link:hover .project-list-block__link,
+.project-list-block__card--link:focus-visible .project-list-block__link {
+  color: #8a6410;
 }
 
 .project-list-block__card--has-media {

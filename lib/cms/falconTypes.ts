@@ -80,9 +80,14 @@ export type WorkCaseStudy = {
 
 export type WorkItem = {
   title: string;
+  /** Optional hash target (e.g. "draftcast"). Defaults from the title. */
+  id?: string;
   description: string;
   tags?: string[];
+  /** Live page/repo opened in the browser. The card still opens the case study when that content exists. */
   href?: string;
+  /** Text for the external link. Defaults to "View live work". */
+  exampleLabel?: string;
   linkLabel?: string;
   /** Optional product/UI screenshot shown on the card and in the case-study modal. */
   screenshot?: { src: string; alt?: string };
@@ -96,8 +101,14 @@ export type WorkGridBlock = SectionEyebrow & {
 
 export type ProjectItem = {
   title: string;
+  /** Optional hash target (e.g. "falcon-finds"). Defaults from the title. */
+  id?: string;
   description: string;
   tags?: string[];
+  /** Live demo, site, or repo. The card is a link when this is set. */
+  href?: string;
+  /** Card link text. Defaults to "View project" in the UI. */
+  linkLabel?: string;
   /** Optional product/UI screenshot shown on the project card. */
   screenshot?: { src: string; alt?: string };
 };

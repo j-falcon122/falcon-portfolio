@@ -318,9 +318,11 @@ async function convertBlock(block, hosted) {
         const row = {
           _key: `work-${i}`,
           title: item.title,
+          ...(item.id ? { id: item.id } : {}),
           description: item.description,
           ...(item.tags?.length ? { tags: item.tags } : {}),
           ...(item.href ? { href: item.href } : {}),
+          ...(item.exampleLabel ? { exampleLabel: item.exampleLabel } : {}),
           ...(item.linkLabel ? { linkLabel: item.linkLabel } : {}),
         };
         if (item.screenshot?.src) {
@@ -367,8 +369,11 @@ async function convertBlock(block, hosted) {
         items: (block.items || []).map((item, i) => ({
           _key: `proj-${i}`,
           title: item.title,
+          ...(item.id ? { id: item.id } : {}),
           description: item.description,
           ...(item.tags?.length ? { tags: item.tags } : {}),
+          ...(item.href ? { href: item.href } : {}),
+          ...(item.linkLabel ? { linkLabel: item.linkLabel } : {}),
         })),
       };
 

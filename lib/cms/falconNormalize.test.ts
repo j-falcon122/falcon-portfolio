@@ -77,4 +77,67 @@ describe("normalizeFalconBlock projectList tags", () => {
       ],
     });
   });
+
+  it("keeps example links and drops unsafe hrefs", () => {
+    const block = normalizeFalconBlock({
+      _type: "projectList",
+      items: [
+        {
+          title: "Falcon Finds",
+          description: "Word puzzle game.",
+          href: "https://example.com/falcon-finds",
+          linkLabel: "Play the demo",
+        },
+        {
+          title: "Local only",
+          description: "Internal example.",
+          href: "/projects/local",
+        },
+        {
+          title: "Unsafe",
+          description: "Should not link.",
+          href: "javascript:alert(1)",
+        },
+      ],
+    });
+
+    expect(block).toMatchObject({
+      _type: "projectList",
+      items: [
+        {
+          title: "Falcon Finds",
+          href: "https://example.com/falcon-finds",
+          linkLabel: "Play the demo",
+        },
+        {
+          title: "Local only",
+          href: "/projects/local",
+        },
+        {
+          title: "Unsafe",
+          href: undefined,
+        },
+      ],
+    });
+  });
+});
+
+describe("normalizeFalconBlock workGrid anchors", () => {
+  it("keeps a custom link id on work items", () => {
+    const block = normalizeFalconBlock({
+      _type: "workGrid",
+      items: [
+        {
+          title: "DraftCast",
+          description: "Live draft tools.",
+          id: "draftcast",
+        },
+      ],
+    });
+
+    expect(block).toMatchObject({
+      _type: "workGrid",
+      items: [{ title: "DraftCast", id: "draftcast" }],
+    });
+  });
 });
