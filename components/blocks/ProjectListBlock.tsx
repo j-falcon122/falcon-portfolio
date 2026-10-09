@@ -103,7 +103,7 @@ export default function ProjectListBlock({
                           ? { target: "_blank", rel: "noopener noreferrer" }
                           : {})}
                       >
-                        View here
+                        View Here
                       </a>
                     ) : null}
                   </div>

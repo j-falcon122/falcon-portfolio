@@ -135,7 +135,7 @@ export default function WorkCaseStudyModal({
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}
             >
-              View here
+              View Here
             </a>
           ) : null}
         </div>

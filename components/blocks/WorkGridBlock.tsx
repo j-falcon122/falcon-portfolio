@@ -61,7 +61,7 @@ function ViewButton({
       aria-label={`View ${title}`}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >
-      View here
+      View Here
     </a>
   );
 }

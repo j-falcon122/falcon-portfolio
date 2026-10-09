@@ -63,7 +63,7 @@ function MilestoneCard({
           aria-label={`View ${m.title}`}
           draggable={false}
         >
-          View here
+          View Here
         </Link>
       ) : null}
     </div>
