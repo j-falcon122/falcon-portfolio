@@ -106,7 +106,7 @@ describe("ExperienceBlock", () => {
     expect(screen.getByText("Grew into Software Engineer II")).toBeTruthy();
     expect(
       screen.getByRole("link", {
-        name: "Open full details for Web Developer Intern",
+        name: "View Web Developer Intern",
       }),
     ).toHaveAttribute("href", "/experience-details#nyt-intern");
   });
@@ -205,7 +205,7 @@ describe("ExperienceBlock", () => {
 
     const scroller = screen.getByRole("region", { name: "Career timeline" });
     const link = screen.getByRole("link", {
-      name: "Open full details for Web Developer Intern",
+      name: "View Web Developer Intern",
     });
 
     fireEvent.pointerDown(scroller, {
@@ -244,7 +244,7 @@ describe("ExperienceBlock", () => {
 
     const scroller = screen.getByRole("region", { name: "Career timeline" });
     const link = screen.getByRole("link", {
-      name: "Open full details for Web Developer Intern",
+      name: "View Web Developer Intern",
     });
 
     fireEvent.pointerDown(scroller, {

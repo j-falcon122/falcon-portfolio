@@ -128,13 +128,14 @@ export default function WorkCaseStudyModal({
           ))}
           {item.href ? (
             <a
-              className="work-case-study-modal__example"
+              className="work-grid-block__view work-case-study-modal__view"
               href={item.href}
+              aria-label={`View ${item.title}`}
               {...(/^https?:\/\//i.test(item.href)
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}
             >
-              {item.exampleLabel?.trim() || "View live work"}
+              View here
             </a>
           ) : null}
         </div>

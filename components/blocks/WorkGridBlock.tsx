@@ -44,15 +44,24 @@ function isExternalHref(href: string): boolean {
   return /^https?:\/\//i.test(href);
 }
 
-function ExampleLink({ href, label }: { href: string; label: string }) {
+function ViewButton({
+  href,
+  title,
+  className,
+}: {
+  href: string;
+  title: string;
+  className: string;
+}) {
   const external = isExternalHref(href);
   return (
     <a
-      className="work-grid-block__example"
+      className={className}
       href={href}
+      aria-label={`View ${title}`}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >
-      {label}
+      View here
     </a>
   );
 }
@@ -135,11 +144,16 @@ export default function WorkGridBlock({
         <div className="work-grid-block__grid">
           {items.map((item, i) => {
             const canOpenModal = hasCaseStudyContent(item.caseStudy);
-            const label = item.linkLabel || "Case Study Highlights";
             const href = item.href?.trim();
-            const exampleLabel = item.exampleLabel?.trim() || "View live work";
             const anchorId = anchorIds[i];
             const hashHref = catalogItemHashHref(anchorId);
+            const viewButton = href ? (
+              <ViewButton
+                href={href}
+                title={item.title}
+                className="work-grid-block__view"
+              />
+            ) : null;
 
             if (canOpenModal) {
               return (
@@ -160,11 +174,11 @@ export default function WorkGridBlock({
                   >
                     <CardContent item={item} />
                     <CardScreenshot item={item} />
-                    <span className="work-grid-block__link">{label}</span>
+                    <span className="work-grid-block__link">
+                      Case Study Highlights
+                    </span>
                   </a>
-                  {href ? (
-                    <ExampleLink href={href} label={exampleLabel} />
-                  ) : null}
+                  {viewButton}
                 </article>
               );
             }
@@ -177,11 +191,9 @@ export default function WorkGridBlock({
               >
                 <CardContent item={item} />
                 <CardScreenshot item={item} />
-                {href ? (
-                  <ExampleLink href={href} label={exampleLabel} />
-                ) : (
+                {viewButton ?? (
                   <span className="work-grid-block__link work-grid-block__link--static">
-                    {label}
+                    Case Study Highlights
                   </span>
                 )}
               </article>

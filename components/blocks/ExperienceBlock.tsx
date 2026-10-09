@@ -53,19 +53,21 @@ function MilestoneCard({
   href?: string;
   children: ReactNode;
 }) {
-  if (href) {
-    return (
-      <Link
-        href={href}
-        className="experience-block__card experience-block__card--link"
-        aria-label={`Open full details for ${m.title}`}
-        draggable={false}
-      >
-        {children}
-      </Link>
-    );
-  }
-  return <div className="experience-block__card">{children}</div>;
+  return (
+    <div className="experience-block__card">
+      <div className="experience-block__card-body">{children}</div>
+      {href ? (
+        <Link
+          href={href}
+          className="experience-block__view"
+          aria-label={`View ${m.title}`}
+          draggable={false}
+        >
+          View here
+        </Link>
+      ) : null}
+    </div>
+  );
 }
 
 /** Scroll about three milestone cards (200px + 20px gap). */
@@ -141,6 +143,14 @@ export default function ExperienceBlock({
 
   const onScrollerPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    if (
+      event.target instanceof Element &&
+      event.target.closest("a.experience-block__view")
+    ) {
+      dragRef.current.pointerId = null;
+      dragRef.current.moved = false;
+      return;
+    }
     dragRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
@@ -259,7 +269,7 @@ export default function ExperienceBlock({
                     <li
                       key={`${m.dates}-${i}`}
                       className={`experience-block__milestone experience-block__milestone--${kind}${hasDetails ? " experience-block__milestone--has-details" : ""}${isLinked ? " experience-block__milestone--linked" : ""}`}
-                      tabIndex={!isLinked && hasDetails ? 0 : undefined}
+                      tabIndex={hasDetails ? 0 : undefined}
                     >
                       <span className="experience-block__dates">{m.dates}</span>
                       <MilestoneCard m={m} href={detailHref}>

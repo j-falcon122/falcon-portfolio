@@ -2,10 +2,7 @@ import type {
   ProjectItem,
   ProjectListBlock as ProjectListBlockType,
 } from "@/lib/cms/falconTypes";
-import {
-  catalogItemHashHref,
-  uniqueCatalogAnchorIds,
-} from "@/lib/catalogItemAnchor";
+import { uniqueCatalogAnchorIds } from "@/lib/catalogItemAnchor";
 import { withAssetPath } from "portfolio-core/lib/basePath";
 import SectionHeader from "./SectionHeader";
 
@@ -57,31 +54,23 @@ export default function ProjectListBlock({
             const cardDescription = item.description.trim();
             const tags = textEntries(item.tags);
             const href = item.href?.trim();
-            const linkLabel = item.linkLabel?.trim() || "View project";
             const hasCopy = Boolean(cardTitle || cardDescription || tags.length);
             if (!hasCopy && !hasScreenshot) return null;
 
             const anchorId = anchorIds[i];
-            const hashHref = catalogItemHashHref(anchorId);
-            const cardHref = href || hashHref;
             const external = Boolean(href && isExternalHref(href));
             const className = [
               "project-list-block__card",
               hasScreenshot ? "project-list-block__card--has-media" : "",
-              "project-list-block__card--link",
             ]
               .filter(Boolean)
               .join(" ");
 
             return (
-              <a
+              <article
                 key={`${item.title}-${i}`}
                 id={anchorId}
                 className={className}
-                href={cardHref}
-                {...(external
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
               >
                 <CardScreenshot item={item} />
                 {hasCopy ? (
@@ -106,11 +95,20 @@ export default function ProjectListBlock({
                       </div>
                     ) : null}
                     {href ? (
-                      <span className="project-list-block__link">{linkLabel}</span>
+                      <a
+                        className="project-list-block__view"
+                        href={href}
+                        aria-label={`View ${cardTitle || item.title}`}
+                        {...(external
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
+                      >
+                        View here
+                      </a>
                     ) : null}
                   </div>
                 ) : null}
-              </a>
+              </article>
             );
           })}
         </div>
